@@ -43,6 +43,9 @@ export default function AccountScreen() {
   //   }
   // }
 
+
+  const [visible, setVisible] = useState(false);
+
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
   };
