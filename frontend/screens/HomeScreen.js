@@ -6,8 +6,6 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import { color } from "@rneui/base";
 
 
-
-
     
 export default function HomeScreen(props) {
 
