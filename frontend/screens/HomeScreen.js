@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text, ScrollView, TouchableHighlight, TouchableOpacity, TextInput } from "react-native";
 import { Button, Overlay, Input } from "@rneui/themed";
+import IconIonic from 'react-native-vector-icons/Ionicons';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import { color } from "@rneui/base";
 
 
 
@@ -30,6 +33,13 @@ export default function HomeScreen(props) {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
 
+  // Information pour changement de mot de passe
+  const [emailReset, setEmailRest] = useState('');
+  const [passwordReset, setPasswordReset] = useState('');
+  const [confirmedPasswordReset, setConfirmedPasswordReset] = useState('');
+
+
+
   // On vérifie dans le backend si le user existe déjà ou pas
   var checkConnectionInformation = async (mail, mdp) => {
     await fetch('/sign-in', {
@@ -39,10 +49,19 @@ export default function HomeScreen(props) {
     });
   }
 
-  console.log(signInEmail)
+  // Declenche la route pour changer de mot de passe
+  var resetPassword = async () => {
+    await fetch('/reset-password', {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: `emailFromResetPassword=${emailReset}&passwordFromResetPassword=${passwordReset}&passwordFromResetPasswordConfirmed=${confirmedPasswordReset}`
+    }); 
+  }
+
 
   return (
     <ScrollView>
+
         <Text h4 style={{textAlign: 'center'}}>HOMESCREEN</Text>
         <Button
         title = "Go to Results page"
@@ -55,15 +74,25 @@ export default function HomeScreen(props) {
         />
 
         {/* Overlay avec les options de connexions */}
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{width: '90%'}}>
+          <Text>  Nom</Text>
+
+          <TextInput style = {styles.input} placeholder = "WESH ZOUBA LA MICHE"/>
+          {/* <Input placeholder="Nom" style = {styles.input} /> */}
+          <Text>  Prenom</Text>
+          <Input placeholder="Prenom" />
+
           <Text>  Adresse email</Text>
-          <Input placeholder="Mail" style={{ paddingRight: '70%'}} />
+          <Input placeholder="Mail" />
 
           <Text>  Numéro de téléphone</Text>
-          <Input placeholder="Tel" style={{ paddingRight: '70%'}} />
+          {/* <Input placeholder="Tel"/>
+           */}
+          <TextInput style = {styles.input} placeholder = "WESH ZOUBA LA MICHE" keyboardType="phone-pad"/>
+
 
           <Text>  Mot de passe</Text>
-          <Input placeholder="Mdp" style={{ paddingRight: '70%'}} />
+          <Input placeholder="Mdp"/>
 
 
           <Button
@@ -75,21 +104,19 @@ export default function HomeScreen(props) {
             title = "Connexion via Google"
             onPress={() => console.log("s'inscrire via google")}
           />
-          <Text>J'ai déjà un compte</Text>
-          <Button
-            style = {{ paddingTop: '1%' }}
-            title = "Se connecter"
-            onPress={() => {console.log('ée'); setVisible(false); setVisibleConnection(true)}}
-          />
+          <Text style={{textAlign: 'center', marginTop: '4%', marginBottom: '2%'}}>J'ai déjà un compte</Text>
+          <TouchableOpacity onPress = {() => {toggleOverlay(); setVisibleConnection(true)}}>
+            <Text style={{textAlign: 'center', color: 'green'}} >Se connecter</Text>
+          </TouchableOpacity>
         </Overlay>
 
         {/* Overlay j'ai déjà un compte, se connecter */}
-        <Overlay isVisible={visibleConnection} onBackdropPress={toggleOverlayConnection}>
+        <Overlay isVisible={visibleConnection} onBackdropPress={setVisibleConnection} overlayStyle={{width: '90%'}}>
           <Text>  Adresse email</Text>
           <Input 
           placeholder="Mail" 
           style={{ paddingRight: '70%'}} 
-          onChangeText={(msg) => setSignInEmail(msg)} 
+          onChangeText={(msg) => setSignInEmail(msg)}
           />
 
           <Text>  Mot de passe</Text>
@@ -99,28 +126,47 @@ export default function HomeScreen(props) {
           onChangeText={(msg) => setSignInPassword(msg)} 
           />
 
+          <TouchableOpacity onPress = {() => {toggleOverlay(); setVisibleConnection(true)}}>
+            <Text style={{textAlign: 'right', color: 'green', fontSize: 10}} onPress={() => {setVisibleConnection(false); setVisibleForgetPassword(true); checkConnectionInformation(signInEmail, signInPassword)}} >Mot de passe oublié</Text>
+          </TouchableOpacity>
           <Button
-            style = {{ paddingTop: '1%' }}
-            title = "Mot de passe oublié"
-            onPress={() => {console.log("Mdp oublié zebi"); setVisibleConnection(false); setVisibleForgetPassword(true)}}
+            style = {{ paddingTop: '10%' }}
+            title = "Se connecter"
+            onPress={() => {console.log("Se connecter")}}
           />
 
-          <Button
-            style = {{ paddingTop: '1%' }}
-            title = "Connexion via Google"
-            onPress={() => {console.log("Se connecter"); checkConnectionInformation(signInEmail, signInPassword)}}
-          />
         </Overlay>
 
         {/* Overlay mot de passe oublié */}
-        <Overlay isVisible={visibleForgetPassword} onBackdropPress={toggleOverlayForgetPassword}>
+        <Overlay isVisible={visibleForgetPassword} onBackdropPress={setVisibleForgetPassword} overlayStyle={{width: '90%'}}>
           <Text>  Adresse email</Text>
-          <Input placeholder="Mail" style={{ paddingRight: '70%'}} />
+          <Input 
+          placeholder="Mail" 
+          style={{ paddingRight: '70%'}} 
+          onChangeText={(msg) => emailReset(msg)}
+          />
+
+          <Text>  Nouveau mot de passe</Text>
+          <Input 
+          placeholder="Mdp" 
+          style={{ paddingRight: '70%'}} 
+          onChangeText={(msg) => passwordReset(msg)}
+          />
+
+          <Text>  Confirmer le nouveau mot de passe</Text>
+          <Input 
+          placeholder="Mdp" 
+          style={{ paddingRight: '70%'}} 
+          onChangeText={(msg) => confirmedPasswordReset(msg)}
+          />
+
           <Button
             style = {{ paddingTop: '1%' }}
-            title = "Reset password"
+            title = "Confirmer"
             onPress={() => console.log("Reset password")}
           />
+
+          
         </Overlay>
 
     </ScrollView>
@@ -135,4 +181,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  input: {
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+  }
 });
+
+
+// const styles = StyleSheet.create({
+//   container: {
+//     paddingTop: 60,
+//     alignItems: 'center'
+//   },
+//   button: {
+//     marginBottom: 30,
+//     width: 260,
+//     alignItems: 'center',
+//     backgroundColor: '#2196F3'
+//   },
+//   buttonText: {
+//     textAlign: 'center',
+//     padding: 20,
+//     color: 'white'
+//   }
+// });
