@@ -25,4 +25,26 @@ router.post('/sign-in', async function(req, res, next) {
 
   res.json({result, userFromFrontExist, error})
 })
+
+// Reset password
+router.post('/reset-password', async function(req, res, next) {
+
+  var error = [];
+
+  var emailFromFrontExist = await userModel.findOne({email: req.body.emailFromResetPassword});
+  var passwordFromFront = req.body.passwordFromResetPassword;
+  var passwordFromFrontConfirmed = req.body.passwordFromResetPasswordConfirmed;
+
+  var result = false;
+
+  if(emailFromFrontExist){
+    if(passwordFromFront === passwordFromFrontConfirmed){
+      result = true;
+      await userModel.updateOne({password: passwordFromFront})
+    }
+  }
+  // ne pas oublier de rajouter une chose dans le front, si result === true alors on ferme l'overlay
+  // actuel et on rouvre celui de la connection, vu qu'on vient de changer notre mdp
+  res.json({result})
+})
 module.exports = router;
