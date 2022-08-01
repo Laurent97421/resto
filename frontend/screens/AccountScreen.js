@@ -8,7 +8,7 @@ import { Overlay, Button, Input } from "@rneui/themed";
 export default function AccountScreen() {
 
 
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
     setVisible(!visible);
   }
