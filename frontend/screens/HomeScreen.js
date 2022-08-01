@@ -2,8 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { Button } from "@rneui/themed";
 
-
-
     
 export default function HomeScreen(props) {
 
