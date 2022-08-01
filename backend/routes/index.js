@@ -1,10 +1,21 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
+var userModel = require("../models/users");
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
 });
+
+/* Post Sign-up */
+
+router.post("/sign-up", async function (req, res, next) {
+  var newUser = new userModel({});
+
+  await newUser.save();
+});
+// });
 
 // Sign In
 router.post('/sign-in', async function(req, res, next) {
