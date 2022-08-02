@@ -39,7 +39,7 @@ export default function HomeScreen(props) {
   //sign-up
 
   var signup = async (firstName, name, mail, mdp, tel) => {
-    let privateAdressIP = "192.168.14.254";
+    let privateAdressIP = "37.65.5.111";
 
     await fetch("/sign-up", "http://" + privateAdressIP + ":3000/signup", {
       method: "POST",
@@ -47,120 +47,110 @@ export default function HomeScreen(props) {
       body: `firstNameFromFront=${firstName}&nameFromFront=${name}&emailFromFront=${mail}&passwordFromFront=${mdp}&phoneFromFront=${tel}`,
     });
   };
+}
+return (
+  <ScrollView>
+    <Text h4 style={{ textAlign: "center" }}>
+      HOMESCREEN
+    </Text>
+    <Button
+      title="Go to Results page"
+      onPress={() => props.navigation.navigate("Result")}
+    />
+    <Button
+      style={{ marginTop: "50%" }}
+      title="OVERLAYS TESTS"
+      onPress={() => {
+        toggleOverlay();
+      }}
+    />
 
-  return (
-    <ScrollView>
-      <Text h4 style={{ textAlign: "center" }}>
-        HOMESCREEN
-      </Text>
+    {/* Overlay avec les options de connexions */}
+    <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+      <Text> Prénom</Text>
+      <Input placeholder="Premom" style={{ paddingRight: "70%" }} />
+
+      <Text> Nom</Text>
+      <Input placeholder="Nom" style={{ paddingRight: "70%" }} />
+
+      <Text> Adresse email</Text>
+      <Input placeholder="Mail" style={{ paddingRight: "70%" }} />
+
+      <Text> Numéro de téléphone</Text>
+      <Input placeholder="Tel" style={{ paddingRight: "70%" }} />
+
+      <Text> Mot de passe</Text>
+      <Input placeholder="Mdp" style={{ paddingRight: "70%" }} />
+
+      <Button title="S'inscrire" onPress={() => console.log("s'inscrire")} />
       <Button
-        title="Go to Results page"
-        onPress={() => props.navigation.navigate("Result")}
+        style={{ paddingTop: "1%" }}
+        title="Connexion via Google"
+        onPress={() => console.log("s'inscrire via google")}
       />
+      <Text>J'ai déjà un compte</Text>
       <Button
-        style={{ marginTop: "50%" }}
-        title="OVERLAYS TESTS"
+        style={{ paddingTop: "1%" }}
+        title="Se connecter"
         onPress={() => {
-          toggleOverlay();
+          console.log("ée");
+          setVisible(false);
+          setVisibleConnection(true);
+        }}
+      />
+    </Overlay>
+
+    {/* Overlay j'ai déjà un compte, se connecter */}
+    <Overlay
+      isVisible={visibleConnection}
+      onBackdropPress={toggleOverlayConnection}
+    >
+      <Text> Adresse email</Text>
+      <Input
+        placeholder="Mail"
+        style={{ paddingRight: "70%" }}
+        onChangeText={(msg) => setSignInEmail(msg)}
+      />
+
+      <Text> Mot de passe</Text>
+      <Input
+        placeholder="Mdp"
+        style={{ paddingRight: "70%" }}
+        onChangeText={(msg) => setSignInPassword(msg)}
+      />
+
+      <Button
+        style={{ paddingTop: "1%" }}
+        title="Mot de passe oublié"
+        onPress={() => {
+          console.log("Mdp oublié zebi");
+          setVisibleConnection(false);
+          setVisibleForgetPassword(true);
         }}
       />
 
-      {/* Overlay avec les options de connexions */}
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <Text> Prénom</Text>
-        <Input placeholder="Premom" style={{ paddingRight: "70%" }} />
+      <Button
+        style={{ paddingTop: "1%" }}
+        title="Connexion via Google"
+        onPress={() => {
+          console.log("Se connecter");
+          checkConnectionInformation(signInEmail, signInPassword);
+        }}
+      />
+    </Overlay>
 
-        <Text> Nom</Text>
-        <Input placeholder="Nom" style={{ paddingRight: "70%" }} />
-
-        <Text> Adresse email</Text>
-        <Input placeholder="Mail" style={{ paddingRight: "70%" }} />
-
-        <Text> Numéro de téléphone</Text>
-        <Input placeholder="Tel" style={{ paddingRight: "70%" }} />
-
-        <Text> Mot de passe</Text>
-        <Input placeholder="Mdp" style={{ paddingRight: "70%" }} />
-
-        <Button title="S'inscrire" onPress={() => console.log("s'inscrire")} />
-        <Button
-          style={{ paddingTop: "1%" }}
-          title="Connexion via Google"
-          onPress={() => console.log("s'inscrire via google")}
-        />
-        <Text>J'ai déjà un compte</Text>
-        <Button
-          style={{ paddingTop: "1%" }}
-          title="Se connecter"
-          onPress={() => {
-            console.log("ée");
-            setVisible(false);
-            setVisibleConnection(true);
-          }}
-        />
-      </Overlay>
-
-      {/* Overlay j'ai déjà un compte, se connecter */}
-      <Overlay
-        isVisible={visibleConnection}
-        onBackdropPress={toggleOverlayConnection}
-      >
-        <Text> Adresse email</Text>
-        <Input
-          placeholder="Mail"
-          style={{ paddingRight: "70%" }}
-          onChangeText={(msg) => setSignInEmail(msg)}
-        />
-
-        <Text> Mot de passe</Text>
-        <Input
-          placeholder="Mdp"
-          style={{ paddingRight: "70%" }}
-          onChangeText={(msg) => setSignInPassword(msg)}
-        />
-
-        <Button
-          style={{ paddingTop: "1%" }}
-          title="Mot de passe oublié"
-          onPress={() => {
-            console.log("Mdp oublié zebi");
-            setVisibleConnection(false);
-            setVisibleForgetPassword(true);
-          }}
-        />
-
-        <Button
-          style={{ paddingTop: "1%" }}
-          title="Connexion via Google"
-          onPress={() => {
-            console.log("Se connecter");
-            checkConnectionInformation(signInEmail, signInPassword);
-          }}
-        />
-      </Overlay>
-
-      {/* Overlay mot de passe oublié */}
-      <Overlay
-        isVisible={visibleForgetPassword}
-        onBackdropPress={toggleOverlayForgetPassword}
-      >
-        <Text> Adresse email</Text>
-        <Input placeholder="Mail" style={{ paddingRight: "70%" }} />
-        <Button
-          style={{ paddingTop: "1%" }}
-          title="Reset password"
-          onPress={() => console.log("Reset password")}
-        />
-      </Overlay>
-    </ScrollView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+    {/* Overlay mot de passe oublié */}
+    <Overlay
+      isVisible={visibleForgetPassword}
+      onBackdropPress={toggleOverlayForgetPassword}
+    >
+      <Text> Adresse email</Text>
+      <Input placeholder="Mail" style={{ paddingRight: "70%" }} />
+      <Button
+        style={{ paddingTop: "1%" }}
+        title="Reset password"
+        onPress={() => console.log("Reset password")}
+      />
+    </Overlay>
+  </ScrollView>
+);
