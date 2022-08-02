@@ -4,12 +4,12 @@ var usersSchema = mongoose.Schema({
   userName: String,
   userFirstName: String,
   userEmail: String,
-  userPhone: String,
+  userPhone: Number,
   userPassword: String,
   token: String,
-  reservations: [reservationsSchema],
+  // reservations: [reservationsSchema],
 });
 
 var userModel = mongoose.model("users", usersSchema);
 
-module.exports = usersModel;
+module.exports = userModel;
