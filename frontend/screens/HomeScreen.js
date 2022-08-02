@@ -53,7 +53,7 @@ export default function HomeScreen(props) {
       body: `firstNameFromFront=${firstName}&nameFromFront=${name}&emailFromFront=${mail}&passwordFromFront=${mdp}&phoneFromFront=${tel}`,
     });
   };
-}
+
 
 
 
