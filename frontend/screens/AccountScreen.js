@@ -1,74 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import { Overlay, Input, Button } from "@rneui/themed";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 // import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from "@react-navigation/native";
 
 
-export default function AccountScreen() {
+
+export default function AccountScreen(props) {
 
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [lastnameInput, setLastnameInput] = useState('a');
   const [firstnameInput, setFirstnameInput] = useState('b');
   const [emailInput, setEmailInput] = useState('c');
   const [phoneNumberInput, setPhoneNumberInput] = useState('d');
+
+  const [hasModified, setHasModified] = useState(false);
   
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
   };
 
-  // Obtenir le user en sessions
-  // useEffect( () => {
-  //   const userSessionID = async function retrieveUserSession() {
-  //     try {   
-  //         const session = await EncryptedStorage.getItem("user_session");
-      
-  //         if (session !== undefined) {
-  //           console.log(session)
-  //         }
-  //     } catch (error) {
-  //         console.log('No user connected !', error)
-  //     }
-  //   }
+  // Pré-remplir les données à partir de la BDD
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem('userEmail', function(error, userEmail){
+        if(true){
+          setLastnameInput('AsyncStorage');
+          setFirstnameInput('AsyncStorage');
+          setEmailInput('AsyncStorage');
+          setPhoneNumberInput('AsyncStorage');  
+        } else {
+          console.log('No user connected !')
+        }
+      })
+    },[])
+  )
 
-  //   const sendUserSessionIDtoBE = async () => {
-  //     await fetch('/account-screen', {
-  //     })
-  //   }
-  // }, []);
-
-  // Remplir les inputs à partir de la BDD
-  
-  // try {
-  //   const res = await fetch("/service", { method: "GET" }),
-  //     json = await res.json();
-  //   console.log(json);
-  // } catch (err) {
-  //   console.error("error:", err);
-  // }
-
-  // var getUserDataFromBDD;
-  
-
-  // Deconnexion (Option 1 : Clear all)
-  // async function clearStorage() {
-  //   try {
-  //       await EncryptedStorage.clear();
-  //       // Congrats! You've just cleared the device storage!
-  //   } catch (error) {
-  //     console.log('No data found !')
-  //   }
-  // }
-
-  // Deconnexion (Option 2 : Remove one)
-  // async function removeUserSession() {
-  //   try {
-  //       await EncryptedStorage.removeItem("user_session");
-  //       // Congrats! You've just removed your first value!
-  //   } catch (error) {
-  //     console.log('No data found !')
-  //   }
-  // }
+  // Change le pré-remplissage des inputs si modification par le user
+  useEffect ( () => {
+    if(hasModified) {
+      AsyncStorage.getItem('userEmail', function(error, userEmail){
+        if(true){
+          setLastnameInput('modif');
+          setFirstnameInput('modif');
+          setEmailInput('modif');
+          setPhoneNumberInput('modif');  
+        } else {
+          console.log('No modification done !')
+        }
+      })
+    }
+  }, [hasModified])
 
 
 
@@ -114,6 +98,7 @@ export default function AccountScreen() {
           <View>
             <Text style={{ fontSize: 15 }}>Numéro de téléphone :</Text>
             <Input
+              keyboardType="numeric"
               type='tel'
               value={phoneNumberInput}
               onChangeText={ value => { setPhoneNumberInput(value) } }
@@ -134,7 +119,7 @@ export default function AccountScreen() {
             containerStyle={{}}
             buttonStyle={{ height: 56, width: 130, borderRadius: 40 }}
             titleStyle={{}}
-            onPress={toggleOverlay}
+            onPress={() => {toggleOverlay(); console.log('User has modified !'); setHasModified(true)}}
           />
         </View>
       </Overlay>
