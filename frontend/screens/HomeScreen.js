@@ -41,6 +41,19 @@ export default function HomeScreen(props) {
   const [confirmedPasswordReset, setConfirmedPasswordReset] = useState('');
   const [resetPsw, setResetPsw] = useState(false);
 
+// signup
+
+  var signup = async (firstName, name, mail, mdp, tel) => {
+    let privateAdressIP = "37.65.5.111";
+
+    await fetch("/sign-up", "http://" + privateAdressIP + ":3000/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `firstNameFromFront=${firstName}&nameFromFront=${name}&emailFromFront=${mail}&passwordFromFront=${mdp}&phoneFromFront=${tel}`,
+    });
+  };
+}
+
 
 
 
