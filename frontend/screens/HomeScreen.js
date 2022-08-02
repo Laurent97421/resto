@@ -6,6 +6,7 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import { color } from "@rneui/base";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 import { Icon } from '@rneui/themed'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
@@ -60,18 +61,24 @@ export default function HomeScreen(props) {
 
   // On vérifie dans le backend si le user existe déjà ou pas
   var checkConnectionInformation = async (mail, mdp) => {
-    var connectionInfos = await fetch('/sign-in', {
-      method: 'POST',
-      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body: `emailFromFront=${mail}&passwordFromFront=${mdp}`
-    });
+    try{
+      var connectionInfos = await fetch('/sign-in', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `emailFromFront=${mail}&passwordFromFront=${mdp}`
+      });
+  
+      var bodyConnectionInfos = connectionInfos.json();
+  
+      // Si les données entrées appartiennent à un user en BDD
+      // result sera = true, et donc on set
+      if(bodyConnectionInfos.result){
+        setConnectionOK(true);
+        AsyncStorage.setItem("userEmail", bodyConnectionInfos.userBDD.email);
+      } 
+    } catch (err) {
+      console.log('No user connected')
 
-    var bodyConnectionInfos = connectionInfos.json();
-
-    // Si les données entrées appartiennent à un user en BDD
-    // result sera = true, et donc on set
-    if(bodyConnectionInfos.result){
-      setConnectionOK(true);
     }
     
     

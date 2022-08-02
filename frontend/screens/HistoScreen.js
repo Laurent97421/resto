@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
     

@@ -93,8 +93,10 @@ router.post("/sign-in", async function (req, res, next) {
   // à rajouter: if result === true, on le connecte, donc token et tout ça.
   // Si true: redirect vers  homescreen en sauvegardant le token pour la session
 
-  res.json({ result, userFromFrontExist, error });
-});
+
+  res.json({result, userBDD: userFromFrontExist, error})
+})
+
 
 // Reset password
 router.post("/reset-password", async function (req, res, next) {
