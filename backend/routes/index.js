@@ -49,6 +49,9 @@ router.post('/sign-in', async function(req, res, next) {
     }
   }
 
+  // à rajouter: if result === true, on le connecte, donc token et tout ça.
+  // Si true: redirect vers  homescreen en sauvegardant le token pour la session
+
   res.json({result, userFromFrontExist, error})
 })
 
@@ -57,16 +60,20 @@ router.post('/reset-password', async function(req, res, next) {
 
   var error = [];
 
-  var emailFromFrontExist = await userModel.findOne({email: req.body.emailFromResetPassword});
+  var userFromFrontExist = await userModel.findOne({email: req.body.emailFromResetPassword});
   var passwordFromFront = req.body.passwordFromResetPassword;
   var passwordFromFrontConfirmed = req.body.passwordFromResetPasswordConfirmed;
+  var mailFromFront = req.body.emailFromResetPassword
 
   var result = false;
 
-  if(emailFromFrontExist){
+  if(userFromFrontExist){
     if(passwordFromFront === passwordFromFrontConfirmed){
       result = true;
-      await userModel.updateOne({password: passwordFromFront})
+      await userModel.updateOne({ _id: userFromFrontExist._id }, {
+        mail: mailFromFront,
+        password: passwordFromFront
+      })
     }
   }
   // ne pas oublier de rajouter une chose dans le front, si result === true alors on ferme l'overlay
