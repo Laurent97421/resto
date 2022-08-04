@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
-import MyTabs from "../components/RestoScreen/TabScreen";
+import MyTabs from "../Components/RestoScreen/TabScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
 
