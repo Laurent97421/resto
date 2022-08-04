@@ -7,14 +7,16 @@ import { color } from "@rneui/base";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 import { Icon } from '@rneui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { connect } from 'react-redux';
+
 
 
 
     
-export default function HomeScreen(props) {
+function HomeScreen(props) {
 
   // Overlay à l'ouverture de la page
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const toggleOverlay = () => {
     setVisible(!visible);
   }
@@ -31,10 +33,19 @@ export default function HomeScreen(props) {
     setVisibleForgetPassword(!visibleForgetPassword);
   }
 
+  // Information de création de compte
+  const [signupLastName, setSignupLastName] = useState('');
+  const [signupFirstName, setSignupFirstName] = useState('');
+  const [signupEmail, setSignupEmail] = useState('');
+  const [signupTel, setSignupTel] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+
+
   // Information de connexion
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [connectionOK, setConnectionOK] = useState(false);
+  const [userConnected, setUserConnected] = useState('')
 
   // Information pour changement de mot de passe
   const [emailReset, setEmailReset] = useState('');
@@ -42,16 +53,20 @@ export default function HomeScreen(props) {
   const [confirmedPasswordReset, setConfirmedPasswordReset] = useState('');
   const [resetPsw, setResetPsw] = useState(false);
 
-// signup
+  // signup
+  var signup = async () => {
+    let privateAdressIP = "172.20.10.8";
 
-  var signup = async (firstName, name, mail, mdp, tel) => {
-    let privateAdressIP = "37.65.5.111";
-
-    await fetch("/sign-up", "http://" + privateAdressIP + ":3000/signup", {
+    const test = await fetch("http://" + privateAdressIP + ":3000/signup", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `firstNameFromFront=${firstName}&nameFromFront=${name}&emailFromFront=${mail}&passwordFromFront=${mdp}&phoneFromFront=${tel}`,
+      body: `firstNameFromFront=${signupFirstName}&nameFromFront=${signupLastName}&emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&phoneFromFront=${signupTel}`,
     });
+    // const bodyTest = test.json();
+    // var token = bodyTest.token
+    // if(token){
+    //   AsyncStorage.setItem("userToken", token)
+    // }
   };
 
 
@@ -61,32 +76,41 @@ export default function HomeScreen(props) {
 
   // On vérifie dans le backend si le user existe déjà ou pas
   var checkConnectionInformation = async (mail, mdp) => {
+    let privateAdressIP = "172.20.10.8";
     try{
-      var connectionInfos = await fetch('/sign-in', {
+      var connectionInfos = await fetch('http://' + privateAdressIP + ':3000/sign-in', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
         body: `emailFromFront=${mail}&passwordFromFront=${mdp}`
       });
+      // console.log('try ok')
   
-      var bodyConnectionInfos = connectionInfos.json();
-  
+      var bodyConnectionInfos = await connectionInfos.json();
+      setUserConnected(bodyConnectionInfos);
+      console.log(bodyConnectionInfos)
       // Si les données entrées appartiennent à un user en BDD
       // result sera = true, et donc on set
       if(bodyConnectionInfos.result){
         setConnectionOK(true);
-        AsyncStorage.setItem("userEmail", bodyConnectionInfos.userBDD.email);
+        AsyncStorage.setItem("userToken", bodyConnectionInfos.userBDD.token);
       } 
     } catch (err) {
       console.log('No user connected')
 
     }
-    
+    const testToken = await AsyncStorage.getItem("userToken")
+    props.saveToken(testToken)
+    console.log('Le token')
+    console.log(testToken)
     
   }
+
+  // console.log('En dehors')
+  // console.log(userConnected)
   // // Si les infos écritent correspondent à un user en bdd, redirect vers la home page
 var testConnectionPassed = () => {
   if(connectionOK){
-    toggleOverlayConnection();
+    setVisibleConnection(false);
     props.navigation.navigate('Restaurant', {screen: HomeScreen})
     // props.navigation.navigate('Mon compte')
   }
@@ -133,10 +157,12 @@ var testConnectionPassed = () => {
         />
 
         {/* Overlay avec les options de connexions */}
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{width: '90%'}}>
+        <Overlay isVisible={visible} overlayStyle={{width: '90%'}}>
 
 
-          <FloatingLabelInput
+        <FloatingLabelInput
+          onChangeText={(msg) => setSignupLastName(msg)}
+          value = {signupLastName}
           labelStyles={styles.labelStyles}
           containerStyles={styles.containerStyles}
           staticLabel
@@ -144,7 +170,9 @@ var testConnectionPassed = () => {
           placeholder="Nom">
         </FloatingLabelInput>
 
-          <FloatingLabelInput
+        <FloatingLabelInput
+          onChangeText={(msg) => setSignupFirstName(msg)}
+          value = {signupFirstName}
           labelStyles={styles.labelStyles}
           containerStyles={styles.containerStyles}
           staticLabel
@@ -152,7 +180,9 @@ var testConnectionPassed = () => {
           placeholder="Prénom">
         </FloatingLabelInput>
 
-          <FloatingLabelInput
+        <FloatingLabelInput
+          onChangeText={(msg) => setSignupEmail(msg)}
+          value = {signupEmail}
           keyboardType="email-address"
           labelStyles={styles.labelStyles}
           containerStyles={styles.containerStyles}
@@ -162,6 +192,8 @@ var testConnectionPassed = () => {
         </FloatingLabelInput>
 
         <FloatingLabelInput
+          onChangeText={(msg) => setSignupTel(msg)}
+          value = {signupTel}
           keyboardType="numeric"
           labelStyles={styles.labelStyles}
           containerStyles={styles.containerStyles}
@@ -171,6 +203,8 @@ var testConnectionPassed = () => {
         </FloatingLabelInput>
 
         <FloatingLabelInput
+          onChangeText={(msg) => setSignupPassword(msg)}
+          value = {signupPassword}
           labelStyles={styles.labelStyles}
           containerStyles={styles.containerStyles}
           staticLabel
@@ -182,7 +216,7 @@ var testConnectionPassed = () => {
           <Button
             style = {{ marginTop: 30 }}
             title = "S'inscrire"
-            onPress={() => console.log("s'inscrire")}
+            onPress={() => {console.log("s'inscrire"); signup()}}
           />
           <Button
             style = {{ paddingTop: '1%' }}
@@ -196,9 +230,10 @@ var testConnectionPassed = () => {
         </Overlay>
 
         {/* Overlay j'ai déjà un compte, se connecter */}
-        <Overlay isVisible={visibleConnection} onBackdropPress={toggleOverlayConnection} overlayStyle={{width: '90%'}}>
+        <Overlay isVisible={visibleConnection} overlayStyle={{width: '90%'}}>
 
         <FloatingLabelInput
+          keyboardType="email-address"
           onChangeText={(msg) => setSignInEmail(msg)}
           value = {signInEmail}
           labelStyles={styles.labelStyles}
@@ -318,3 +353,15 @@ const styles = StyleSheet.create({
   }
 });
 
+function mapDispatchToProps(dispatch) {
+  return {
+    saveToken : function (token) {
+      dispatch({ type : 'saveToken', token: token})
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(HomeScreen);
