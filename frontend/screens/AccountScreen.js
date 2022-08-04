@@ -5,55 +5,163 @@ import { FloatingLabelInput } from 'react-native-floating-label-input';
 // import EncryptedStorage from 'react-native-encrypted-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
+import { connect } from 'react-redux';
 
 
 
-export default function AccountScreen(props) {
+function AccountScreen(props) {
 
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const [lastnameInput, setLastnameInput] = useState('a');
-  const [firstnameInput, setFirstnameInput] = useState('b');
-  const [emailInput, setEmailInput] = useState('c');
-  const [phoneNumberInput, setPhoneNumberInput] = useState('d');
+  const [lastnameInput, setLastnameInput] = useState('');
+  const [firstnameInput, setFirstnameInput] = useState('');
+  const [emailInput, setEmailInput] = useState('');
+  const [phoneNumberInput, setPhoneNumberInput] = useState('');
+  const [token, setToken] = useState('');
 
-  const [hasModified, setHasModified] = useState(false);
-  
+  // const [, updateState] = useState();
+  // const forceUpdate = useCallback(() => updateState({}),[]);
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log('oui')
+  //     updateState({})
+  //   }, [])
+  // );
+
+
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
   };
 
-  // Pré-remplir les données à partir de la BDD
+  // console.log(token)
+
+  useEffect(() => {
+    console.log('Etape 1: On rentre dans le UseEffect ')
+    // Récupération du token
+    // const getData = async () => {
+    //   try {
+    //     const token =  await AsyncStorage.getItem('userToken')
+    //     if(token){
+    //       console.log('Etape 2: getData effectuée')
+    //       setToken(token)
+    //     }
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
+    // getData();
+    console.log('Etape 2: token')
+    setToken(props.myToken)
+    console.log('Mon Token')
+    console.log(token)
+    // props.navigation.navigate('Restaurant')
+    // props.navigation.navigate('Restaurant', {screen: HomeScreen})
+
+    // A l'aide du token on récupère les infos du user
+    // var userInfos = async () => {
+    //   console.log('Etape 3: userInfos effectuée')
+    //   let privateAdressIP = "172.20.10.8";
+
+    //   // Récupérer les infos BDD du User à partir du token obtenu
+    //   //// Requête
+    //   const getUserInfosFromBDD = await fetch("http://" + privateAdressIP + ":3000/account-screen", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //     body: `tokenFromFront=${token}`,
+    //   });
+    //   //// Réponse
+    //   const userInfosFromBDD = await getUserInfosFromBDD.json();
+    //   // console.log()
+    //   //// Pré-remplissage
+      
+    //   setLastnameInput(userInfosFromBDD.userFromBDD.userName);
+    //   setFirstnameInput(userInfosFromBDD.userFromBDD.userFirstName);
+    //   setEmailInput(userInfosFromBDD.userFromBDD.userEmail);
+    //   setPhoneNumberInput(userInfosFromBDD.userFromBDD.userPhone);
+    // };
+    // userInfos();
+
+  },[token])
+
+  // Alternative à async/await
+  // const getData = () => {
+  //   try {
+  //     AsyncStorage.getItem('userToken')
+  //     .then(value => {
+  //       if (value != null) {
+  //         console.log('getData OK')
+  //         setToken(value)
+  //       }
+  //     })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  
+ var userInfos = async () => {
+      console.log('Etape 3: userInfos effectuée')
+      let privateAdressIP = "172.20.10.8";
+
+      // Récupérer les infos BDD du User à partir du token obtenu
+      //// Requête
+      const getUserInfosFromBDD = await fetch("http://" + privateAdressIP + ":3000/account-screen", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `tokenFromFront=${token}`,
+      });
+      //// Réponse
+      const userInfosFromBDD = await getUserInfosFromBDD.json();
+      console.log(userInfosFromBDD)
+      //// Pré-remplissage
+      
+      setLastnameInput(userInfosFromBDD.userFromBDD.userName);
+      setFirstnameInput(userInfosFromBDD.userFromBDD.userFirstName);
+      setEmailInput(userInfosFromBDD.userFromBDD.userEmail);
+      setPhoneNumberInput(userInfosFromBDD.userFromBDD.userPhone);
+    };
+  // On récupère userFromBDD à chaque fois que l'on va sur l'onglet Mon compte
   useFocusEffect(
     useCallback(() => {
-      AsyncStorage.getItem('userEmail', function(error, userEmail){
-        if(true){
-          setLastnameInput('AsyncStorage');
-          setFirstnameInput('AsyncStorage');
-          setEmailInput('AsyncStorage');
-          setPhoneNumberInput('AsyncStorage');  
-        } else {
-          console.log('No user connected !')
-        }
-      })
-    },[])
-  )
-
+        userInfos();
+        console.log('UseFocusEffect OK')
+        console.log(token)
+    }, [token])
+  );
+  
   // Change le pré-remplissage des inputs si modification par le user
-  useEffect ( () => {
-    if(hasModified) {
-      AsyncStorage.getItem('userEmail', function(error, userEmail){
-        if(true){
-          setLastnameInput('modif');
-          setFirstnameInput('modif');
-          setEmailInput('modif');
-          setPhoneNumberInput('modif');  
-        } else {
-          console.log('No modification done !')
-        }
-      })
-    }
-  }, [hasModified])
+  // useEffect ( () => {
+  //   if(hasModified) {
+  //     AsyncStorage.getItem('userEmail', function(error, userEmail){
+  //       if(true){
+  //         setLastnameInput('modif');
+  //         setFirstnameInput('modif');
+  //         setEmailInput('modif');
+  //         setPhoneNumberInput('modif');  
+  //       } else {
+  //         console.log('No modification done !')
+  //       }
+  //     })
+  //   }
+  // }, [hasModified])
 
+  // On est pas gentil on se deconnecte de l'app
+  // const deconnexion = () => {
+  //   // await AsyncStorage.removeItem('userToken', (err) => console.log('userToken', err));
+  //   AsyncStorage.clear()
+  //   props.navigation.navigate('Home')
+  //   console.log('DECONNECTER')
+  //   // console.log(token)
+  // }
+
+  // useEffect(() => {
+  //   AsyncStorage.clear();
+  //   console.log(token)
+  // }, [token])
+
+  // useEffect(() => {
+  //    console.log('useEffect')
+  //    console.log(props.myToken)
+  //   }, [])
 
 
   return (
@@ -100,7 +208,7 @@ export default function AccountScreen(props) {
             <Input
               keyboardType="numeric"
               type='tel'
-              value={phoneNumberInput}
+              value={phoneNumberInput.toString()}
               onChangeText={ value => { setPhoneNumberInput(value) } }
             ></Input>
           </View>
@@ -119,7 +227,7 @@ export default function AccountScreen(props) {
             containerStyle={{}}
             buttonStyle={{ height: 56, width: 130, borderRadius: 40 }}
             titleStyle={{}}
-            onPress={() => {toggleOverlay(); console.log('User has modified !'); setHasModified(true)}}
+            onPress={() => {toggleOverlay(); console.log('User has modified !')}}
           />
         </View>
       </Overlay>
@@ -210,7 +318,7 @@ export default function AccountScreen(props) {
           staticLabel
           label="Numéro de téléphone"
           editable={false}
-          value={phoneNumberInput}
+          value={phoneNumberInput.toString()}
         >
         </FloatingLabelInput>
       </View>
@@ -222,6 +330,7 @@ export default function AccountScreen(props) {
         onPress={() => setOverlayVisible(true)}
       />
       <Button
+        onPress={() => {deconnexion()}}
         buttonStyle={{ height: 56, marginTop: 20, marginBottom: 20}}
         titleStyle={{ color: 'red', fontSize: 15 }}
         type="clear" >
@@ -231,3 +340,12 @@ export default function AccountScreen(props) {
  
   )
 }
+
+function mapStateToProps(state) {
+	return { myToken : state.token }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(AccountScreen)

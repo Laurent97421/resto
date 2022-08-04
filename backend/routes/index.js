@@ -54,7 +54,7 @@ router.post("/signup", async function (req, res, next) {
   } else {
     var newUser = new userModel({
       userName: req.body.nameFromFront,
-      userFistName: req.body.firstNameFromFront,
+      userFirstName: req.body.firstNameFromFront,
       userEmail: req.body.emailFromFront,
       userPhone: req.body.phoneFromFront,
       userPassword: hash,
@@ -77,10 +77,12 @@ router.post("/sign-in", async function (req, res, next) {
   var error = [];
 
   if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
+    console.log('PREMIER IF, INFOS VIDE')
     error.push("Un ou plusieurs champ(s) sont vide(s)");
   } else {
+    console.log('SECOND IF, FINDONE')
     var userFromFrontExist = await userModel.findOne({
-      email: req.body.emailFromFront,
+      userEmail: req.body.emailFromFront,
     });
     var result = false;
     if (userFromFrontExist) {
@@ -89,11 +91,14 @@ router.post("/sign-in", async function (req, res, next) {
       error.push("Information(s) incorrecte(s)");
     }
   }
+    // var userFromFrontExist = await userModel.findOne({userEmail: req.body.emailFromFront});
+    // console.log(userFromFrontExist)
 
   // à rajouter: if result === true, on le connecte, donc token et tout ça.
   // Si true: redirect vers  homescreen en sauvegardant le token pour la session
 
 
+  // res.json({userFromFrontExist})
   res.json({result, userBDD: userFromFrontExist, error})
 })
 
@@ -126,6 +131,16 @@ router.post("/reset-password", async function (req, res, next) {
   // ne pas oublier de rajouter une chose dans le front, si result === true alors on ferme l'overlay
   // actuel et on rouvre celui de la connection, vu qu'on vient de changer notre mdp
   res.json({ result });
+});
+
+
+router.post("/account-screen", async function (req, res, next) {
+
+  var userFromBDD = await userModel.findOne({token: req.body.tokenFromFront})
+  console.log(userFromBDD)
+
+
+  res.json({userFromBDD});
 });
 
 module.exports = router;

@@ -13,6 +13,19 @@ import MyReservationScreen from './screens/HistoScreen';
 import AccountScreen from './screens/AccountScreen';
 import ReservationScreen from './screens/ReservationScreen';
 
+import { Provider } from 'react-redux';
+import { combineReducers }  from 'redux';
+import { configureStore } from '@reduxjs/toolkit'
+
+import token from './reducers/token'
+
+
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Warning: ...']);
+
+const reducer = combineReducers({ token })
+const store = configureStore({reducer})
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -29,13 +42,16 @@ const StackNavigatorTest = function() { // On sauvegarde une fonction StackNavig
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Mon compte" component={AccountScreen} />
-        <Tab.Screen name="Restaurant" component={StackNavigatorTest} />
-        <Tab.Screen name="Mes réservations" component={MyReservationScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName='Restaurant'>
+          <Tab.Screen name="Mon compte" component={AccountScreen} />
+          <Tab.Screen name="Restaurant" component={StackNavigatorTest} />
+          <Tab.Screen name="Mes réservations" component={MyReservationScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
+
   );
 }
 
