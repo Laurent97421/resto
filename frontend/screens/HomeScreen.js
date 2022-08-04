@@ -447,6 +447,7 @@ function HomeScreen(props) {
           label="Confirmer le nouveau mot de passe"
           placeholder="Confirmer le nouveau mot de passe"
         ></FloatingLabelInput>
+        </Overlay>
 
 
 
