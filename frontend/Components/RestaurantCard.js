@@ -1,12 +1,10 @@
 import React from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from '@react-navigation/native';
-
-
+import { useNavigation } from "@react-navigation/native";
 
 function RestaurantCard(props) {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => {
