@@ -156,7 +156,7 @@ function HomeScreen(props) {
 
       var bodyConnectionInfos = await connectionInfos.json();
       setUserConnected(bodyConnectionInfos);
-      console.log(bodyConnectionInfos);
+      // console.log(bodyConnectionInfos);
       // Si les données entrées appartiennent à un user en BDD
       // result sera = true, et donc on set
       if (bodyConnectionInfos.result) {
@@ -223,7 +223,7 @@ function HomeScreen(props) {
 
   const [filter, setFilter] = useState({});
   // setFilter({a: 'a'})
-  console.log(filter)
+  // console.log(filter)
 
 
 
@@ -575,13 +575,6 @@ function HomeScreen(props) {
     </ScrollView>
   );
 }
-
-
-
-
-
-
-{if(true){ console.log(true)}}
 
 
 

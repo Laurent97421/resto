@@ -14,6 +14,8 @@ import MyReservationScreen from "./screens/HistoScreen";
 import AccountScreen from "./screens/AccountScreen";
 import ReservationScreen from "./screens/ReservationScreen";
 
+import RestaurantCard from "./Components/RestaurantCard";
+
 import { Provider } from "react-redux";
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
