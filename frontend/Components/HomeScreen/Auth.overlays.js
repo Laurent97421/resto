@@ -9,7 +9,9 @@ import { connect } from 'react-redux';
 
 function Authentification(props) {
 
-let privateAdressIP = "172.20.10.4";
+let privateAdressIP = "172.20.10.8"; // Laurent
+// let privateAdressIP = "172.20.10.4"; // Pauline
+
 
 // Overlays Visibility
 const [visibleOverlaySub, setVisibleOverlaySub] = useState(true);

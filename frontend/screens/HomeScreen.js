@@ -91,11 +91,12 @@ export default function HomeScreen(props) {
   }
 
   const [filter, setFilter] = useState({});
-
+  
+  
   const searchResto = async () => {
     console.log('Search Resto')
-    let privateAdressIP = "172.20.10.8";
 
+    let privateAdressIP = "172.20.10.8";
     // On envoie nos informations de recherche au backend
     //// Requête
     const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
@@ -251,7 +252,7 @@ export default function HomeScreen(props) {
       <Button
       style = {{justifyContent: 'flex-end'}}
       title = "Rechercher un restaurant"
-      onPress={() => {props.navigation.navigate('Result'); searchResto()}}
+      onPress={() => {props.navigation.navigate('Result'); searchResto(); setFilter()}}
       />
 
     </ScrollView>
