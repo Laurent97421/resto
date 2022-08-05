@@ -1,144 +1,674 @@
 [{
     "id": "1",
-    "name": "El Cabo Coffe Bar Tres De Mayo",
-    "deliveryFee": 1.40,
-    "minDeliveryTime": 25,
-    "maxDeliveryTime": 35,
+    "name": "Chai Les Copains",
+    "address": "1 quai de Bacalan",
+    "ZIPcode": "33300",
+    "city": "Bordeaux",
+    "phoneNumber": "05 56 04 55 27",
     "rating": 4.0,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant1.jpeg",
-    "dishes": [
+    "voteNumber": 356,
+    "logo": "https://media-cdn.tripadvisor.com/media/photo-s/14/b5/e5/80/chai-les-copains.jpg",
+    "images": [
       {
-        "name": "Cheese Tequeños",
-        "description": "6 pieces of chese with sauce.",
-        "price": 6.90,
-        "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg",
+        "uri": "https://s3.eu-west-3.amazonaws.com/fr.du-jour.menu.medias/7/5/9/9/3/175993/17563_1542902828"
       },
       {
-        "name": "Hamburger La Super Cabo Burger",
-        "description": "Double meat, gouda cheese, cheddar cheese, cooked ham, bacon, egg, salad and rustic potatoes.",
-        "price": 8.90,
-        "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant3.jpeg"
+        "uri": "https://www.naniecuisine.com/wp-content/uploads/2020/09/Chai-les-copains-%C3%A0-Bordeaux-33-02.jpg"
       },
       {
-        "name": "U.S.A. Burger",
-        "description": "Beef, gouda cheese, cheddar cheese, cooked ham, bacon, egg and salad.",
-        "price": 5.40
-      },
-      {
-        "name": "Slices of Llanero Cheese",
-        "description": "Ripe plantain with cheese and palm honey.",
-        "price": 5.90
-      },
-      {
-        "name": "Papas Locas El Cabo",
-        "description": "French fries with shredded chicken, gouda cheese and ham.",
-        "price": 7.90
+        "uri": "https://cdn.radiofrance.fr/s3/cruiser-production/2022/03/b4e23241-b1d1-41a4-9395-a84bc5bac787/870x489_thumbnail_177d902c-ae0f-4e85-be54-58f5286484c5.jpg"
       }
+    ],
+    "menu": [
+      {
+        "id": "1",
+        "category": "Entrées",
+        "dishes":[
+          {
+            "name": "Oeufs mimosa",
+            "price": 6
+          },
+          {
+            "name": "Tomate mozzarella",
+            "price": 7
+          },
+          {
+            "name": "Tartare de saumon",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Plats",
+        "dishes":[
+          {
+            "name": "Le Burger des Copains",
+            "price": 17
+          },
+          {
+            "name": "Côte de Boeuf",
+            "price": 25
+          },
+          {
+            "name": "Pavé de Saumon et sa ratatouille maison",
+            "price": 18
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Desserts",
+        "dishes":[
+          {
+            "name": "Mousse au chocolat",
+            "price": 6
+          },
+          {
+            "name": "Brioche perdue retrouvée par les Copains",
+            "price": 6
+          },
+          {
+            "name": "Café gourmand",
+            "price": 7
+          }
+        ]
+      }
+      
+    ],
+    "boissons": [
+      {
+        "id": "1",
+        "category": "Soft",
+        "drinks":[
+          {
+            "name": "Eau minérale",
+            "price": 3
+          },
+          {
+            "name": "Eau pétillante",
+            "price": 3.50
+          },
+          {
+            "name": "Coca-Cola",
+            "price": 4
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Bières",
+        "drinks":[
+          {
+            "name": "Leffe",
+            "price": 6.50
+          },
+          {
+            "name": "1664",
+            "price": 6.50
+          },
+          {
+            "name": "Chouffe",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Vins",
+        "drinks":[
+          {
+            "name": "Le verre de Rouge",
+            "price": 5.50
+          },
+          {
+            "name": "Le verre de Rosé",
+            "price": 4.50
+          },
+          {
+            "name": "Le verre de Blanc",
+            "price": 4
+          }
+        ]
+      }
+      
     ]
-  }, {
+  },{
     "id": "2",
-    "name": "Tony Roma's - C.C. Meridiano",
-    "deliveryFee": 0.40,
-    "minDeliveryTime": 25,
-    "maxDeliveryTime": 35,
-    "rating": 4.7,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg",
-    "dishes": [
+    "name": "Bistro Régent",
+    "address": "53 Rue Saint-Rémi",
+    "ZIPcode": "33000",
+    "city": "Bordeaux",
+    "phoneNumber": "05 56 44 90 00",
+    "rating": 4.1,
+    "voteNumber": 1345,
+    "logo": "https://upload.wikimedia.org/wikipedia/fr/1/1f/Bistro-regent.png",
+    "images": [
       {
-        "name": "Cajun Ribs",
-        "description": "For lovers of a spicy touch. Ribs bathed in our Original sauce accompanied by Cajun spices. Served with French fries and coleslaw.",
-        "price": 18.95
+        "uri": "https://media-cdn.tripadvisor.com/media/photo-s/17/a4/47/a0/la-salle.jpg"
       },
       {
-        "name": "The Original Baby Backs",
-        "description": "The house specialty. Pork ribs cooked on the barbecue and marinated with our original barbecue sauce. Served with French fries and coleslaw.",
-        "price": 19.95
+        "uri": "https://media-cdn.tripadvisor.com/media/photo-s/02/28/b9/75/ordered-med-rare-but.jpg"
       },
       {
-        "name": "Carolina Honey",
-        "description": "Our famous ribs marinated with our Carolina honey sauce, a mixture of honey with our original sauce. Ideal for those looking for a sweet touch. Served with French fries and coleslaw.",
-        "price": 18.95,
-        "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg",
-      },
-      {
-        "name": "Onion Rings",
-        "description": "Los tradicionales aros de cebolla de tony roma´s dorados, crujientes y ligeros. Únicos en el mundo, acompañados de salsa BBQ.",
-        "price": 6.95
-      },
-      {
-        "name": "Nachos Tony Roma's",
-        "description": "The best selling nachos! with our blend of melted cheeses, accompanied by guacamole, crispy bacon, ranch beans, and sour cream.",
-        "price": 10.95
+        "uri": "https://www.bistro-regent.fr/wp-content/uploads/photos-restos-carte/187.jpg"
       }
+    ],
+    "menu": [
+      {
+        "id": "1",
+        "category": "Entrées",
+        "dishes":[
+          {
+            "name": "Oeufs mimosa",
+            "price": 6
+          },
+          {
+            "name": "Tomate mozzarella",
+            "price": 7
+          },
+          {
+            "name": "Tartare de saumon",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Plats",
+        "dishes":[
+          {
+            "name": "Le Burger des Copains",
+            "price": 17
+          },
+          {
+            "name": "Côte de Boeuf",
+            "price": 25
+          },
+          {
+            "name": "Pavé de Saumon et sa ratatouille maison",
+            "price": 18
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Desserts",
+        "dishes":[
+          {
+            "name": "Mousse au chocolat",
+            "price": 6
+          },
+          {
+            "name": "Brioche perdue retrouvée par les Copains",
+            "price": 6
+          },
+          {
+            "name": "Café gourmand",
+            "price": 7
+          }
+        ]
+      }
+      
+    ],
+    "boissons": [
+      {
+        "id": "1",
+        "category": "Soft",
+        "drinks":[
+          {
+            "name": "Eau minérale",
+            "price": 3
+          },
+          {
+            "name": "Eau pétillante",
+            "price": 3.50
+          },
+          {
+            "name": "Coca-Cola",
+            "price": 4
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Bières",
+        "drinks":[
+          {
+            "name": "Leffe",
+            "price": 6.50
+          },
+          {
+            "name": "1664",
+            "price": 6.50
+          },
+          {
+            "name": "Chouffe",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Vins",
+        "drinks":[
+          {
+            "name": "Le verre de Rouge",
+            "price": 5.50
+          },
+          {
+            "name": "Le verre de Rosé",
+            "price": 4.50
+          },
+          {
+            "name": "Le verre de Blanc",
+            "price": 4
+          }
+        ]
+      }
+      
     ]
-  }, {
+  },{
     "id": "3",
-    "name": "Brothers Barbecue",
-    "deliveryFee": 1.40,
-    "minDeliveryTime": 20,
-    "maxDeliveryTime": 30,
-    "rating": 4.3,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant3.jpeg",
-    "dishes": [
+    "name": "Fufu Ramen",
+    "address": "37 Rue Saint-Rémi",
+    "ZIPcode": "33000",
+    "city": "Bordeaux",
+    "phoneNumber": "05 56 52 10 29",
+    "rating": 4.6,
+    "voteNumber": 2545,
+    "logo": "https://media-cdn.tripadvisor.com/media/photo-s/1c/b4/b6/02/fufu-ramen-restaurant.jpg",
+    "images": [
       {
-        "name": "Burger Mustang",
-        "description": "Homemade bread, burger sauce, lettuce, sweet and sour pickle, bacon, cheddar and BBQ sauce. Beef 180 grams.",
-        "price": 5.90     
+        "uri": "https://www.dish.guide/ir/restaurant/bfa/bfad49f1d57798490f499f90714eade4.jpg"
       },
       {
-        "name": "Alabama bread",
-        "description": "Artisan bread, butter sauce, garlic, BBQ chicken and cheddar.",
-        "price": 3.00   
+        "uri": "https://www.dish.guide/ir/restaurant/d60/d6091fcfba82200e2c2641500c9845a2.jpg"
       },
       {
-        "name": "New York Burger",
-        "description": "Homemade bread, lettuce, burger sauce, 180 grams of beef, goat cheese and roasted apple.",
-        "price": 5.90     
-      },
-      {
-        "name": "Mac & Cheese Burger",
-        "description": "Homemade bread, lettuce, burger sauce, 180 grams of beef, mac and cheese, and American-style bacon.",
-        "price": 5.90     
-      },
-      {
-        "name": "Nachos Brothers",
-        "description": "Nachos, guacamole, cheddar sauce, beans, bacon, and cream cheese.",
-        "price": 5.20     
+        "uri": "https://media-cdn.tripadvisor.com/media/photo-s/1c/b4/b5/f6/fufu-ramen-restaurant.jpg"
       }
+    ],
+    "menu": [
+      {
+        "id": "1",
+        "category": "Entrées",
+        "dishes":[
+          {
+            "name": "Oeufs mimosa",
+            "price": 6
+          },
+          {
+            "name": "Tomate mozzarella",
+            "price": 7
+          },
+          {
+            "name": "Tartare de saumon",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Plats",
+        "dishes":[
+          {
+            "name": "Le Burger des Copains",
+            "price": 17
+          },
+          {
+            "name": "Côte de Boeuf",
+            "price": 25
+          },
+          {
+            "name": "Pavé de Saumon et sa ratatouille maison",
+            "price": 18
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Desserts",
+        "dishes":[
+          {
+            "name": "Mousse au chocolat",
+            "price": 6
+          },
+          {
+            "name": "Brioche perdue retrouvée par les Copains",
+            "price": 6
+          },
+          {
+            "name": "Café gourmand",
+            "price": 7
+          }
+        ]
+      }
+      
+    ],
+    "boissons": [
+      {
+        "id": "1",
+        "category": "Soft",
+        "drinks":[
+          {
+            "name": "Eau minérale",
+            "price": 3
+          },
+          {
+            "name": "Eau pétillante",
+            "price": 3.50
+          },
+          {
+            "name": "Coca-Cola",
+            "price": 4
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Bières",
+        "drinks":[
+          {
+            "name": "Leffe",
+            "price": 6.50
+          },
+          {
+            "name": "1664",
+            "price": 6.50
+          },
+          {
+            "name": "Chouffe",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Vins",
+        "drinks":[
+          {
+            "name": "Le verre de Rouge",
+            "price": 5.50
+          },
+          {
+            "name": "Le verre de Rosé",
+            "price": 4.50
+          },
+          {
+            "name": "Le verre de Blanc",
+            "price": 4
+          }
+        ]
+      }
+      
     ]
-  }, {
+  },{
     "id": "4",
-    "name": "Hamburguesa Nostra La Salle",
-    "deliveryFee": 0.90,
-    "minDeliveryTime": 30,
-    "maxDeliveryTime": 40,
+    "name": "A CANTINA",
+    "address": "Rue Mably",
+    "ZIPcode": "33000",
+    "city": "Bordeaux",
+    "phoneNumber": "06 49 76 71 27",
     "rating": 4.5,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant4.jpeg",
-    "dishes": [
+    "voteNumber": 548,
+    "logo": "https://www.closcanereccia.com/wp-content/uploads/2015/11/comptoir.png",
+    "images": [
       {
-        "name": "English burger",
-        "description": "Beef with bacon, portobello mushrooms, tomato, cheddar cheese, grilled egg and our smoked sauce.",
-        "price": 14.90     
+        "uri": "https://www.pagesjaunes.fr/media/ugc/a_cantina_brasserie_corse_03306300_161151695"
       },
       {
-        "name": "Mexican Burger",
-        "description": "Beef, with pico de gallo, veggie chili, cheddar cheese, guacamole and smoked sauce.",
-        "price": 14.90     
-      },
-      {
-        "name": "Tequeños",
-        "description": "Crispy sticks filled with melted cheese accompanied by tomato chutney.",
-        "price": 9.90    
-      },
-      {
-        "name": "Starters Combo",
-        "description": "Tequeños, crispy onion and chicken delicacies.",
-        "price": 13.90    
-      },
-      {
-        "name": "Cesar Salad",
-        "description": "Green sprouts, pieces of grilled bacon, chicken delicacies, grated Parmesan, muffin croutons and fried onion confetti dressed with Caesar sauce.",
-        "price": 10.50     
+        "uri": "https://rs-menus-api.roocdn.com/images/9cd2bb0b-b920-450b-b680-f7ef8469ea28/image.jpeg?width=1200&height=630&fit=crop"
       }
+    ],
+    "menu": [
+      {
+        "id": "1",
+        "category": "Entrées",
+        "dishes":[
+          {
+            "name": "Oeufs mimosa",
+            "price": 6
+          },
+          {
+            "name": "Tomate mozzarella",
+            "price": 7
+          },
+          {
+            "name": "Tartare de saumon",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Plats",
+        "dishes":[
+          {
+            "name": "Le Burger des Copains",
+            "price": 17
+          },
+          {
+            "name": "Côte de Boeuf",
+            "price": 25
+          },
+          {
+            "name": "Pavé de Saumon et sa ratatouille maison",
+            "price": 18
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Desserts",
+        "dishes":[
+          {
+            "name": "Mousse au chocolat",
+            "price": 6
+          },
+          {
+            "name": "Brioche perdue retrouvée par les Copains",
+            "price": 6
+          },
+          {
+            "name": "Café gourmand",
+            "price": 7
+          }
+        ]
+      }
+      
+    ],
+    "boissons": [
+      {
+        "id": "1",
+        "category": "Soft",
+        "drinks":[
+          {
+            "name": "Eau minérale",
+            "price": 3
+          },
+          {
+            "name": "Eau pétillante",
+            "price": 3.50
+          },
+          {
+            "name": "Coca-Cola",
+            "price": 4
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Bières",
+        "drinks":[
+          {
+            "name": "Leffe",
+            "price": 6.50
+          },
+          {
+            "name": "1664",
+            "price": 6.50
+          },
+          {
+            "name": "Chouffe",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Vins",
+        "drinks":[
+          {
+            "name": "Le verre de Rouge",
+            "price": 5.50
+          },
+          {
+            "name": "Le verre de Rosé",
+            "price": 4.50
+          },
+          {
+            "name": "Le verre de Blanc",
+            "price": 4
+          }
+        ]
+      }
+      
     ]
-  }]
+  },{
+    "id": "5",
+    "name": "Bistro Régent",
+    "address": "4 Cours du 30 Juillet",
+    "ZIPcode": "33000",
+    "city": "Bordeaux",
+    "phoneNumber": "05 56 81 76 10",
+    "rating": 4.4,
+    "voteNumber": 5070,
+    "logo": "https://www.entrecote.fr/wp-content/uploads/2020/07/L%E2%80%99Entrec%C3%B4terestaurants.png",
+    "images": [
+      {
+        "uri": "https://c8.alamy.com/compfr/gxrj21/le-celebre-restaurant-l-entrecote-a-bordeaux-france-gxrj21.jpg"
+      },
+      {
+        "uri": "https://nouvelleaquitainetravel.com/wp-content/uploads/2020/11/Entrecote-Frites-800x600.jpg"
+      },
+      {
+        "uri": "https://media-cdn.tripadvisor.com/media/photo-p/15/0e/55/09/photo0jpg.jpg"
+      }
+    ],
+    "menu": [
+      {
+        "id": "1",
+        "category": "Entrées",
+        "dishes":[
+          {
+            "name": "Oeufs mimosa",
+            "price": 6
+          },
+          {
+            "name": "Tomate mozzarella",
+            "price": 7
+          },
+          {
+            "name": "Tartare de saumon",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Plats",
+        "dishes":[
+          {
+            "name": "Le Burger des Copains",
+            "price": 17
+          },
+          {
+            "name": "Côte de Boeuf",
+            "price": 25
+          },
+          {
+            "name": "Pavé de Saumon et sa ratatouille maison",
+            "price": 18
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Desserts",
+        "dishes":[
+          {
+            "name": "Mousse au chocolat",
+            "price": 6
+          },
+          {
+            "name": "Brioche perdue retrouvée par les Copains",
+            "price": 6
+          },
+          {
+            "name": "Café gourmand",
+            "price": 7
+          }
+        ]
+      }
+      
+    ],
+    "boissons": [
+      {
+        "id": "1",
+        "category": "Soft",
+        "drinks":[
+          {
+            "name": "Eau minérale",
+            "price": 3
+          },
+          {
+            "name": "Eau pétillante",
+            "price": 3.50
+          },
+          {
+            "name": "Coca-Cola",
+            "price": 4
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Bières",
+        "drinks":[
+          {
+            "name": "Leffe",
+            "price": 6.50
+          },
+          {
+            "name": "1664",
+            "price": 6.50
+          },
+          {
+            "name": "Chouffe",
+            "price": 6.50
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Vins",
+        "drinks":[
+          {
+            "name": "Le verre de Rouge",
+            "price": 5.50
+          },
+          {
+            "name": "Le verre de Rosé",
+            "price": 4.50
+          },
+          {
+            "name": "Le verre de Blanc",
+            "price": 4
+          }
+        ]
+      }
+      
+    ]
+  }
+]

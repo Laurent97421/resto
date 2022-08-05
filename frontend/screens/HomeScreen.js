@@ -1,40 +1,66 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
-import { Button, Overlay } from "@rneui/themed";
-import {Calendar} from 'react-native-calendars';
-import {LocaleConfig} from 'react-native-calendars';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
+import { Button, Overlay, Input } from "@rneui/themed";
+import IconIonic from "react-native-vector-icons/Ionicons";
+import IconFontAwesome from "react-native-vector-icons/FontAwesome";
+import { color } from "@rneui/base";
+import { FloatingLabelInput } from "react-native-floating-label-input";
+import { Icon } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { connect } from "react-redux";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { LocaleConfig } from "react-native-calendars";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import DatePicker from "@react-native-community/datetimepicker";
 import Authentification from "../Components/HomeScreen/Auth.overlays";
 
-    
 export default function HomeScreen(props) {
-
-  LocaleConfig.locales['fr'] = {
+  LocaleConfig.locales["fr"] = {
     monthNames: [
-      'Janvier',
-      'Février',
-      'Mars',
-      'Avril',
-      'Mai',
-      'Juin',
-      'Juillet',
-      'Août',
-      'Septembre',
-      'Octobre',
-      'Novembre',
-      'Décembre'
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre",
     ],
-    monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-    dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-    today: "Aujourd'hui"
+    monthNamesShort: [
+      "Janv.",
+      "Févr.",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juil.",
+      "Août",
+      "Sept.",
+      "Oct.",
+      "Nov.",
+      "Déc.",
+    ],
+    dayNames: [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi",
+    ],
+    dayNamesShort: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
+    today: "Aujourd'hui",
   };
-  LocaleConfig.defaultLocale = 'fr';
+  LocaleConfig.defaultLocale = "fr";
 
 
   // Pour la recherche du restaurant
-  const [searchAddressResto, setSearchAddressResto] = useState('');
+  const [searchAddressResto, setSearchAddressResto] = useState("");
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [dateInfos, setDateInfos] = useState();
   const [timeVisible, setTimeVisible] = useState(false);
@@ -44,37 +70,36 @@ export default function HomeScreen(props) {
   const [selectedVeggie, setSelectedVeggie] = useState(false);
   const [selectedOther, setSelectedOther] = useState(false);
 
-
   const selectHallal = () => {
     setSelectedHallal(!selectedHallal);
-  }
+  };
   const selectVeggie = () => {
     setSelectedVeggie(!selectedVeggie);
-  }
+  };
 
   const selectOther = () => {
-    setSelectedOther(!selectedOther)
-  }
+    setSelectedOther(!selectedOther);
+  };
 
   var colorFilterHallal;
-  if(!selectedHallal){
-    colorFilterHallal = 'lightgrey';
+  if (!selectedHallal) {
+    colorFilterHallal = "lightgrey";
   } else {
-    colorFilterHallal = 'lightblue';
+    colorFilterHallal = "lightblue";
   }
 
   var colorFilterVeggie;
-  if(!selectedVeggie){
-    colorFilterVeggie = 'lightgrey';
+  if (!selectedVeggie) {
+    colorFilterVeggie = "lightgrey";
   } else {
-    colorFilterVeggie = 'lightblue';
+    colorFilterVeggie = "lightblue";
   }
 
   var colorFilterOther;
-  if(!selectedOther){
-    colorFilterOther = 'lightgrey';
+  if (!selectedOther) {
+    colorFilterOther = "lightgrey";
   } else {
-    colorFilterOther = 'lightblue';
+    colorFilterOther = "lightblue";
   }
 
   const [timePicker, setTimePicker] = useState(false);
@@ -82,23 +107,24 @@ export default function HomeScreen(props) {
 
   const showTimePicker = () => {
     setTimePicker(true);
-  }
+  };
 
   const onTimeSelected = (event, value) => {
     setTime(value);
-    setTimePicker(false)
-    setTimeVisible(false)
-  }
+    setTimePicker(false);
+    setTimeVisible(false);
+  };
 
   const [filter, setFilter] = useState({});
-  
-  
-  const searchResto = async () => {
-    console.log('Search Resto')
 
+
+  const searchResto = async () => {
+    console.log("Search Resto");
     let privateAdressIP = "172.20.10.8";
+
     // On envoie nos informations de recherche au backend
     //// Requête
+
     const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -106,9 +132,9 @@ export default function HomeScreen(props) {
     });
   }
 
+
   return (
     <ScrollView>
-
       <Text h4 style={{textAlign: 'center'}}>Rechercher un restaurant</Text>
 
       {/* Authentification Overlays */}
@@ -149,14 +175,15 @@ export default function HomeScreen(props) {
            onDayPress={day => {
             // console.log('Selected day')
             // console.log(day);
-            setDateInfos(day.dateString)
+            setDateInfos(day.dateString);
             setCalendarVisible(false);
           }}
           // onMonthChange={month => {
           //   console.log('month changed', month);
           // }}
-          />
-        </Overlay>
+        />
+      </Overlay>
+
 
         {/* TIME OVERLAY */}
         {timePicker && (
@@ -208,6 +235,7 @@ export default function HomeScreen(props) {
           </View>
         </View>
 
+
         {/* EQUIPEMENTS FILTERS */}
         <View>
           <View style={styles.filtreContainer}>
@@ -250,9 +278,12 @@ export default function HomeScreen(props) {
 
       {/* BUTTON SEARCH */}
       <Button
-      style = {{justifyContent: 'flex-end'}}
-      title = "Rechercher un restaurant"
-      onPress={() => {props.navigation.navigate('Result'); searchResto(); setFilter()}}
+        style={{ justifyContent: "flex-end" }}
+        title="Rechercher un restaurant"
+        onPress={() => {
+          props.navigation.navigate("Result");
+          searchResto();
+        }}
       />
 
     </ScrollView>
@@ -261,31 +292,31 @@ export default function HomeScreen(props) {
 
 const styles = StyleSheet.create({
   viewSearch: {
-    flexDirection: 'row',
-    width: '90%'
+    flexDirection: "row",
+    width: "90%",
   },
-  filtreContainer:{
-    flexDirection: 'column',
+  filtreContainer: {
+    flexDirection: "column",
     marginVertical: 10,
   },
   title: {
     marginHorizontal: 16,
     marginBottom: 10,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   filtreCarre: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginHorizontal: 16,
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   filtre: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: "lightgrey",
     width: 70,
     height: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
   }
-
 });
+
