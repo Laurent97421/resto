@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -13,8 +13,12 @@ import { Button } from "@rneui/themed";
 import { SearchIcon, AdjustmentsIcon } from "react-native-heroicons/outline";
 
 import RestaurantCard from "../Components/RestaurantCard";
+import Map from "../Components/Map";
 
-export default function ResultScreen(props) {
+import { GooglePlacesAutoComplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_MAPS_APIKEY } from "@env";
+
+export default function ResultScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -36,12 +40,7 @@ export default function ResultScreen(props) {
         </View>
         <AdjustmentsIcon color="#A0A0A0" />
       </View>
-      <View>
-        <Image
-          style={{ height: 150, margin: 10, borderRadius: 8, width: 340 }}
-          source={require("../assets/GoogleMap.webp")}
-        />
-      </View>
+      <Map />
       <View>
         <Text
           h5
@@ -50,8 +49,7 @@ export default function ResultScreen(props) {
           Liste des restaurants
         </Text>
       </View>
-      <ScrollView>
-        <RestaurantCard />
+      <ScrollView style={{ height: "20%" }}>
         <RestaurantCard />
         <RestaurantCard />
         <RestaurantCard />
