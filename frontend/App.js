@@ -19,7 +19,6 @@ import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 
 import token from "./reducers/token";
-
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']);
 
