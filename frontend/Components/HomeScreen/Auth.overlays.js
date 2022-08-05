@@ -4,9 +4,12 @@ import { Button, Overlay } from "@rneui/themed";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 import { Icon } from '@rneui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { connect } from 'react-redux';
 
 
-export default function Authentification(props) {
+function Authentification(props) {
+
+let privateAdressIP = "172.20.10.4";
 
 // Overlays Visibility
 const [visibleOverlaySub, setVisibleOverlaySub] = useState(true);
@@ -31,8 +34,6 @@ const closeLogin = () => {
 
     // Connection with BackEnd to create a User in BDD
     var signup = async () => {
-        let privateAdressIP = "172.20.10.8";
-
         const test = await fetch("http://" + privateAdressIP + ":3000/signup", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -50,13 +51,8 @@ const closeLogin = () => {
     const [signInEmail, setSignInEmail] = useState("");
     const [signInPassword, setSignInPassword] = useState("");
 
-    // Connection States
-    const [userConnected, setUserConnected] = useState("");
-
     // On vérifie dans le backend si le user existe déjà ou pas
     var checkConnectionInformation = async (mail, mdp) => {
-        let privateAdressIP = "172.20.10.8";
-        
         try {
             var connectionInfos = await fetch(
                 "http://" + privateAdressIP + ":3000/sign-in",
@@ -67,16 +63,11 @@ const closeLogin = () => {
                     body: `emailFromFront=${mail}&passwordFromFront=${mdp}`,
                 }
             );
-            // console.log('try ok')
 
             var bodyConnectionInfos = await connectionInfos.json();
-            setUserConnected(bodyConnectionInfos);
-            console.log(bodyConnectionInfos);
-            // Si les données entrées appartiennent à un user en BDD
-            // result sera = true, et donc on set
             
             if(bodyConnectionInfos.result) {
-                setVisibleConnection(false);
+                setVisibleOverlayLog(false);
                 // AsyncStorage.setItem("userToken", bodyConnectionInfos.userBDD.token);
                 props.saveToken(bodyConnectionInfos.userBDD.token);
                 props.navigation.navigate("Restaurant");
@@ -370,3 +361,14 @@ const styles = StyleSheet.create({
       marginRight: 15
     },
 })
+
+function mapDispatchToProps(dispatch) {
+    return {
+      saveToken: function (token) {
+        dispatch({ type: "saveToken", token: token });
+      },
+    };
+  }
+  
+  export default connect(null, mapDispatchToProps)(Authentification);
+

@@ -77,92 +77,8 @@ export default function HomeScreen(props) {
     colorFilterOther = 'lightblue';
   }
 
-
-  // signup
-  var signup = async () => {
-    let privateAdressIP = "172.20.10.8";
-
-    const test = await fetch("http://" + privateAdressIP + ":3000/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `firstNameFromFront=${signupFirstName}&nameFromFront=${signupLastName}&emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&phoneFromFront=${signupTel}`,
-    });
-    // const bodyTest = test.json();
-    // var token = bodyTest.token
-    // if(token){
-    //   AsyncStorage.setItem("userToken", token)
-    // }
-  };
-
-  // On vérifie dans le backend si le user existe déjà ou pas
-  var checkConnectionInformation = async (mail, mdp) => {
-    let privateAdressIP = "172.20.10.8";
-    try {
-      var connectionInfos = await fetch(
-        "http://" + privateAdressIP + ":3000/sign-in",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `emailFromFront=${mail}&passwordFromFront=${mdp}`,
-        }
-      );
-      // console.log('try ok')
-
-      var bodyConnectionInfos = await connectionInfos.json();
-      setUserConnected(bodyConnectionInfos);
-      // console.log(bodyConnectionInfos);
-      // Si les données entrées appartiennent à un user en BDD
-      // result sera = true, et donc on set
-      if (bodyConnectionInfos.result) {
-        setConnectionOK(true);
-        AsyncStorage.setItem("userToken", bodyConnectionInfos.userBDD.token);
-      }
-    } catch (err) {
-      console.log("No user connected");
-    }
-    const testToken = await AsyncStorage.getItem("userToken");
-    props.saveToken(testToken);
-    console.log("Le token");
-    console.log(testToken);
-  };
-
-  // console.log('En dehors')
-  // console.log(userConnected)
-  // // Si les infos écritent correspondent à un user en bdd, redirect vers la home page
-  var testConnectionPassed = () => {
-    if (connectionOK) {
-      setVisibleConnection(false);
-      props.navigation.navigate("Restaurant", { screen: HomeScreen });
-      // props.navigation.navigate('Mon compte')
-    }
-  };
-
-  // Declenche la route pour changer de mot de passe
-  var resetPassword = async () => {
-    const dataResetPassword = await fetch("/reset-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `emailFromResetPassword=${emailReset}&passwordFromResetPassword=${passwordReset}&passwordFromResetPasswordConfirmed=${confirmedPasswordReset}`,
-    });
-
-    const bodyResetPassword = dataResetPassword.json();
-
-    // Si tout est ok en back, result = true, et donc on setResetPsw à true
-    // et ensuite si resetPsw on revient sur l'overlay j'ai déjà un compte
-    if (bodyResetPassword.result) {
-      console.log("test resetPassword");
-      setResetPsw(true);
-    }
-  };
-  // Si le password a été changé, on ferme l'overlay du chgt de mdp et on va sur celui de j'ai déjà un compte
-  if (resetPsw) {
-    toggleOverlayForgetPassword();
-    toggleOverlayConnection();
-  }
-
   const [timePicker, setTimePicker] = useState(false);
   const [time, setTime] = useState(new Date(Date.now()));
-
 
   const showTimePicker = () => {
     setTimePicker(true);
@@ -175,26 +91,19 @@ export default function HomeScreen(props) {
   }
 
   const [filter, setFilter] = useState({});
-  // setFilter({a: 'a'})
-  // console.log(filter)
-
 
   const searchResto = async () => {
     console.log('Search Resto')
     let privateAdressIP = "172.20.10.8";
 
-    
-
-      // On envoie nos informations de recherche au backend
-      //// Requête
-      const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
-      });
+    // On envoie nos informations de recherche au backend
+    //// Requête
+    const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
+    });
   }
-
-
 
   return (
     <ScrollView>
