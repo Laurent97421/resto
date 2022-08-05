@@ -16,7 +16,7 @@ import RestaurantCard from "../Components/RestaurantCard";
 import Map from "../Components/Map";
 
 import { GooglePlacesAutoComplete } from "react-native-google-places-autocomplete";
-import { GOOGLE_MAPS_APIKEY } from "@env";
+// import { GOOGLE_MAPS_APIKEY } from "@env";
 
 export default function ResultScreen() {
   return (
