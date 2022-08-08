@@ -1,31 +1,25 @@
 import React from "react";
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
+import { connect } from "react-redux";
 
 import MyTabs from "../Components/RestoScreen/TabScreen";
 
-import { NavigationContainer } from "@react-navigation/native";
-
-
-
-
 /// ATTTENTIOOOONNNNN !!! Rebasculer l'overlay à true dans HomeScreen avant de push
 
-    
-export default function RestoScreen() {
-
-
+function RestoScreen(props) {
+  
   return (
     <View style={{backgroundColor:'white'}}>
         {/* Header */}
         <View style={styles.headerContainer}>
           <View style={styles.imageContainer}>
-            <Image style={styles.image} source={{ uri : 'https://media-cdn.tripadvisor.com/media/photo-s/14/b5/e5/80/chai-les-copains.jpg'}}/>
+            <Image style={styles.image} source={{ uri : props.restoSelected[0].logo}}/>
           </View>
           <View style={styles.restoInfosContainer}>
-            <Text style={styles.restoName}>Chai Les Copains</Text>
-            <Text style={styles.restoAddress}>1 quai de Bacalan{'\n'}33300 Bordeaux</Text>
-            <Text style={styles.restoPhone}>+33 5 56 04 55 27</Text>
+            <Text style={styles.restoName}>{props.restoSelected[0].name}</Text>
+            <Text style={styles.restoAddress}>{props.restoSelected[0].address}{'\n'}{props.restoSelected[0].ZIPcode} {props.restoSelected[0].city}</Text>
+            <Text style={styles.restoPhone}>{props.restoSelected[0].phoneNumber}</Text>
           </View>
         </View>
 
@@ -39,7 +33,7 @@ export default function RestoScreen() {
               <FontAwesome name="star-o" size={20} color="black" />
               <FontAwesome name="star-o" size={20} color="black" />
             </View>
-            <Text style={styles.nbVote}>(234)</Text>
+            <Text style={styles.nbVote}>({props.restoSelected[0].voteNumber})</Text>
           </View>
 
           <Text style={styles.seeAll}>Voir tous les avis</Text>
@@ -141,3 +135,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 });
+
+function mapStateToProps(state) {
+  return { restoSelected: state.restoSelected }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(RestoScreen);
