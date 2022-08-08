@@ -1,34 +1,24 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  TextInput,
-  Image,
-} from "react-native";
+import { StyleSheet, View, Text, ScrollView, SafeAreaView, TextInput, Image } from "react-native";
 import { Button } from "@rneui/themed";
-
 import { SearchIcon, AdjustmentsIcon } from "react-native-heroicons/outline";
 
-import RestaurantCard from "../Components/RestaurantCard";
 import Map from "../Components/Map";
 
-import { GooglePlacesAutoComplete } from "react-native-google-places-autocomplete";
+import RestaurantCard from "../Components/RestaurantCard";
+
+// import { GooglePlacesAutoComplete } from "react-native-google-places-autocomplete";
 // import { GOOGLE_MAPS_APIKEY } from "@env";
 
 export default function ResultScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text
-          h4
-          style={{ textAlign: "center", fontWeight: "bold", fontSize: 20 }}
-        >
+        <Text h4 style={{ textAlign: "center", fontWeight: "bold", fontSize: 20 }}>
           Restaurants disponibles
         </Text>
       </View>
+
       <View style={styles.outsideSearch}>
         <View style={styles.searchBox}>
           <SearchIcon color="#A0A0A0" size="20" />
@@ -40,21 +30,16 @@ export default function ResultScreen() {
         </View>
         <AdjustmentsIcon color="#A0A0A0" />
       </View>
+      
       <Map />
+      
       <View>
-        <Text
-          h5
-          style={{ textAlign: "center", fontWeight: "bold", fontSize: 18 }}
-        >
+        <Text h5 style={{ textAlign: "center", fontWeight: "bold", fontSize: 18 }}>
           Liste des restaurants
         </Text>
       </View>
+
       <ScrollView style={{ height: "20%" }}>
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
-        <RestaurantCard />
         <RestaurantCard />
       </ScrollView>
     </SafeAreaView>

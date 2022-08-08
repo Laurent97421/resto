@@ -14,7 +14,7 @@ let privateAdressIP = "172.20.10.8"; // Laurent
 
 
 // Overlays Visibility
-const [visibleOverlaySub, setVisibleOverlaySub] = useState(true);
+const [visibleOverlaySub, setVisibleOverlaySub] = useState(false);
 const [visibleOverlayLog, setVisibleOverlayLog] = useState(false);
 const [visibleOverlayForget, setVisibleOverlayForget] = useState(false);
 
