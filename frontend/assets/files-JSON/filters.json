@@ -45,7 +45,7 @@
         }
     ]
   }, {
-    "id": "2",
+    "id": "3",
     "categoryName": "Moyens de paiement",
     "filtres": [
         {
@@ -110,7 +110,7 @@
             "selected": false
         }
     ]
-  }{
+  },{
     "id": "5",
     "categoryName": "Accessibilité",
     "filtres": [
@@ -131,4 +131,4 @@
             "selected": false
         }
     ]
-  },]
+  }]
