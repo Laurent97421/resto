@@ -31,8 +31,10 @@ function photosScreen(props) {
     <ScrollView style={{backgroundColor:'white'}}>
 
       <View>
+
         <Overlay style={styles.imgOverlay} isVisible={overlayIsVisible} onPress={() => setOverlayIsVisible(false)} onBackdropPress={() => setOverlayIsVisible(false)}>
           <Image style={{width: '100%', aspectRatio: 5/3}} source={{ uri: imgPressed }}/>
+
           <Ionicons name="arrow-back-circle" size={45} color='white' style={styles.iconContainer} onPress={() => setOverlayIsVisible(false)} />
         </Overlay>
       </View>

@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { Button, Overlay, Input } from "@rneui/themed";
-import IconIonic from "react-native-vector-icons/Ionicons";
-import IconFontAwesome from "react-native-vector-icons/FontAwesome";
-import { color } from "@rneui/base";
-import { FloatingLabelInput } from "react-native-floating-label-input";
-import { Icon } from "@rneui/themed";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { connect } from "react-redux";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "@react-native-community/datetimepicker";
 import Authentification from "../Components/HomeScreen/Auth.overlays";
+import filters from "../assets/files-JSON/filters.json"
+import { acc } from "react-native-reanimated";
+import { connect } from "react-redux";
+// import { IconFill, IconOutline } from "@ant-design/icons-react-native";
+// import { Icon } from "@rneui/themed";
+// import { checkcircleo } from "react-native-vector-icons/AntDesign";
+import Icon from 'react-native-vector-icons/AntDesign';
 
-export default function HomeScreen(props) {
+
+
+
+function HomeScreen(props) {
+
+
+  
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -64,42 +70,70 @@ export default function HomeScreen(props) {
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [dateInfos, setDateInfos] = useState();
   const [timeVisible, setTimeVisible] = useState(false);
+  const [filter, setFilter] = useState([])
+// console.log('OHOZHRIOEHROIZHEIORHOIERH')
+  
+  // Selection des filtres  
+  const listFilter = (indice, element) => {
+    const [color, setColor] = useState("lightgrey");
+    const [active, setActive] = useState(false);
+    const [logoColor, setLogoColor] = useState("black")
 
-  // Selection des filtres
-  const [selectedHallal, setSelectedHallal] = useState(false);
-  const [selectedVeggie, setSelectedVeggie] = useState(false);
-  const [selectedOther, setSelectedOther] = useState(false);
+    //  Filtres
+    const handleClick = () => {
+      setActive(true);
+      setColor("lightblue")
+      setLogoColor("blue")
+      setFilter([...filter, {element: element}])
+      // console.log(filter[0].element)
+      if(active === true){
+        setActive(false)
+        setColor("lightgrey")
+        setLogoColor("black")
+        // filter.map((data, i) => {
+          // console.log(data.element)
+          // console.log(data)
+        var allFilter = filter.filter(e => e.element !== element)
+        setFilter(allFilter)
+        // })
+        // setFilter(filter[0].filter(e => e.element !== element))
+        // moviesWishList.filter(e => e.movieName !== movieName)
+        // setFilter([])
+      }
+    };
 
-  const selectHallal = () => {
-    setSelectedHallal(!selectedHallal);
-  };
-  const selectVeggie = () => {
-    setSelectedVeggie(!selectedVeggie);
-  };
+    // filters && filters.map((data) => {
 
-  const selectOther = () => {
-    setSelectedOther(!selectedOther);
-  };
+    //   if(data.id == 1){
+    //     return(
+    //       // touchable()
+    //       <View key = {data.id}>
+    //       <View style={styles.filtreContainer}>
+    //         {/* HEADER */}
+    //         <Text style={styles.title}>{data.categoryName}</Text>
+    //         {/* FILTERS */}
+    //         <View style={styles.filtreCarre}>
+    //           {data.filtres && data.filtres.map((alimentation, i) => {
+    //             return(
+    //               listFilter(i, alimentation.name)
+    //             )
+    //           })}
+    // console.log(filter)
 
-  var colorFilterHallal;
-  if (!selectedHallal) {
-    colorFilterHallal = "lightgrey";
-  } else {
-    colorFilterHallal = "lightblue";
-  }
-
-  var colorFilterVeggie;
-  if (!selectedVeggie) {
-    colorFilterVeggie = "lightgrey";
-  } else {
-    colorFilterVeggie = "lightblue";
-  }
-
-  var colorFilterOther;
-  if (!selectedOther) {
-    colorFilterOther = "lightgrey";
-  } else {
-    colorFilterOther = "lightblue";
+    return(
+      <TouchableOpacity 
+      key = {indice}
+      style={{backgroundColor: color, width: 75, height: 75, justifyContent: 'center',alignItems: 'center', borderRadius: 10, marginRight: 10, marginVertical: 10}}
+      onPress={()=> {handleClick()}}
+      >
+        <View style = {{marginLeft: '70%', marginTop: '-30%', marginBottom: '13%', backgroundColor: 'white', borderRadius: '90%'}}>
+          <Icon name="checkcircleo" color = {logoColor} />
+        </View>
+          <Text style = {{ textAlign: 'center', fontSize: 12 }}  >{element}</Text>
+        <View >
+        </View>
+      </TouchableOpacity>
+    )
   }
 
   const [timePicker, setTimePicker] = useState(false);
@@ -115,22 +149,26 @@ export default function HomeScreen(props) {
     setTimeVisible(false);
   };
 
-  const [filter, setFilter] = useState({});
+
+  // const searchResto = async () => {
+  //   console.log("Search Resto");
+  //   let privateAdressIP = "172.20.10.8";
+
+  //   // On envoie nos informations de recherche au backend
+  //   //// Requête
+
+  //   const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //     body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
+  //   });
+  // }
 
 
-  const searchResto = async () => {
-    console.log("Search Resto");
-    let privateAdressIP = "172.20.10.8";
 
-    // On envoie nos informations de recherche au backend
-    //// Requête
 
-    const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
-    });
-  }
+    
+
 
 
   return (
@@ -199,82 +237,134 @@ export default function HomeScreen(props) {
           </Overlay>
         )}
 
+
       {/* FILTERS */}
 
         {/* ALIMENTATION FILTERS */}
-        <View>
-          <View style={styles.filtreContainer}>
-            
-            {/* HEADER */}
-            <Text style={styles.title}>Alimentation</Text>
-            
-            {/* FILTERS */}
-            <View style={styles.filtreCarre}>
-              <TouchableOpacity 
-                style={{backgroundColor: colorFilterHallal, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectHallal()}}
-              >
-                <Text>Hallal</Text>
-              </TouchableOpacity>
+        {
+          filters && filters.map((data) => {
 
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterVeggie, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectVeggie()}}
-              >
-                <Text>Veggie</Text>
-              </TouchableOpacity>
+            if(data.id == 1){
+              return(
+                // touchable()
+                <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((alimentation, i) => {
+                      return(
+                        listFilter(i, alimentation.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterOther, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectOther()}}
-              >
-                <Text>Je ne mange que de l'air bio</Text>
-              </TouchableOpacity>
-            </View>
+        {/* ALLERGENES */}
+        {
+          filters && filters.map((data) => {
+            if(data.id == 2) {
+              return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((equipement, i) => {
 
-          </View>
-        </View>
+                      return(
+                        listFilter(i, equipement.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
+        {/* MOYENS DE PAIEMENT */}
+        {
+          filters && filters.map((data) => {
+            if(data.id == 3) {
+              return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((equipement, i) => {
+
+                      return(
+                        listFilter(i, equipement.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
         {/* EQUIPEMENTS FILTERS */}
-        <View>
-          <View style={styles.filtreContainer}>
+        {
+          filters && filters.map((data) => {
+            if(data.id == 4) {
+              return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((equipement, i) => {
 
-            {/* HEADER */}
-            <Text style={styles.title}>Equipements</Text>
-            
-            {/* FILTERS */}
-            <View style={styles.filtreCarre}>
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterHallal, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectHallal()}}
-              >
-                <Text>Image jolie</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </View>
+                      return(
+                        listFilter(i, equipement.name)
+                        
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
         {/* ACCESS FILTERS */}
-        <View>
-          <View style={styles.filtreContainer}>
-
-            {/* HEADER */}
-            <Text style={styles.title}>Accessibilité</Text>
-            
-            {/* FILTERS */}
-            <View style={styles.filtreCarre}>
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterHallal, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectHallal()}}
-              >
-                <Text>Image jolie</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </View>
+        {
+          filters && filters.map((data) => {
+            if(data.id == 5){
+              return(
+                <View key = {data.id}>
+                  <View style={styles.filtreContainer}>
+                    {/* HEADER */}
+                    <Text style={styles.title}>{data.categoryName}</Text>
+                    {/* FILTERS */}
+                    <View style={styles.filtreCarre}>
+                      {data.filtres && data.filtres.map((accessibilite, i) => {
+                        return(
+                          listFilter(i, accessibilite.name)
+                        )
+                      })}
+                    </View>
+                  </View>
+                </View>
+                )
+            }
+          })
+        }
 
       {/* BUTTON SEARCH */}
       <Button
@@ -282,7 +372,9 @@ export default function HomeScreen(props) {
         title="Rechercher un restaurant"
         onPress={() => {
           props.navigation.navigate("Result");
-          searchResto();
+          // searchResto();
+          props.saveSearchResto(searchAddressResto, dateInfos, time.getHours() + ':' + time.getMinutes(), filter)
+
         }}
       />
 
@@ -307,8 +399,9 @@ const styles = StyleSheet.create({
   filtreCarre: {
     flexDirection: "row",
     marginHorizontal: 16,
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: 'wrap'
   },
   filtre: {
     backgroundColor: "lightgrey",
@@ -320,3 +413,12 @@ const styles = StyleSheet.create({
   }
 });
 
+function mapDispatchToProps(dispatch) {
+  return {
+    saveSearchResto: function (adresse, date, heure, filter) {
+      dispatch({ type: "saveSearchResto", adresse: adresse, date: date, heure: heure, filter: filter });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(HomeScreen);
