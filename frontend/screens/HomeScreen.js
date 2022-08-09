@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { Button, Overlay, Input } from "@rneui/themed";
-import IconIonic from "react-native-vector-icons/Ionicons";
-import IconFontAwesome from "react-native-vector-icons/FontAwesome";
-import { color } from "@rneui/base";
-import { FloatingLabelInput } from "react-native-floating-label-input";
-import { Icon } from "@rneui/themed";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { connect } from "react-redux";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "@react-native-community/datetimepicker";
 import Authentification from "../Components/HomeScreen/Auth.overlays";
+import filters from "../assets/files-JSON/filters.json"
+import { acc } from "react-native-reanimated";
+import { connect } from "react-redux";
 
-export default function HomeScreen(props) {
+
+
+function HomeScreen(props) {
+
+
+  
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -65,41 +66,74 @@ export default function HomeScreen(props) {
   const [dateInfos, setDateInfos] = useState();
   const [timeVisible, setTimeVisible] = useState(false);
 
-  // Selection des filtres
-  const [selectedHallal, setSelectedHallal] = useState(false);
-  const [selectedVeggie, setSelectedVeggie] = useState(false);
-  const [selectedOther, setSelectedOther] = useState(false);
+  // Selection des filtres  
+  const listRegimeAlimentaire = (indice, element) => {
+    const [colorAlimentaire, setColorAlimentaire] = useState("lightgrey");
+    const [activeAlimentaire, setActiveAlimentaire] = useState(false);
 
-  const selectHallal = () => {
-    setSelectedHallal(!selectedHallal);
-  };
-  const selectVeggie = () => {
-    setSelectedVeggie(!selectedVeggie);
-  };
-
-  const selectOther = () => {
-    setSelectedOther(!selectedOther);
-  };
-
-  var colorFilterHallal;
-  if (!selectedHallal) {
-    colorFilterHallal = "lightgrey";
-  } else {
-    colorFilterHallal = "lightblue";
+    const handleClickAlimentaire = () => {
+      setActiveAlimentaire(true);
+      setColorAlimentaire("lightblue")
+      if(activeAlimentaire === true){
+        setActiveAlimentaire(false)
+        setColorAlimentaire("lightgrey")
+      }
+    };
+    return(
+      <TouchableOpacity 
+        key = {indice}
+        style={{backgroundColor: colorAlimentaire, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
+        onPress={()=> {handleClickAlimentaire()}}
+        >
+        <Text style = {{ textAlign: 'center' }}>{element}</Text>
+      </TouchableOpacity>
+    )
   }
 
-  var colorFilterVeggie;
-  if (!selectedVeggie) {
-    colorFilterVeggie = "lightgrey";
-  } else {
-    colorFilterVeggie = "lightblue";
+  const listEquipement = (indice, element) => {
+    const [colorEquipement, setColorEquipement] = useState("lightgrey");
+    const [activeEquipement, setActiveEquipement] = useState(false);
+
+    const handleClickEquipement = () => {
+      setActiveEquipement(true);
+      setColorEquipement("lightblue")
+      if(activeEquipement === true){
+        setActiveEquipement(false)
+        setColorEquipement("lightgrey")
+      }
+    };
+    return(
+      <TouchableOpacity 
+        key = {indice}
+        style={{backgroundColor: colorEquipement, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
+        onPress={()=> {handleClickEquipement()}}
+        >
+        <Text style = {{ textAlign: 'center' }}>{element}</Text>
+      </TouchableOpacity>
+    )
   }
 
-  var colorFilterOther;
-  if (!selectedOther) {
-    colorFilterOther = "lightgrey";
-  } else {
-    colorFilterOther = "lightblue";
+  const listAccessibilité = (indice, element) => {
+    const [colorAccessibilite, setColorAccessibilite] = useState("lightgrey");
+    const [activeAccessibilite, setActiveAccessibilite] = useState(false);
+
+    const handleClickAccessibilite = () => {
+      setActiveAccessibilite(true);
+      setColorAccessibilite("lightblue")
+      if(activeAccessibilite === true){
+        setActiveAccessibilite(false)
+        setColorAccessibilite("lightgrey")
+      }
+    };
+    return(
+      <TouchableOpacity 
+        key = {indice}
+        style={{backgroundColor: colorAccessibilite, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
+        onPress={()=> {handleClickAccessibilite()}}
+        >
+        <Text style = {{ textAlign: 'center' }}>{element}</Text>
+      </TouchableOpacity>
+    )
   }
 
   const [timePicker, setTimePicker] = useState(false);
@@ -115,8 +149,6 @@ export default function HomeScreen(props) {
     setTimeVisible(false);
   };
 
-  const [filter, setFilter] = useState({});
-
 
   const searchResto = async () => {
     console.log("Search Resto");
@@ -131,6 +163,12 @@ export default function HomeScreen(props) {
       body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
     });
   }
+
+
+
+
+    
+
 
 
   return (
@@ -199,82 +237,84 @@ export default function HomeScreen(props) {
           </Overlay>
         )}
 
+
       {/* FILTERS */}
 
         {/* ALIMENTATION FILTERS */}
-        <View>
-          <View style={styles.filtreContainer}>
-            
-            {/* HEADER */}
-            <Text style={styles.title}>Alimentation</Text>
-            
-            {/* FILTERS */}
-            <View style={styles.filtreCarre}>
-              <TouchableOpacity 
-                style={{backgroundColor: colorFilterHallal, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectHallal()}}
-              >
-                <Text>Hallal</Text>
-              </TouchableOpacity>
+        {
+          filters && filters.map((data) => {
 
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterVeggie, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectVeggie()}}
-              >
-                <Text>Veggie</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterOther, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectOther()}}
-              >
-                <Text>Je ne mange que de l'air bio</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </View>
+            if(data.id == 1){
+              return(
+                // touchable()
+                <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((alimentation, i) => {
+                      return(
+                        listRegimeAlimentaire(i, alimentation.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
 
         {/* EQUIPEMENTS FILTERS */}
-        <View>
-          <View style={styles.filtreContainer}>
+        {
+          filters && filters.map((data) => {
+            if(data.id == 4) {
+              return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((equipement, i) => {
 
-            {/* HEADER */}
-            <Text style={styles.title}>Equipements</Text>
-            
-            {/* FILTERS */}
-            <View style={styles.filtreCarre}>
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterHallal, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectHallal()}}
-              >
-                <Text>Image jolie</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </View>
+                      return(
+                        listEquipement(i, equipement.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
         {/* ACCESS FILTERS */}
-        <View>
-          <View style={styles.filtreContainer}>
-
-            {/* HEADER */}
-            <Text style={styles.title}>Accessibilité</Text>
-            
-            {/* FILTERS */}
-            <View style={styles.filtreCarre}>
-              <TouchableOpacity
-                style={{backgroundColor: colorFilterHallal, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-                onPress={()=> {selectHallal()}}
-              >
-                <Text>Image jolie</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </View>
+        {
+          filters && filters.map((data) => {
+            if(data.id == 5){
+              return(
+                <View key = {data.id}>
+                  <View style={styles.filtreContainer}>
+                    {/* HEADER */}
+                    <Text style={styles.title}>{data.categoryName}</Text>
+                    {/* FILTERS */}
+                    <View style={styles.filtreCarre}>
+                      {data.filtres && data.filtres.map((accessibilite, i) => {
+                        return(
+                          listAccessibilité(i, accessibilite.name)
+                        )
+                      })}
+                    </View>
+                  </View>
+                </View>
+                )
+            }
+          })
+        }
 
       {/* BUTTON SEARCH */}
       <Button
@@ -320,3 +360,12 @@ const styles = StyleSheet.create({
   }
 });
 
+function mapDispatchToProps(dispatch) {
+  return {
+    saveSearchResto: function (addresse) {
+      dispatch({ type: "saveSearchResto", addresse: addresse });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(HomeScreen);
