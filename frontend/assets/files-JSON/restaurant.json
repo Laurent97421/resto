@@ -132,6 +132,33 @@
         ]
       }
       
+    ],
+    "features": [
+      {
+        "id": 1,
+        "property": "Alimentation",
+        "values":["Veggie"]
+      },
+      {
+        "id": 2,
+        "property": "Allergènes",
+        "values":["Gluten", "Crustacés", "Oeufs"]
+      },
+      {
+        "id": 3,
+        "property": "Moyens de paiement",
+        "values":["Espèces", "Chèques", "Sans contact", "CB", "Visa", "MasterCard", "Ticket Restaurant"]
+      },
+      {
+        "id": 4,
+        "property": "Équipements",
+        "values":["Climatisation", "Terrasse ombragée", "Chaise haute"]
+      },
+      {
+        "id": 5,
+        "property": "Accessibilité",
+        "values":["Handicap", "Animaux", "Transports en commun"]
+      }
     ]
   },{
     "id": 2,
@@ -267,6 +294,33 @@
         ]
       }
       
+    ],
+    "features": [
+      {
+        "id": 1,
+        "property": "Alimentation",
+        "values":["Veggie"]
+      },
+      {
+        "id": 2,
+        "property": "Allergènes",
+        "values":["Gluten", "Crustacés", "Oeufs"]
+      },
+      {
+        "id": 3,
+        "property": "Moyens de paiement",
+        "values":["Espèces", "Chèques", "Sans contact", "CB", "Visa", "MasterCard", "Ticket Restaurant"]
+      },
+      {
+        "id": 4,
+        "property": "Équipements",
+        "values":["Climatisation", "Terrasse ombragée", "Chaise haute"]
+      },
+      {
+        "id": 5,
+        "property": "Accessibilité",
+        "values":["Handicap", "Animaux", "Transports en commun"]
+      }
     ]
   },{
     "id": 3,
@@ -401,7 +455,33 @@
           }
         ]
       }
-      
+    ],
+    "features": [
+      {
+        "id": 1,
+        "property": "Alimentation",
+        "values":["Veggie"]
+      },
+      {
+        "id": 2,
+        "property": "Allergènes",
+        "values":["Gluten", "Crustacés", "Oeufs"]
+      },
+      {
+        "id": 3,
+        "property": "Moyens de paiement",
+        "values":["Espèces", "Chèques", "Sans contact", "CB", "Visa", "MasterCard", "Ticket Restaurant"]
+      },
+      {
+        "id": 4,
+        "property": "Équipements",
+        "values":["Climatisation", "Terrasse ombragée", "Chaise haute"]
+      },
+      {
+        "id": 5,
+        "property": "Accessibilité",
+        "values":["Handicap", "Animaux", "Transports en commun"]
+      }
     ]
   },{
     "id": 4,
@@ -533,7 +613,33 @@
           }
         ]
       }
-      
+    ],
+    "features": [
+      {
+        "id": 1,
+        "property": "Alimentation",
+        "values":["Veggie"]
+      },
+      {
+        "id": 2,
+        "property": "Allergènes",
+        "values":["Gluten", "Crustacés", "Oeufs"]
+      },
+      {
+        "id": 3,
+        "property": "Moyens de paiement",
+        "values":["Espèces", "Chèques", "Sans contact", "CB", "Visa", "MasterCard", "Ticket Restaurant"]
+      },
+      {
+        "id": 4,
+        "property": "Équipements",
+        "values":["Climatisation", "Terrasse ombragée", "Chaise haute"]
+      },
+      {
+        "id": 5,
+        "property": "Accessibilité",
+        "values":["Handicap", "Animaux", "Transports en commun"]
+      }
     ]
   },{
     "id": 5,
@@ -669,6 +775,33 @@
         ]
       }
       
+    ],
+    "features": [
+      {
+        "id": 1,
+        "property": "Alimentation",
+        "values":["Veggie"]
+      },
+      {
+        "id": 2,
+        "property": "Allergènes",
+        "values":["Gluten", "Crustacés", "Oeufs"]
+      },
+      {
+        "id": 3,
+        "property": "Moyens de paiement",
+        "values":["Espèces", "Chèques", "Sans contact", "CB", "Visa", "MasterCard", "Ticket Restaurant"]
+      },
+      {
+        "id": 4,
+        "property": "Équipements",
+        "values":["Climatisation", "Terrasse ombragée", "Chaise haute"]
+      },
+      {
+        "id": 5,
+        "property": "Accessibilité",
+        "values":["Handicap", "Animaux", "Transports en commun"]
+      }
     ]
   }
 ]

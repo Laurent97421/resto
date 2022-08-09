@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, TouchableOpacity, View, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, View, ScrollView } from 'react-native';
 import { Overlay } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from "react-redux";
 
-
-
-let deviceWidth = Dimensions.get('window').width;
-// console.log(deviceWidth)
+// let deviceWidth = Dimensions.get('window').width;
 // let deviceHeight = Dimensions.get('window').height;
-// console.log(deviceHeight)
 
 function photosScreen(props) {
 
-  // Overlay to show image in fullscreen
   const [overlayIsVisible, setOverlayIsVisible] = useState(false);
+  const [imgPressed, setImgPressed] = useState();
+  
+  // Function for onPress options of TouchableOpacity
+  var imgFullScreen = (resto) => {
+    setOverlayIsVisible(true);
+    setImgPressed(resto);
+  }
 
-  // console.log("Photos")
-  // console.log(props.restoSelected[0].images)
-    
-  // var imgFullScreen = (props) => {
-  //   setOverlayIsVisible(true);
-  //   props.resto.uri
-  // }
-
+  // map function to iterate img from resto selected
   var imgFromJSONFile = props.restoSelected[0].images.map((resto, i) => {
     return (
-      <TouchableOpacity key={i} style={styles.imgContainer} onPress={() => setOverlayIsVisible(true)}>
+      <TouchableOpacity key={i} style={styles.imgContainer} onPress={() => {imgFullScreen(resto.uri)}}>
         <Image style={styles.image} source={{ uri: resto.uri }}/>
       </TouchableOpacity>
     )
@@ -36,8 +31,10 @@ function photosScreen(props) {
     <ScrollView style={{backgroundColor:'white'}}>
 
       <View>
-        <Overlay style={styles.imgOverlay} isVisible={overlayIsVisible} onPress={() => setOverlayIsVisible(false)}>
-          {/* <Image style={{width: '100%', aspectRatio: 5/3}} source={{ uri: resto.uri }}/> */}
+
+        <Overlay style={styles.imgOverlay} isVisible={overlayIsVisible} onPress={() => setOverlayIsVisible(false)} onBackdropPress={() => setOverlayIsVisible(false)}>
+          <Image style={{width: '100%', aspectRatio: 5/3}} source={{ uri: imgPressed }}/>
+
           <Ionicons name="arrow-back-circle" size={45} color='white' style={styles.iconContainer} onPress={() => setOverlayIsVisible(false)} />
         </Overlay>
       </View>
@@ -45,8 +42,8 @@ function photosScreen(props) {
       <View style={styles.gallery}>
         { imgFromJSONFile }
       </View>
+
     </ScrollView>
-    
   )
 }
 

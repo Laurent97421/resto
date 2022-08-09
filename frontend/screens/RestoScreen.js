@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, SafeAreaView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from "react-redux";
 
@@ -10,7 +10,7 @@ import MyTabs from "../Components/RestoScreen/TabScreen";
 function RestoScreen(props) {
   
   return (
-    <View style={{backgroundColor:'white'}}>
+    <View style={{backgroundColor:'white', flex:1}}>
         {/* Header */}
         <View style={styles.headerContainer}>
           <View style={styles.imageContainer}>
@@ -50,12 +50,11 @@ function RestoScreen(props) {
         </View>
 
         {/* Tab Navigation */}
-        <View style={{ height: 500 }}>
-          <MyTabs/>
+        <View style={{ flex:1 }}>
+            <MyTabs/>
         </View>
 
     </View>
- 
   )
 }
 
