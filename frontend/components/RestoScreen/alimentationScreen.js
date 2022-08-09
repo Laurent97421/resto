@@ -10,19 +10,19 @@ function alimentationScreen(props) {
       return (
         filtre.values.map((value, i) => {
           return (
-            <View style={styles.filter}><Text key={i} style={styles.filterText}>{value}</Text></View>
+            <View key={i} style={styles.filter}><Text style={styles.filterText}>{value}</Text></View>
           )
         })
       )
     }
   });
 
-  var filtersAllergenes = props.restoSelected[0].features.map((filtre, i) => {
+  var filtersAllergenes = props.restoSelected[0].features.map((filtre) => {
     if(filtre.property == 'Allergènes') {
       return (
         filtre.values.map((value, i) => {
           return (
-            <View style={styles.filter}><Text key={i} style={styles.filterText}>{value}</Text></View>
+            <View key={i} style={styles.filter}><Text style={styles.filterText}>{value}</Text></View>
           )
 
           // var text=[];

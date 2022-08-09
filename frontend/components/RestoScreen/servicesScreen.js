@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 
 function servicesScreen(props) {
 
-  var filtersPayment = props.restoSelected[0].features.map((filtre, i) => {
+  var filtersPayment = props.restoSelected[0].features.map((filtre) => {
     if(filtre.property == 'Moyens de paiement') {
       return (
         filtre.values.map((value, i) => {
           return (
-            <View style={styles.filter}><Text key={i} style={styles.filterText}>{value}</Text></View>
+            <View key={i} style={styles.filter}><Text style={styles.filterText}>{value}</Text></View>
           )
         })
       )
@@ -22,7 +22,7 @@ function servicesScreen(props) {
       return (
         filtre.values.map((value, i) => {
           return (
-            <View style={styles.filter}><Text key={i} style={styles.filterText}>{value}</Text></View>
+            <View key={i} style={styles.filter}><Text style={styles.filterText}>{value}</Text></View>
           )
         })
       )
@@ -34,7 +34,7 @@ function servicesScreen(props) {
       return (
         filtre.values.map((value, i) => {
           return (
-            <View style={styles.filter}><Text key={i} style={styles.filterText}>{value}</Text></View>
+            <View key={i} style={styles.filter}><Text style={styles.filterText}>{value}</Text></View>
           )
         })
       )
