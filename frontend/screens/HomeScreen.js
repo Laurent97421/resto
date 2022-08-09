@@ -70,7 +70,8 @@ function HomeScreen(props) {
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [dateInfos, setDateInfos] = useState();
   const [timeVisible, setTimeVisible] = useState(false);
-
+  const [filter, setFilter] = useState([])
+// console.log('OHOZHRIOEHROIZHEIORHOIERH')
   
   // Selection des filtres  
   const listFilter = (indice, element) => {
@@ -83,12 +84,42 @@ function HomeScreen(props) {
       setActive(true);
       setColor("lightblue")
       setLogoColor("blue")
+      setFilter([...filter, {element: element}])
+      // console.log(filter[0].element)
       if(active === true){
         setActive(false)
         setColor("lightgrey")
         setLogoColor("black")
+        // filter.map((data, i) => {
+          // console.log(data.element)
+          // console.log(data)
+        var allFilter = filter.filter(e => e.element !== element)
+        setFilter(allFilter)
+        // })
+        // setFilter(filter[0].filter(e => e.element !== element))
+        // moviesWishList.filter(e => e.movieName !== movieName)
+        // setFilter([])
       }
     };
+
+    // filters && filters.map((data) => {
+
+    //   if(data.id == 1){
+    //     return(
+    //       // touchable()
+    //       <View key = {data.id}>
+    //       <View style={styles.filtreContainer}>
+    //         {/* HEADER */}
+    //         <Text style={styles.title}>{data.categoryName}</Text>
+    //         {/* FILTERS */}
+    //         <View style={styles.filtreCarre}>
+    //           {data.filtres && data.filtres.map((alimentation, i) => {
+    //             return(
+    //               listFilter(i, alimentation.name)
+    //             )
+    //           })}
+    // console.log(filter)
+
     return(
       <TouchableOpacity 
       key = {indice}
@@ -119,19 +150,19 @@ function HomeScreen(props) {
   };
 
 
-  const searchResto = async () => {
-    console.log("Search Resto");
-    let privateAdressIP = "172.20.10.8";
+  // const searchResto = async () => {
+  //   console.log("Search Resto");
+  //   let privateAdressIP = "172.20.10.8";
 
-    // On envoie nos informations de recherche au backend
-    //// Requête
+  //   // On envoie nos informations de recherche au backend
+  //   //// Requête
 
-    const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
-    });
-  }
+  //   const searchUser = await fetch("http://" + privateAdressIP + ":3000/result-screen", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //     body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
+  //   });
+  // }
 
 
 
@@ -341,8 +372,8 @@ function HomeScreen(props) {
         title="Rechercher un restaurant"
         onPress={() => {
           props.navigation.navigate("Result");
-          searchResto();
-          props.saveSearchResto(searchAddressResto, dateInfos, time.getHours() + ':' + time.getMinutes())
+          // searchResto();
+          props.saveSearchResto(searchAddressResto, dateInfos, time.getHours() + ':' + time.getMinutes(), filter)
 
         }}
       />
@@ -384,8 +415,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveSearchResto: function (adresse, date, heure) {
-      dispatch({ type: "saveSearchResto", adresse: adresse, date: date, heure: heure });
+    saveSearchResto: function (adresse, date, heure, filter) {
+      dispatch({ type: "saveSearchResto", adresse: adresse, date: date, heure: heure, filter: filter });
     },
   };
 }
