@@ -37,7 +37,7 @@ function photosScreen(props) {
 
       <View>
         <Overlay style={styles.imgOverlay} isVisible={overlayIsVisible} onPress={() => setOverlayIsVisible(false)}>
-          <Image style={{width: '100%', aspectRatio: 5/3}} source={{ uri: resto.uri }}/>
+          {/* <Image style={{width: '100%', aspectRatio: 5/3}} source={{ uri: resto.uri }}/> */}
           <Ionicons name="arrow-back-circle" size={45} color='white' style={styles.iconContainer} onPress={() => setOverlayIsVisible(false)} />
         </Overlay>
       </View>

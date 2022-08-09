@@ -9,6 +9,11 @@ import Authentification from "../Components/HomeScreen/Auth.overlays";
 import filters from "../assets/files-JSON/filters.json"
 import { acc } from "react-native-reanimated";
 import { connect } from "react-redux";
+// import { IconFill, IconOutline } from "@ant-design/icons-react-native";
+// import { Icon } from "@rneui/themed";
+// import { checkcircleo } from "react-native-vector-icons/AntDesign";
+import Icon from 'react-native-vector-icons/AntDesign';
+
 
 
 
@@ -66,72 +71,36 @@ function HomeScreen(props) {
   const [dateInfos, setDateInfos] = useState();
   const [timeVisible, setTimeVisible] = useState(false);
 
+  
   // Selection des filtres  
-  const listRegimeAlimentaire = (indice, element) => {
-    const [colorAlimentaire, setColorAlimentaire] = useState("lightgrey");
-    const [activeAlimentaire, setActiveAlimentaire] = useState(false);
+  const listFilter = (indice, element) => {
+    const [color, setColor] = useState("lightgrey");
+    const [active, setActive] = useState(false);
+    const [logoColor, setLogoColor] = useState("black")
 
-    const handleClickAlimentaire = () => {
-      setActiveAlimentaire(true);
-      setColorAlimentaire("lightblue")
-      if(activeAlimentaire === true){
-        setActiveAlimentaire(false)
-        setColorAlimentaire("lightgrey")
+    //  Filtres
+    const handleClick = () => {
+      setActive(true);
+      setColor("lightblue")
+      setLogoColor("blue")
+      if(active === true){
+        setActive(false)
+        setColor("lightgrey")
+        setLogoColor("black")
       }
     };
     return(
       <TouchableOpacity 
-        key = {indice}
-        style={{backgroundColor: colorAlimentaire, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-        onPress={()=> {handleClickAlimentaire()}}
-        >
-        <Text style = {{ textAlign: 'center' }}>{element}</Text>
-      </TouchableOpacity>
-    )
-  }
-
-  const listEquipement = (indice, element) => {
-    const [colorEquipement, setColorEquipement] = useState("lightgrey");
-    const [activeEquipement, setActiveEquipement] = useState(false);
-
-    const handleClickEquipement = () => {
-      setActiveEquipement(true);
-      setColorEquipement("lightblue")
-      if(activeEquipement === true){
-        setActiveEquipement(false)
-        setColorEquipement("lightgrey")
-      }
-    };
-    return(
-      <TouchableOpacity 
-        key = {indice}
-        style={{backgroundColor: colorEquipement, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-        onPress={()=> {handleClickEquipement()}}
-        >
-        <Text style = {{ textAlign: 'center' }}>{element}</Text>
-      </TouchableOpacity>
-    )
-  }
-
-  const listAccessibilité = (indice, element) => {
-    const [colorAccessibilite, setColorAccessibilite] = useState("lightgrey");
-    const [activeAccessibilite, setActiveAccessibilite] = useState(false);
-
-    const handleClickAccessibilite = () => {
-      setActiveAccessibilite(true);
-      setColorAccessibilite("lightblue")
-      if(activeAccessibilite === true){
-        setActiveAccessibilite(false)
-        setColorAccessibilite("lightgrey")
-      }
-    };
-    return(
-      <TouchableOpacity 
-        key = {indice}
-        style={{backgroundColor: colorAccessibilite, width: 70, height: 70, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
-        onPress={()=> {handleClickAccessibilite()}}
-        >
-        <Text style = {{ textAlign: 'center' }}>{element}</Text>
+      key = {indice}
+      style={{backgroundColor: color, width: 75, height: 75, justifyContent: 'center',alignItems: 'center', borderRadius: 10, marginRight: 10, marginVertical: 10}}
+      onPress={()=> {handleClick()}}
+      >
+        <View style = {{marginLeft: '70%', marginTop: '-30%', marginBottom: '13%', backgroundColor: 'white', borderRadius: '90%'}}>
+          <Icon name="checkcircleo" color = {logoColor} />
+        </View>
+          <Text style = {{ textAlign: 'center', fontSize: 12 }}  >{element}</Text>
+        <View >
+        </View>
       </TouchableOpacity>
     )
   }
@@ -255,7 +224,7 @@ function HomeScreen(props) {
                   <View style={styles.filtreCarre}>
                     {data.filtres && data.filtres.map((alimentation, i) => {
                       return(
-                        listRegimeAlimentaire(i, alimentation.name)
+                        listFilter(i, alimentation.name)
                       )
                     })}
                   </View>
@@ -266,6 +235,55 @@ function HomeScreen(props) {
           })
         }
 
+        {/* ALLERGENES */}
+        {
+          filters && filters.map((data) => {
+            if(data.id == 2) {
+              return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((equipement, i) => {
+
+                      return(
+                        listFilter(i, equipement.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
+
+        {/* MOYENS DE PAIEMENT */}
+        {
+          filters && filters.map((data) => {
+            if(data.id == 3) {
+              return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+                    {data.filtres && data.filtres.map((equipement, i) => {
+
+                      return(
+                        listFilter(i, equipement.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+            }
+          })
+        }
 
         {/* EQUIPEMENTS FILTERS */}
         {
@@ -281,7 +299,8 @@ function HomeScreen(props) {
                     {data.filtres && data.filtres.map((equipement, i) => {
 
                       return(
-                        listEquipement(i, equipement.name)
+                        listFilter(i, equipement.name)
+                        
                       )
                     })}
                   </View>
@@ -305,7 +324,7 @@ function HomeScreen(props) {
                     <View style={styles.filtreCarre}>
                       {data.filtres && data.filtres.map((accessibilite, i) => {
                         return(
-                          listAccessibilité(i, accessibilite.name)
+                          listFilter(i, accessibilite.name)
                         )
                       })}
                     </View>
@@ -323,6 +342,8 @@ function HomeScreen(props) {
         onPress={() => {
           props.navigation.navigate("Result");
           searchResto();
+          props.saveSearchResto(searchAddressResto, dateInfos, time.getHours() + ':' + time.getMinutes())
+
         }}
       />
 
@@ -347,8 +368,9 @@ const styles = StyleSheet.create({
   filtreCarre: {
     flexDirection: "row",
     marginHorizontal: 16,
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: 'wrap'
   },
   filtre: {
     backgroundColor: "lightgrey",
@@ -362,8 +384,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveSearchResto: function (addresse) {
-      dispatch({ type: "saveSearchResto", addresse: addresse });
+    saveSearchResto: function (adresse, date, heure) {
+      dispatch({ type: "saveSearchResto", adresse: adresse, date: date, heure: heure });
     },
   };
 }
