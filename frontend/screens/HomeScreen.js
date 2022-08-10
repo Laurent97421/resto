@@ -3,8 +3,6 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from 
 import { Button, Overlay, Input } from "@rneui/themed";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
-// import DateTimePicker from "@react-native-community/datetimepicker";
-// import DatePicker from "@react-native-community/datetimepicker";
 import Authentification from "../Components/HomeScreen/Auth.overlays";
 import filters from "../assets/files-JSON/filters.json"
 import { acc } from "react-native-reanimated";
