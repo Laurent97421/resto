@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import "react-native-gesture-handler";
+import { Ionicons } from '@expo/vector-icons';
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -13,8 +14,6 @@ import RestoScreen from "./screens/RestoScreen";
 import MyReservationScreen from "./screens/HistoScreen";
 import AccountScreen from "./screens/AccountScreen";
 import ReservationScreen from "./screens/ReservationScreen";
-
-import RestaurantCard from "./Components/RestaurantCard";
 
 import { Provider } from "react-redux";
 import { combineReducers } from "redux";
@@ -48,7 +47,30 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="Restaurant">
+        <Tab.Navigator 
+          initialRouteName="Restaurant"
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ color }) => {
+              let iconName;
+              if(route.name=='Mon compte') {
+                iconName = 'person';
+              } else if(route.name == 'Restaurant') {
+                iconName = 'restaurant';
+              } else if(route.name == 'Mes réservations') {
+                iconName = 'file-tray-full'
+              }
+              return <Ionicons name={iconName} size={25} color={color} />;
+            },
+          })}
+          
+          tabBarOptions={{
+            activeTintColor:'black',
+            inactiveTintColor:'lightgrey',
+          //   style: {
+          //     backgroundColor:'#130f40',
+          //   }
+          }}
+          >
           <Tab.Screen name="Mon compte" component={AccountScreen} />
           <Tab.Screen name="Restaurant" component={StackNavigatorTest} />
           <Tab.Screen name="Mes réservations" component={MyReservationScreen} />
