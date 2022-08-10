@@ -142,7 +142,7 @@
       {
         "id": 2,
         "property": "Allergènes",
-        "values":["Gluten", "Crustacés", "Oeufs"]
+        "values":["Gluten", "Crustacés", "Oeufs", "Arachides", "Lait", "Céréales"]
       },
       {
         "id": 3,
