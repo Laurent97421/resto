@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Button, Overlay, Input } from "@rneui/themed";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
 import Authentification from "../Components/HomeScreen/Auth.overlays";
-import filters from "../assets/files-JSON/filters.json"
+import filters from "../assets/files-JSON/filters.json";
 import { acc } from "react-native-reanimated";
 import { connect } from "react-redux";
+
 import Icon from 'react-native-vector-icons/AntDesign';
 import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker'
 
@@ -62,7 +70,6 @@ function HomeScreen(props) {
   LocaleConfig.defaultLocale = "fr";
   // // // // // // // //
 
-
   // Pour la recherche du restaurant
   const [searchAddressResto, setSearchAddressResto] = useState("");
   const [calendarVisible, setCalendarVisible] = useState(false);
@@ -70,10 +77,11 @@ function HomeScreen(props) {
   const [filter, setFilter] = useState([])
   
   // Selection des filtres  
+
   const listFilter = (indice, element) => {
     const [color, setColor] = useState("lightgrey");
     const [active, setActive] = useState(false);
-    const [logoColor, setLogoColor] = useState("black")
+    const [logoColor, setLogoColor] = useState("black");
 
     //  Filtres
     const handleClick = () => {
@@ -108,23 +116,40 @@ function HomeScreen(props) {
     //           })}
     // console.log(filter)
 
-    return(
-      <TouchableOpacity 
-      key = {indice}
-      style={{backgroundColor: color, width: 75, height: 75, justifyContent: 'center',alignItems: 'center', borderRadius: 10, marginRight: 10, marginVertical: 10}}
-      onPress={()=> {handleClick()}}
+    return (
+      <TouchableOpacity
+        key={indice}
+        style={{
+          backgroundColor: color,
+          width: 75,
+          height: 75,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 10,
+          marginRight: 10,
+          marginVertical: 10,
+        }}
+        onPress={() => {
+          handleClick();
+        }}
       >
-        <View style = {{marginLeft: '70%', marginTop: '-30%', marginBottom: '13%', backgroundColor: 'white', borderRadius: '90%'}}>
-          <Icon name="checkcircleo" color = {logoColor} />
+        <View
+          style={{
+            marginLeft: "70%",
+            marginTop: "-30%",
+            marginBottom: "13%",
+            backgroundColor: "white",
+            borderRadius: 90,
+          }}
+        >
+          <Icon name="checkcircleo" color={logoColor} />
         </View>
-          <Text style = {{ textAlign: 'center', fontSize: 12 }}  >{element}</Text>
-        <View >
-        </View>
+        <Text style={{ textAlign: "center", fontSize: 12 }}>{element}</Text>
+        <View></View>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
- 
   // const searchResto = async () => {
   //   console.log("Search Resto");
   //   let privateAdressIP = "172.20.10.8";
@@ -138,6 +163,7 @@ function HomeScreen(props) {
   //     body: `address=${searchAddressResto}&date=${dateInfos}&time=${time}`,
   //   });
   // }
+
 
   // SELECTION DE L'HEURE //
   const [heureVisible, setHeureVisible] = useState(false);
@@ -175,6 +201,7 @@ function HomeScreen(props) {
         onChangeText={(msg) => setSearchAddressResto(msg)}
         value = {searchAddressResto}
         />
+
 
         <TextInput 
         onPressIn={() => {console.log('woula'); setCalendarVisible(true)}}
@@ -326,6 +353,7 @@ function HomeScreen(props) {
                   <Text style={styles.title}>{data.categoryName}</Text>
                   {/* FILTERS */}
                   <View style={styles.filtreCarre}>
+
                     {data.filtres && data.filtres.map((accessibilite, i) => {
                       return(
                         listFilter(i, accessibilite.name)
@@ -375,7 +403,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     // justifyContent: "space-between",
     alignItems: "center",
-    flexWrap: 'wrap'
+    flexWrap: "wrap",
   },
   filtre: {
     backgroundColor: "lightgrey",
@@ -390,7 +418,13 @@ const styles = StyleSheet.create({
 function mapDispatchToProps(dispatch) {
   return {
     saveSearchResto: function (adresse, date, heure, filter) {
-      dispatch({ type: "saveSearchResto", adresse: adresse, date: date, heure: heure, filter: filter });
+      dispatch({
+        type: "saveSearchResto",
+        adresse: adresse,
+        date: date,
+        heure: heure,
+        filter: filter,
+      });
     },
   };
 }

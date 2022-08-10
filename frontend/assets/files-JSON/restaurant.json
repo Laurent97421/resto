@@ -7,6 +7,10 @@
     "phoneNumber": "05 56 04 55 27",
     "rating": 4.0,
     "voteNumber": 356,
+    "location": {
+      "lat": 44.85706290742784,
+      "lng" : -0.5618086444119288
+    },
     "logo": "https://media-cdn.tripadvisor.com/media/photo-s/14/b5/e5/80/chai-les-copains.jpg",
     "images": [
       {
@@ -166,6 +170,10 @@
     "address": "53 Rue Saint-Rémi",
     "ZIPcode": "33000",
     "city": "Bordeaux",
+    "location": {
+      "lat": 44.84142154000692,
+      "lng" : -0.5731338263348565
+    },
     "phoneNumber": "05 56 44 90 00",
     "rating": 4.1,
     "voteNumber": 1345,
@@ -328,6 +336,10 @@
     "address": "37 Rue Saint-Rémi",
     "ZIPcode": "33000",
     "city": "Bordeaux",
+    "location": {
+      "lat": 44.842424019540566,
+      "lng" : -0.5725596584202612
+    },
     "phoneNumber": "05 56 52 10 29",
     "rating": 4.6,
     "voteNumber": 2545,
@@ -489,6 +501,10 @@
     "address": "Rue Mably",
     "ZIPcode": "33000",
     "city": "Bordeaux",
+    "location": {
+      "lat": 44.8436902615881,
+      "lng" : -0.5769770297369221
+    },
     "phoneNumber": "06 49 76 71 27",
     "rating": 4.5,
     "voteNumber": 548,
@@ -647,6 +663,10 @@
     "address": "4 Cours du 30 Juillet",
     "ZIPcode": "33000",
     "city": "Bordeaux",
+    "location": {
+      "lat": 44.84341151489861,
+      "lng" : -0.5742340866811162
+    },
     "phoneNumber": "05 56 81 76 10",
     "rating": 4.4,
     "voteNumber": 5070,
