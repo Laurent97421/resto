@@ -53,7 +53,7 @@ function RestoScreen(props) {
 
         {/* Button */}
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.touchableOpacity} onPress={() =>     navigation.navigate('Reservation')}>
+          <TouchableOpacity style={styles.touchableOpacity} onPress={() =>  navigation.navigate('Reservation')}>
             <Text style={styles.buttonTitle}>Réserver ce restaurant</Text>
           </TouchableOpacity>      
         </View>
