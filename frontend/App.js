@@ -28,6 +28,7 @@ import search from "./reducers/search";
 const reducer = combineReducers({ user, restoSelected, search });
 const store = configureStore({ reducer });
 
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
