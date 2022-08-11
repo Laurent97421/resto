@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -12,13 +12,42 @@ function RestaurantCard(props) {
   const toDo = (data) => {
     navigation.navigate("Resto");
     props.onRestoClick(data)
-    // console.log(JSON.stringify(data));
+    console.log(data)
   }
-  
+
+  // // // // // // // // // // // // // // // // // // // // // // // // // // //$
+var temporaire = []
+
+props.searchInfos[1].map((data) => {
+
+    RestaurantsData.map((dataResto) => {
+      dataResto.features.map((dataFeatures) => {
+          const found = dataFeatures.values.find(element => element == data.element);
+          if(found){
+            temporaire.push({id: dataResto.id, name: dataResto.name, address: dataResto.address, ZIPcode: dataResto.ZIPcode, city: dataResto.city, phoneNumber: dataResto.phoneNumber, rating: dataResto.rating, voteNumber: dataResto.voteNumber, logo: dataResto.logo, images: dataResto.images, menu: dataResto.menu, boissons: dataResto.boissons, features: dataResto.features})
+
+          }
+      })
+    })
+
+  })
+
+  // Pour enlever les doublons dans le tableau d'objets
+  let newArray = [];
+  let uniqueObject = {};
+  for(let i in temporaire){
+    objName = temporaire[i]['name']
+    uniqueObject[objName] = temporaire[i];
+  }
+
+  for (i in uniqueObject) {
+    newArray.push(uniqueObject[i]);
+}
+  // // // // // // // // // // // // // // // // // // // // // // // // // // //
   return (
     <View>
       {
-        RestaurantsData && RestaurantsData.map( data => {
+        newArray.map((data) => {
           return (
             <TouchableOpacity
               onPress={() => {toDo(data)}}
@@ -72,7 +101,6 @@ function RestaurantCard(props) {
                   </TouchableOpacity>
           )
         })
-      
       }
     </View>
     
@@ -88,7 +116,11 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
+function mapStateToProps(state) {
+  return { searchInfos: state.search }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(RestaurantCard);

@@ -11,6 +11,8 @@ import {
 import { Button } from "@rneui/themed";
 import { SearchIcon, AdjustmentsIcon } from "react-native-heroicons/outline";
 
+import { connect } from "react-redux";
+
 import Map from "../Components/Map";
 
 import RestaurantCard from "../Components/RestaurantCard";
@@ -19,6 +21,8 @@ import RestaurantCard from "../Components/RestaurantCard";
 // import { GOOGLE_MAPS_APIKEY } from "@env";
 
 export default function ResultScreen() {
+
+  
   return (
     <SafeAreaView style={styles.container}>
       {/* <View>
@@ -102,3 +106,4 @@ const styles = StyleSheet.create({
     // margin: 4,
   },
 });
+

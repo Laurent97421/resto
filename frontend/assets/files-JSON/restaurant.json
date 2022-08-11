@@ -634,7 +634,7 @@
       {
         "id": 1,
         "property": "Alimentation",
-        "values":["Veggie"]
+        "values":["Veggie", "Hallal"]
       },
       {
         "id": 2,
