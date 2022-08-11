@@ -9,12 +9,12 @@ import { connect } from 'react-redux';
 
 function Authentification(props) {
 
-let privateAdressIP = "172.20.10.8"; // Laurent
-// let privateAdressIP = "172.20.10.4"; // Pauline
+// let privateAdressIP = "172.20.10.8"; // Laurent
+let privateAdressIP = "172.20.10.4"; // Pauline
 
 
 // Overlays Visibility
-const [visibleOverlaySub, setVisibleOverlaySub] = useState(false);
+const [visibleOverlaySub, setVisibleOverlaySub] = useState(true);
 const [visibleOverlayLog, setVisibleOverlayLog] = useState(false);
 const [visibleOverlayForget, setVisibleOverlayForget] = useState(false);
 
@@ -36,16 +36,21 @@ const closeLogin = () => {
 
     // Connection with BackEnd to create a User in BDD
     var signup = async () => {
-        const test = await fetch("http://" + privateAdressIP + ":3000/signup", {
+        // 1. Add new user in database using route from back end
+        const saveUser = await fetch("http://" + privateAdressIP + ":3000/signup", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: `firstNameFromFront=${signupFirstName}&nameFromFront=${signupLastName}&emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&phoneFromFront=${signupTel}`,
         });
-        // const bodyTest = test.json();
-        // var token = bodyTest.token
-        // if(token){
-        //   AsyncStorage.setItem("userToken", token)
-        // }
+        const body = await saveUser.json();
+        // console.log('Voici le user sauvegardé')
+        // console.log(body);
+
+        // 2. Close overlay
+        if(body.result === true){
+            props.saveUser(body);
+            setVisibleOverlaySub(false);
+        }
     };
 
 ///////// LOGIN ///////////
@@ -124,96 +129,96 @@ const closeLogin = () => {
         <Overlay isVisible={visibleOverlaySub} overlayStyle={{width: '90%'}}>
             {/* input Last Name */}
             <FloatingLabelInput
-            onChangeText={(msg) => setSignupLastName(msg)}
-            value={signupLastName}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Nom"
-            placeholder="Nom"
+                onChangeText={(msg) => setSignupLastName(msg)}
+                value={signupLastName}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Nom"
+                placeholder="Nom"
             ></FloatingLabelInput>
 
             {/* input First Name */}
             <FloatingLabelInput
-            onChangeText={(msg) => setSignupFirstName(msg)}
-            value={signupFirstName}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Prénom"
-            placeholder="Prénom"
+                onChangeText={(msg) => setSignupFirstName(msg)}
+                value={signupFirstName}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Prénom"
+                placeholder="Prénom"
             ></FloatingLabelInput>
 
             {/* input Email */}
             <FloatingLabelInput
-            onChangeText={(msg) => setSignupEmail(msg)}
-            value={signupEmail}
-            keyboardType="email-address"
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Email"
-            placeholder="Email"
+                onChangeText={(msg) => setSignupEmail(msg)}
+                value={signupEmail}
+                keyboardType="email-address"
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Email"
+                placeholder="Email"
             ></FloatingLabelInput>
 
             {/* input Phone Number */}
             <FloatingLabelInput
-            onChangeText={(msg) => setSignupTel(msg)}
-            value={signupTel}
-            keyboardType="numeric"
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Tel"
-            placeholder="Tel"
+                onChangeText={(msg) => setSignupTel(msg)}
+                value={signupTel}
+                keyboardType="numeric"
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Tel"
+                placeholder="Tel"
             ></FloatingLabelInput>
 
             {/* input Password */}
             <FloatingLabelInput
-            onChangeText={(msg) => setSignupPassword(msg)}
-            value={signupPassword}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Mot de passe"
-            placeholder="Mot de passe"
+                onChangeText={(msg) => setSignupPassword(msg)}
+                value={signupPassword}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Mot de passe"
+                placeholder="Mot de passe"
             ></FloatingLabelInput>
 
             {/* Button Subscribe */}
             <Button
-            style={{ marginTop: 30 }}
-            title="S'inscrire"
-            onPress={() => {
-                console.log("s'inscrire");
-                signup();
+                style={{ marginTop: 30 }}
+                title="S'inscrire"
+                onPress={() => {
+                    console.log("Click sur s'inscrire détécté");
+                    signup();
             }}
             />
 
             {/* Button Google Connect */}
             <Button
-            style={{ paddingTop: "1%" }}
-            title="Connexion via Google"
-            onPress={() => console.log("s'inscrire via google")}
+                style={{ paddingTop: "1%" }}
+                title="Connexion via Google"
+                onPress={() => console.log("s'inscrire via google")}
             />
 
             {/* J'ai déjà un compte */}
             <Text
-            style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}
-            >
-            J'ai déjà un compte
+                style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}
+                >
+                J'ai déjà un compte
             </Text>
 
             <TouchableOpacity
-            onPress={() => {
-                // overlay subscribe se ferme
-                closeSubscribe();
-                // overlay login s'affiche
-                setVisibleOverlayLog(true);
-            }}
+                onPress={() => {
+                    // overlay subscribe se ferme
+                    closeSubscribe();
+                    // overlay login s'affiche
+                    setVisibleOverlayLog(true);
+                }}
             >
-            <Text style={{ textAlign: "center", color: "green" }}>
-                Se connecter
-            </Text>
+                <Text style={{ textAlign: "center", color: "green" }}>
+                    Se connecter
+                </Text>
             </TouchableOpacity>
         </Overlay>
 
@@ -221,36 +226,36 @@ const closeLogin = () => {
         <Overlay isVisible={visibleOverlayLog} overlayStyle={{ width: "90%" }}>
             {/* Input Email */}
             <FloatingLabelInput
-            keyboardType="email-address"
-            onChangeText={(msg) => setSignInEmail(msg)}
-            value={signInEmail}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Email"
-            placeholder="Email"
+                keyboardType="email-address"
+                onChangeText={(msg) => setSignInEmail(msg)}
+                value={signInEmail}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Email"
+                placeholder="Email"
             ></FloatingLabelInput>
 
             {/* Input Password */}
             <FloatingLabelInput
-            onChangeText={(msg) => setSignInPassword(msg)}
-            value={signInPassword}
-            isPassword={true}
-            customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-            customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Mot de passe"
-            placeholder="Mot de passe"
+                onChangeText={(msg) => setSignInPassword(msg)}
+                value={signInPassword}
+                isPassword={true}
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Mot de passe"
+                placeholder="Mot de passe"
             ></FloatingLabelInput>
 
             {/* Button Forget Password */}
             <TouchableOpacity
-            onPress={() => {
-                toggleOverlay();
-                setVisibleConnection(true);
-            }}
+                onPress={() => {
+                    toggleOverlay();
+                    setVisibleConnection(true);
+                }}
             >
             <Text
                 style={{
@@ -265,7 +270,6 @@ const closeLogin = () => {
                     // overlay forget password s'affiche
                     setVisibleOverlayForget(true);
                 }}
-                
             >
                 Mot de passe oublié
             </Text>
@@ -273,11 +277,11 @@ const closeLogin = () => {
 
             {/* Button Login */}
             <Button
-            style={{ paddingTop: "10%" }}
-            title="Se connecter"
-            onPress={() => {
-                checkConnectionInformation(signInEmail, signInPassword);
-            }}
+                style={{ paddingTop: "10%" }}
+                title="Se connecter"
+                onPress={() => {
+                    checkConnectionInformation(signInEmail, signInPassword);
+                }}
             />
         </Overlay>
 
@@ -285,41 +289,41 @@ const closeLogin = () => {
         <Overlay isVisible={visibleOverlayForget} onBackdropPress={() => setVisibleOverlayForget(false)} overlayStyle={{ width: "90%" }}>
             {/* Input Email */}
             <FloatingLabelInput
-            onChangeText={(msg) => setEmailReset(msg)}
-            value={emailReset}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Email"
-            placeholder="Email"
+                onChangeText={(msg) => setEmailReset(msg)}
+                value={emailReset}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Email"
+                placeholder="Email"
             ></FloatingLabelInput>
 
             {/* Input New Password */}
             <FloatingLabelInput
-            onChangeText={(msg) => setPasswordReset(msg)}
-            value={passwordReset}
-            isPassword={true}
-            customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-            customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Nouveau mot de passe"
-            placeholder="Nouveau mot de passe"
+                onChangeText={(msg) => setPasswordReset(msg)}
+                value={passwordReset}
+                isPassword={true}
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Nouveau mot de passe"
+                placeholder="Nouveau mot de passe"
             ></FloatingLabelInput>
 
             {/* Input New Password Confirm */}
             <FloatingLabelInput
-            onChangeText={(msg) => setConfirmedPasswordReset(msg)}
-            value={confirmedPasswordReset}
-            isPassword={true}
-            customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-            customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
-            labelStyles={styles.labelStyles}
-            containerStyles={styles.containerStyles}
-            staticLabel
-            label="Confirmer le nouveau mot de passe"
-            placeholder="Confirmer le nouveau mot de passe"
+                onChangeText={(msg) => setConfirmedPasswordReset(msg)}
+                value={confirmedPasswordReset}
+                isPassword={true}
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Confirmer le nouveau mot de passe"
+                placeholder="Confirmer le nouveau mot de passe"
             ></FloatingLabelInput>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft : 16, marginRight: 16, marginBottom: 30 }}>
@@ -366,11 +370,14 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
     return {
-      saveToken: function (token) {
-        dispatch({ type: "saveToken", token: token });
+      saveUser: function (user) {
+        dispatch({ type: "saveUser", user: user });
       },
     };
   }
   
-  export default connect(null, mapDispatchToProps)(Authentification);
+  export default connect(
+    null,
+    mapDispatchToProps
+)(Authentification);
 

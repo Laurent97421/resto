@@ -1,11 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import { connect } from 'react-redux'; 
 
+function MyReservationScreen(props) {
 
-export default function MyReservationScreen() {
+  // console.log('Je suis le token du mapState dans HistoScreen')
+  // console.log(props.userConnected.reservations);
 
   return (
+
     <View style={styles.container}>
 
       <Text style={{ paddingBottom: 10, paddingTop: 10, fontSize: 30 }}>Vos réservations</Text>
@@ -129,3 +133,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 });
+
+function mapStateToProps(state) {
+  return { userConnected: state.user }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(MyReservationScreen)

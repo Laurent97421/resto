@@ -1,9 +1,9 @@
-export default function token(token = '', action) {
+export default function user(user = '', action) {
 
-    if(action.type === 'saveToken') {
-      return action.token
+    if(action.type === 'saveUser') {
+      return action.user
     } else {
-      return token;
+      return user;
     }
   
   }
