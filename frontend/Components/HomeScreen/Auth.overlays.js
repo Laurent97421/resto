@@ -46,7 +46,7 @@ const closeLogin = () => {
         // console.log('Voici le user sauvegardé')
         // console.log(body);
 
-        // 2. Close overlay
+        // 2. Close overlay + Sauvegarder le user dans Redux
         if(body.result === true){
             props.saveUser(body);
             setVisibleOverlaySub(false);
@@ -59,32 +59,28 @@ const closeLogin = () => {
     const [signInPassword, setSignInPassword] = useState("");
 
     // On vérifie dans le backend si le user existe déjà ou pas
-    var checkConnectionInformation = async (mail, mdp) => {
+    var checkConnectionInformation = async () => {
         try {
-            var connectionInfos = await fetch(
-                "http://" + privateAdressIP + ":3000/sign-in",
-                
+            // 1. On envoie les infos du user pour le connecter
+            var connectionInfos = await fetch("http://" + privateAdressIP + ":3000/sign-in",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `emailFromFront=${mail}&passwordFromFront=${mdp}`,
+                    body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`,
                 }
             );
-
             var bodyConnectionInfos = await connectionInfos.json();
-            
-            if(bodyConnectionInfos.result) {
+            console.log(bodyConnectionInfos)
+
+            // 2. Close overlay + Sauvegarder le user dans Redux
+            if(bodyConnectionInfos.result == true) {
+                props.saveUser(bodyConnectionInfos);
                 setVisibleOverlayLog(false);
-                // AsyncStorage.setItem("userToken", bodyConnectionInfos.userBDD.token);
-                props.saveToken(bodyConnectionInfos.userBDD.token);
-                props.navigation.navigate("Restaurant");
             }
         } catch (err) {
+            // Error si pas de user trouvé en BDD
             console.log("No user connected");
         }
-
-        const testToken = await AsyncStorage.getItem("userToken");
-        props.saveToken(testToken);
     };
 
 ///////// FORGET PASSWORD ///////////
@@ -113,13 +109,6 @@ const closeLogin = () => {
             setResetPsw(true);
         }
     };
-  
-    // Si le password a été changé, on ferme l'overlay du chgt de mdp et on va sur celui de j'ai déjà un compte
-    if (resetPsw) {
-        toggleOverlayForgetPassword();
-        toggleOverlayConnection();
-    };
-
 
 
   return (
@@ -189,7 +178,7 @@ const closeLogin = () => {
                 style={{ marginTop: 30 }}
                 title="S'inscrire"
                 onPress={() => {
-                    console.log("Click sur s'inscrire détécté");
+                    console.log("Click sur s'inscrire détécté !");
                     signup();
             }}
             />
@@ -202,20 +191,11 @@ const closeLogin = () => {
             />
 
             {/* J'ai déjà un compte */}
-            <Text
-                style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}
-                >
+            <Text style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}>
                 J'ai déjà un compte
             </Text>
 
-            <TouchableOpacity
-                onPress={() => {
-                    // overlay subscribe se ferme
-                    closeSubscribe();
-                    // overlay login s'affiche
-                    setVisibleOverlayLog(true);
-                }}
-            >
+            <TouchableOpacity onPress={() => { setVisibleOverlaySub(false); setVisibleOverlayLog(true);}}>
                 <Text style={{ textAlign: "center", color: "green" }}>
                     Se connecter
                 </Text>
@@ -224,10 +204,11 @@ const closeLogin = () => {
 
         {/* LOGIN */}
         <Overlay isVisible={visibleOverlayLog} overlayStyle={{ width: "90%" }}>
+            
             {/* Input Email */}
             <FloatingLabelInput
                 keyboardType="email-address"
-                onChangeText={(msg) => setSignInEmail(msg)}
+                onChangeText={(value) => setSignInEmail(value)}
                 value={signInEmail}
                 labelStyles={styles.labelStyles}
                 containerStyles={styles.containerStyles}
@@ -238,7 +219,7 @@ const closeLogin = () => {
 
             {/* Input Password */}
             <FloatingLabelInput
-                onChangeText={(msg) => setSignInPassword(msg)}
+                onChangeText={(value) => setSignInPassword(value)}
                 value={signInPassword}
                 isPassword={true}
                 customShowPasswordComponent={<Icon name="eye" type="entypo" />}
@@ -251,28 +232,12 @@ const closeLogin = () => {
             ></FloatingLabelInput>
 
             {/* Button Forget Password */}
-            <TouchableOpacity
-                onPress={() => {
-                    toggleOverlay();
-                    setVisibleConnection(true);
-                }}
-            >
-            <Text
-                style={{
-                textAlign: "right",
-                color: "green",
-                fontSize: 10,
-                paddingRight: 20,
-                }}
-                onPress={() => {
-                    // overlay login se ferme
-                    closeLogin();
-                    // overlay forget password s'affiche
-                    setVisibleOverlayForget(true);
-                }}
-            >
-                Mot de passe oublié
-            </Text>
+            <TouchableOpacity onPress={() => {setVisibleOverlayLog(false); setVisibleOverlayForget(true);}}>
+                <Text
+                    style={{textAlign: "right", color: "green", fontSize: 10, paddingRight: 20,}}
+                >
+                    Mot de passe oublié
+                </Text>
             </TouchableOpacity>
 
             {/* Button Login */}
@@ -280,13 +245,15 @@ const closeLogin = () => {
                 style={{ paddingTop: "10%" }}
                 title="Se connecter"
                 onPress={() => {
-                    checkConnectionInformation(signInEmail, signInPassword);
+                    console.log('click sur Se Connecter détécté !');
+                    checkConnectionInformation();
                 }}
             />
         </Overlay>
 
         {/* FORGET PASSWORD */}
-        <Overlay isVisible={visibleOverlayForget} onBackdropPress={() => setVisibleOverlayForget(false)} overlayStyle={{ width: "90%" }}>
+        <Overlay isVisible={visibleOverlayForget} overlayStyle={{ width: "90%" }}>
+
             {/* Input Email */}
             <FloatingLabelInput
                 onChangeText={(msg) => setEmailReset(msg)}

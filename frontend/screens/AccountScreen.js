@@ -1,20 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View, Text, TextInput } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { Overlay, Input, Button } from "@rneui/themed";
 import { FloatingLabelInput } from "react-native-floating-label-input";
-// import EncryptedStorage from 'react-native-encrypted-storage';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
 import { connect } from "react-redux";
+import { TabActions } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 function AccountScreen(props) {
+
   const [overlayVisible, setOverlayVisible] = useState(false);
+  
+  // INPUTS STATES pour 'modifier ses informations'
   const [lastnameInput, setLastnameInput] = useState("");
   const [firstnameInput, setFirstnameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [phoneNumberInput, setPhoneNumberInput] = useState("");
-  const [token, setToken] = useState("");
 
+  // Bouton DECONNEXION
+  const jumpToAction = TabActions.jumpTo("Restaurant");
+  const navigation = useNavigation();
+
+  var logOut = () => {
+    navigation.dispatch(jumpToAction);
+  }
+//// TESTS [
   // const [, updateState] = useState();
   // const forceUpdate = useCallback(() => updateState({}),[]);
   // useFocusEffect(
@@ -23,59 +32,54 @@ function AccountScreen(props) {
   //     updateState({})
   //   }, [])
   // );
-
-  const toggleOverlay = () => {
-    setOverlayVisible(!overlayVisible);
-  };
-
   // console.log(token)
 
-  useEffect(() => {
-    console.log("Etape 1: On rentre dans le UseEffect ");
-    // Récupération du token
-    // const getData = async () => {
-    //   try {
-    //     const token =  await AsyncStorage.getItem('userToken')
-    //     if(token){
-    //       console.log('Etape 2: getData effectuée')
-    //       setToken(token)
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
-    // getData();
-    console.log("Etape 2: token");
-    setToken(props.myToken);
-    console.log("Mon Token");
-    console.log(token);
-    // props.navigation.navigate('Restaurant')
-    // props.navigation.navigate('Restaurant', {screen: HomeScreen})
+  // useEffect(() => {
+  //   console.log("Etape 1: On rentre dans le UseEffect ");
+  //   // Récupération du token
+  //   // const getData = async () => {
+  //   //   try {
+  //   //     const token =  await AsyncStorage.getItem('userToken')
+  //   //     if(token){
+  //   //       console.log('Etape 2: getData effectuée')
+  //   //       setToken(token)
+  //   //     }
+  //   //   } catch (error) {
+  //   //     console.log(error)
+  //   //   }
+  //   // }
+  //   // getData();
+  //   console.log("Etape 2: token");
+  //   setToken(props.myToken);
+  //   console.log("Mon Token");
+  //   console.log(token);
+  //   // props.navigation.navigate('Restaurant')
+  //   // props.navigation.navigate('Restaurant', {screen: HomeScreen})
 
-    // A l'aide du token on récupère les infos du user
-    // var userInfos = async () => {
-    //   console.log('Etape 3: userInfos effectuée')
-    //   let privateAdressIP = "172.20.10.8";
+  //   // A l'aide du token on récupère les infos du user
+  //   // var userInfos = async () => {
+  //   //   console.log('Etape 3: userInfos effectuée')
+  //   //   let privateAdressIP = "172.20.10.8";
 
-    //   // Récupérer les infos BDD du User à partir du token obtenu
-    //   //// Requête
-    //   const getUserInfosFromBDD = await fetch("http://" + privateAdressIP + ":3000/account-screen", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    //     body: `tokenFromFront=${token}`,
-    //   });
-    //   //// Réponse
-    //   const userInfosFromBDD = await getUserInfosFromBDD.json();
-    //   // console.log()
-    //   //// Pré-remplissage
+  //   //   // Récupérer les infos BDD du User à partir du token obtenu
+  //   //   //// Requête
+  //   //   const getUserInfosFromBDD = await fetch("http://" + privateAdressIP + ":3000/account-screen", {
+  //   //     method: "POST",
+  //   //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //   //     body: `tokenFromFront=${token}`,
+  //   //   });
+  //   //   //// Réponse
+  //   //   const userInfosFromBDD = await getUserInfosFromBDD.json();
+  //   //   // console.log()
+  //   //   //// Pré-remplissage
 
-    //   setLastnameInput(userInfosFromBDD.userFromBDD.userName);
-    //   setFirstnameInput(userInfosFromBDD.userFromBDD.userFirstName);
-    //   setEmailInput(userInfosFromBDD.userFromBDD.userEmail);
-    //   setPhoneNumberInput(userInfosFromBDD.userFromBDD.userPhone);
-    // };
-    // userInfos();
-  }, [token]);
+  //   //   setLastnameInput(userInfosFromBDD.userFromBDD.userName);
+  //   //   setFirstnameInput(userInfosFromBDD.userFromBDD.userFirstName);
+  //   //   setEmailInput(userInfosFromBDD.userFromBDD.userEmail);
+  //   //   setPhoneNumberInput(userInfosFromBDD.userFromBDD.userPhone);
+  //   // };
+  //   // userInfos();
+  // }, [token]);
 
   // Alternative à async/await
   // const getData = () => {
@@ -92,40 +96,40 @@ function AccountScreen(props) {
   //   }
   // }
 
-  var userInfos = async () => {
-    console.log("Etape 3: userInfos effectuée");
-    let privateAdressIP = "172.20.10.8";
+  // var userInfos = async () => {
+  //   console.log("Etape 3: userInfos effectuée");
+  //   let privateAdressIP = "172.20.10.8";
 
-    // Récupérer les infos BDD du User à partir du token obtenu
-    //// Requête
-    const getUserInfosFromBDD = await fetch(
-      "http://" + privateAdressIP + ":3000/account-screen",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `tokenFromFront=${token}`,
-      }
-    );
-    //// Réponse
-    const userInfosFromBDD = await getUserInfosFromBDD.json();
-    console.log(userInfosFromBDD);
-    //// Pré-remplissage
+  //   // Récupérer les infos BDD du User à partir du token obtenu
+  //   //// Requête
+  //   const getUserInfosFromBDD = await fetch(
+  //     "http://" + privateAdressIP + ":3000/account-screen",
+  //     {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //       body: `tokenFromFront=${token}`,
+  //     }
+  //   );
+  //   //// Réponse
+  //   const userInfosFromBDD = await getUserInfosFromBDD.json();
+  //   console.log(userInfosFromBDD);
+  //   //// Pré-remplissage
 
-    setLastnameInput(userInfosFromBDD.userFromBDD.userName);
-    setFirstnameInput(userInfosFromBDD.userFromBDD.userFirstName);
-    setEmailInput(userInfosFromBDD.userFromBDD.userEmail);
-    setPhoneNumberInput(userInfosFromBDD.userFromBDD.userPhone);
-  };
-  // On récupère userFromBDD à chaque fois que l'on va sur l'onglet Mon compte
-  useFocusEffect(
-    useCallback(() => {
-      userInfos();
-      console.log("UseFocusEffect OK");
-      console.log(token);
-    }, [token])
-  );
+  //   setLastnameInput(userInfosFromBDD.userFromBDD.userName);
+  //   setFirstnameInput(userInfosFromBDD.userFromBDD.userFirstName);
+  //   setEmailInput(userInfosFromBDD.userFromBDD.userEmail);
+  //   setPhoneNumberInput(userInfosFromBDD.userFromBDD.userPhone);
+  // };
+  // // On récupère userFromBDD à chaque fois que l'on va sur l'onglet Mon compte
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     userInfos();
+  //     console.log("UseFocusEffect OK");
+  //     console.log(token);
+  //   }, [token])
+  // );
 
-  // Change le pré-remplissage des inputs si modification par le user
+  // // Change le pré-remplissage des inputs si modification par le user
   // useEffect ( () => {
   //   if(hasModified) {
   //     AsyncStorage.getItem('userEmail', function(error, userEmail){
@@ -141,7 +145,7 @@ function AccountScreen(props) {
   //   }
   // }, [hasModified])
 
-  // On est pas gentil on se deconnecte de l'app
+  // // On est pas gentil on se deconnecte de l'app
   // const deconnexion = () => {
   //   // await AsyncStorage.removeItem('userToken', (err) => console.log('userToken', err));
   //   AsyncStorage.clear()
@@ -160,228 +164,213 @@ function AccountScreen(props) {
   //    console.log(props.myToken)
   //   }, [])
 
-  return (
-    <View
-      style={{
-        paddingTop: 60,
-        paddingLeft: 16,
-        paddingRight: 16,
-        flex: 1,
-        backgroundColor: "#fff",
-      }}
-    >
-      {/* AccountScreen Overlay */}
-      <Overlay
-        overlayStyle={{ width: "90%", height: "auto", borderRadius: 20 }}
-        isVisible={overlayVisible}
-        onBackdropPress={toggleOverlay}
-      >
-        {/* overlay title */}
-        <Text
-          style={{
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 30,
-            fontSize: 20,
-          }}
-        >
-          Modifier mes informations
-        </Text>
-        {/* overlay inputs */}
-        <View
-          style={{
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 30,
-            marginBottom: 30,
-          }}
-        >
-          <View>
-            <Text style={{ fontSize: 15 }}>Nom :</Text>
-            <Input
-              type="text"
-              value={lastnameInput}
-              onChangeText={(value) => {
-                setLastnameInput(value);
-              }}
-            ></Input>
-          </View>
-          <View>
-            <Text style={{ fontSize: 15 }}>Prénom :</Text>
-            <Input
-              type="text"
-              value={firstnameInput}
-              onChangeText={(value) => {
-                setFirstnameInput(value);
-              }}
-            ></Input>
-          </View>
-          <View>
-            <Text style={{ fontSize: 15 }}>Adresse e-mail :</Text>
-            <Input
-              type="email"
-              value={emailInput}
-              onChangeText={(value) => {
-                setEmailInput(value);
-              }}
-            ></Input>
-          </View>
-          <View>
-            <Text style={{ fontSize: 15 }}>Numéro de téléphone :</Text>
-            <Input
-              keyboardType="numeric"
-              type="tel"
-              value={phoneNumberInput.toString()}
-              onChangeText={(value) => {
-                setPhoneNumberInput(value);
-              }}
-            ></Input>
-          </View>
-        </View>
-        {/* overlay buttons */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginLeft: 16,
-            marginRight: 16,
-            marginBottom: 30,
-          }}
-        >
-          <Button
-            title="Annuler"
-            type="outline"
-            buttonStyle={{
-              borderColor: "red",
-              height: 56,
-              width: 130,
-              borderRadius: 40,
-            }}
-            titleStyle={{ color: "red" }}
-            onPress={toggleOverlay}
-          />
-          <Button
-            title="Valider"
-            containerStyle={{}}
-            buttonStyle={{ height: 56, width: 130, borderRadius: 40 }}
-            titleStyle={{}}
-            onPress={() => {
-              toggleOverlay();
-              console.log("User has modified !");
-            }}
-          />
-        </View>
-      </Overlay>
+  // console.log('Je suis le token du mapState dans AccountScreen')
+  // console.log(props.userConnected.userBDD.userFirstName);
 
-      {/* AccountScreen Front */}
-      {/* title */}
-      <Text style={{ paddingBottom: 10, paddingTop: 10, fontSize: 30 }}>
-        Vos informations
-      </Text>
-      {/* floating label inputs */}
-      <View style={{ flex: 1, marginTop: 30, marginBottom: 80 }}>
-        <FloatingLabelInput
-          labelStyles={{
-            backgroundColor: "#fff",
-            color: "grey",
-            paddingHorizontal: 10,
-            marginTop: 20,
-          }}
-          containerStyles={{
-            height: 56,
-            borderWidth: 1,
-            paddingHorizontal: 10,
-            borderColor: "grey",
-            borderRadius: 10,
-            marginTop: 20,
-          }}
-          staticLabel
-          label="Nom"
-          editable={false}
-          value={lastnameInput}
-        ></FloatingLabelInput>
-        <FloatingLabelInput
-          labelStyles={{
-            backgroundColor: "#fff",
-            paddingHorizontal: 10,
-            marginTop: 20,
-            color: "grey",
-          }}
-          containerStyles={{
-            height: 56,
-            borderWidth: 1,
-            paddingHorizontal: 10,
-            borderColor: "grey",
-            borderRadius: 10,
-            marginTop: 20,
-          }}
-          staticLabel
-          label="Prénom"
-          editable={false}
-          value={firstnameInput}
-        ></FloatingLabelInput>
-        <FloatingLabelInput
-          labelStyles={{
-            backgroundColor: "#fff",
-            paddingHorizontal: 10,
-            marginTop: 20,
-            color: "grey",
-          }}
-          containerStyles={{
-            height: 56,
-            borderWidth: 1,
-            paddingHorizontal: 10,
-            borderColor: "grey",
-            borderRadius: 10,
-            marginTop: 20,
-          }}
-          staticLabel
-          label="Adresse e-mail"
-          editable={false}
-          value={emailInput}
-        ></FloatingLabelInput>
-        <FloatingLabelInput
-          labelStyles={{
-            backgroundColor: "#fff",
-            paddingHorizontal: 10,
-            marginTop: 20,
-            color: "grey",
-          }}
-          containerStyles={{
-            height: 56,
-            borderWidth: 1,
-            paddingHorizontal: 10,
-            borderColor: "grey",
-            borderRadius: 10,
-            marginTop: 20,
-          }}
-          staticLabel
-          label="Numéro de téléphone"
-          editable={false}
-          value={phoneNumberInput.toString()}
-        ></FloatingLabelInput>
+  return (
+    <View style={styles.container}>
+
+      {/* OVERLAY POUR MODIFIER SES DONNEES */}
+        <Overlay
+          overlayStyle={styles.overlayContainer}
+          isVisible={overlayVisible}
+          onBackdropPress={() => setOverlayVisible(false)}
+        >
+          {/* overlay title */}
+          <Text style={styles.overlayTitle}>Modifier mes informations</Text>
+          
+          {/* overlay inputs */}
+          <View style={styles.overlayInputsContainer}>
+            
+            <View>
+              <Text style={{ fontSize: 15 }}>Nom :</Text>
+              <Input
+                type="text"
+                value={props.userConnected.userBDD.userName}
+                onChangeText={ (value) => { setLastnameInput(value);} }
+              ></Input>
+            </View>
+
+            <View>
+              <Text style={{ fontSize: 15 }}>Prénom :</Text>
+              <Input
+                type="text"
+                value={props.userConnected.userBDD.userFirstName}
+                onChangeText={ (value) => {setFirstnameInput(value);} }
+              ></Input>
+            </View>
+
+            <View>
+              <Text style={{ fontSize: 15 }}>Adresse e-mail :</Text>
+              <Input
+                type="email"
+                value={props.userConnected.userBDD.userEmail}
+                onChangeText={ (value) => {setEmailInput(value);} }
+              ></Input>
+            </View>
+
+            <View>
+              <Text style={{ fontSize: 15 }}>Numéro de téléphone :</Text>
+              <Input
+                keyboardType="numeric"
+                type="tel"
+                value={props.userConnected.userBDD.userPhone.toString()}
+                onChangeText={ (value) => {setPhoneNumberInput(value);} }
+              ></Input>
+            </View>
+
+          </View>
+
+          {/* overlay buttons */}
+          <View
+            style={styles.overlayButtonsContainer}
+          >
+            <Button
+              title="Annuler"
+              type="outline"
+              buttonStyle={styles.overlayCancelButton}
+              titleStyle={{ color: "red" }}
+              onPress={() => setOverlayVisible(false)}
+            />
+            <Button
+              title="Valider"
+              containerStyle={{}}
+              buttonStyle={{ height: 56, width: 130, borderRadius: 40 }}
+              titleStyle={{}}
+              onPress={() => {setOverlayVisible(false); console.log("User has modified !");}}
+            />
+          </View>
+        </Overlay>
+
+      {/* FRONT */}
+      
+        {/* title */}
+        <Text style={{ paddingBottom: 10, paddingTop: 10, fontSize: 30 }}>
+          Vos informations
+        </Text>
+
+        {/* floating label inputs */}
+        <View style={{ flex: 1, marginTop: 30, marginBottom: 80 }}>
+
+          <FloatingLabelInput
+            labelStyles={styles.labelStyle}
+            containerStyles={styles.inputStyle}
+            staticLabel
+            label="Nom"
+            editable={false}
+            value={props.userConnected.userBDD.userName}
+          ></FloatingLabelInput>
+          
+          <FloatingLabelInput
+            labelStyles={styles.labelStyle}
+            containerStyles={styles.inputStyle}
+            staticLabel
+            label="Prénom"
+            editable={false}
+            value={props.userConnected.userBDD.userFirstName}
+          ></FloatingLabelInput>
+
+          <FloatingLabelInput
+            labelStyles={styles.labelStyle}
+            containerStyles={styles.inputStyle}
+            staticLabel
+            label="Adresse e-mail"
+            editable={false}
+            value={props.userConnected.userBDD.userEmail}
+          ></FloatingLabelInput>
+
+          <FloatingLabelInput
+            labelStyles={styles.labelStyle}
+            containerStyles={styles.inputStyle}
+            staticLabel
+            label="Numéro de téléphone"
+            editable={false}
+            value={props.userConnected.userBDD.userPhone.toString()}
+          ></FloatingLabelInput>
+
+        </View>
+
+        {/* buttons */}
+        <Button
+          buttonStyle={{ height: 56, marginTop: 20, borderRadius: 40 }}
+          titleStyle={{ fontSize: 17 }}
+          title="Modifier mes informations"
+          onPress={() => setOverlayVisible(true)}
+        />
+
+        <Button
+          buttonStyle={{ height: 56, marginTop: 20, marginBottom: 20 }}
+          titleStyle={{ color: "red", fontSize: 15 }}
+          type="clear"
+          onPress={() => logOut()}
+        >
+          SE DÉCONNECTER
+        </Button>
       </View>
-      {/* buttons */}
-      <Button
-        buttonStyle={{ height: 56, marginTop: 20, borderRadius: 40 }}
-        titleStyle={{ fontSize: 17 }}
-        title="Modifier mes informations"
-        onPress={() => setOverlayVisible(true)}
-      />
-      <Button
-        // onPress={() => {deconnexion()}}
-        buttonStyle={{ height: 56, marginTop: 20, marginBottom: 20 }}
-        titleStyle={{ color: "red", fontSize: 15 }}
-        type="clear"
-      >
-        SE DÉCONNECTER
-      </Button>
-    </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 60,
+    paddingLeft: 16,
+    paddingRight: 16,
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  // OVERLAY
+  overlayContainer: {
+    width: "90%",
+    height: "auto",
+    borderRadius: 20
+  },
+  overlayTitle: {
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 30,
+    fontSize: 20,
+  },
+  overlayInputsContainer: {
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  overlayButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 30,
+  },
+  overlayCancelButton: {
+    borderColor: "red",
+    height: 56,
+    width: 130,
+    borderRadius: 40,
+  },
+  // FRONT
+  labelStyle: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    marginTop: 20,
+    color: "grey",
+  },
+  inputStyle: {
+    height: 56,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    borderColor: "grey",
+    borderRadius: 10,
+    marginTop: 20,
+  },
+})
+
 function mapStateToProps(state) {
-  return { myToken: state.token };
+  return { userConnected: state.user };
 }
 
-export default connect(mapStateToProps, null)(AccountScreen);
+export default connect(
+  mapStateToProps,
+  null
+)(AccountScreen);

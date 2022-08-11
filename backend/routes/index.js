@@ -54,32 +54,27 @@ router.post("/signup", async function (req, res, next) {
 
 /* POST Sign-in */
 router.post("/sign-in", async function (req, res, next) {
+  
   var error = [];
+  var result = false;
 
-  if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
-    console.log('PREMIER IF, INFOS VIDE')
+  if (
+    req.body.emailFromFront == "" ||
+    req.body.passwordFromFront == ""
+  ) {
     error.push("Un ou plusieurs champ(s) sont vide(s)");
   } else {
-    console.log('SECOND IF, FINDONE')
     var userFromFrontExist = await userModel.findOne({
       userEmail: req.body.emailFromFront,
+      userPassword: req.body.passwordFromFront
     });
-    var result = false;
     if (userFromFrontExist) {
       result = true;
     } else {
       error.push("Information(s) incorrecte(s)");
     }
   }
-    // var userFromFrontExist = await userModel.findOne({userEmail: req.body.emailFromFront});
-    // console.log(userFromFrontExist)
-
-  // à rajouter: if result === true, on le connecte, donc token et tout ça.
-  // Si true: redirect vers  homescreen en sauvegardant le token pour la session
-
-
-  // res.json({userFromFrontExist})
-  res.json({result, userBDD: userFromFrontExist, error})
+  res.json({result, userFromFrontExist, error})
 })
 
 /* POST Reset Password */
