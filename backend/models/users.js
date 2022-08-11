@@ -7,7 +7,21 @@ var usersSchema = mongoose.Schema({
   userPhone: Number,
   userPassword: String,
   token: String,
-  // reservations: [reservationsSchema],
+  reservations: [
+    {
+        restoName: String,
+        restoAddress: String,
+        restoZIPCode: Number,
+        restoCity: String,
+        restoPhone: String,
+        date: String,
+        hour: String,
+        numberOfPeople: Number,
+        resaName: String,
+        resaPhone: Number,
+        status: String
+    }
+  ],
 });
 
 var userModel = mongoose.model("users", usersSchema);

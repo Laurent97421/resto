@@ -11,13 +11,31 @@ import { useNavigation } from "@react-navigation/native";
 
 function ReservationScreen(props) {
 
+  console.log(typeof(formatDate(new Date(props.userSearch[0].date))))
+
+  // Pour naviguer vers un screen du Bottom Tab Nav à partir d'un bouton
   const jumpToAction = TabActions.jumpTo("Mes réservations");
   const navigation = useNavigation();
 
+  // INPUTS STATES
   const [counterAdults, setCounterAdults] = useState(0);
   const [counterChildren, setCounterChildren] = useState(0);
   const [counterBabies, setCounterBabies] = useState(0);
 
+  // Fonctions pour formatter la date au format local  
+  function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+  }
+  
+  function formatDate(date) {
+    return [
+      padTo2Digits(date.getDate()),
+      padTo2Digits(date.getMonth() + 1),
+      date.getFullYear(),
+    ].join('/');
+  }
+
+  // Fonctions pour que le compteur convives ne soit pas < 0
   function minConvivesAdults() {
     if(counterAdults < 1) {
       setCounterAdults(0)
@@ -42,6 +60,24 @@ function ReservationScreen(props) {
     }
   }
 
+  // SAVE RESERVATION IN BDD
+  // let privateAdressIP = "172.20.10.8"; // Laurent
+  let privateAdressIP = "172.20.10.4"; // Pauline
+
+  // Connection with BackEnd to create a User in BDD
+  var saveReservation = async () => {
+      // Add new reservation in database using route from back end
+      const saveResa = await fetch("http://"+ privateAdressIP +":3000/reservation", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `restoName=${props.restoSelected[0].name}&restoAddress=${props.restoSelected[0].address}&restoZIPCode=${props.restoSelected[0].ZIPcode}&restoCity=${props.restoSelected[0].city}&restoPhone=${props.restoSelected[0].phoneNumber}&date=${formatDate(new Date(props.userSearch[0].date))}&hour=${props.userSearch[0].heure}&numberOfPeople=${counterAdults+counterChildren+counterBabies}&resaName=${props.userConnected.userSave.userName.toUpperCase()}&resaPhone=${props.userConnected.userSave.userPhone}&status=${'En attente...'}&tokenFromRedux=${props.userConnected.userSave.token}`,
+      });
+      // const responseText = await saveResa.text();
+      const responseJson = await saveResa.json();
+      console.log('Voici la réservation sauvegardé')
+      console.log(responseJson)
+  };
+
   return (
     <View style={{backgroundColor:'white', flex:1}}>
 
@@ -62,13 +98,13 @@ function ReservationScreen(props) {
           {/* Date */}
           <View>
             <Text style={styles.inputHeader}>Date</Text>
-            <TextInput style={styles.input}/>
+            <TextInput value={formatDate(new Date(props.userSearch[0].date))} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
 
           {/* Heure */}
           <View>
             <Text style={styles.inputHeader}>Heure</Text>
-            <TextInput style={styles.input}/>
+            <TextInput value={props.userSearch[0].heure} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
 
           {/* Nombre de convives */}
@@ -152,7 +188,7 @@ function ReservationScreen(props) {
           {/* Nom */}
           <View>
             <Text style={styles.inputHeader}>Nom associé</Text>
-            <TextInput placeholder="Votre nom" style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput value={props.userConnected.userSave.userName.toUpperCase()} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
 
           {/* Numéro de téléphone */}
@@ -162,13 +198,13 @@ function ReservationScreen(props) {
               <TouchableOpacity><Text style={{fontSize: 10, fontStyle:'italic', textDecorationLine: 'underline'}}>Changer de numéro</Text></TouchableOpacity>
             </View>
 
-            <TextInput keyboardType='phone-pad' placeholder="Votre 06" style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput keyboardType='phone-pad' value={props.userConnected.userSave.userPhone.toString()} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
         </View>
 
         {/* Button */}
         <View>
-          <TouchableOpacity style={styles.button} onPress={() =>  navigation.dispatch(jumpToAction)}><Text style={styles.buttonTitle}>Je réserve</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() =>  {navigation.dispatch(jumpToAction); saveReservation()}}><Text style={styles.buttonTitle}>Je réserve</Text></TouchableOpacity>
         </View>
     
     </View>
@@ -176,7 +212,7 @@ function ReservationScreen(props) {
 }
 
 function mapStateToProps(state) {
-  return { restoSelected: state.restoSelected }
+  return { restoSelected: state.restoSelected, userConnected: state.user, userSearch: state.search }
 }
 
 export default connect(
