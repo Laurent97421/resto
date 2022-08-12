@@ -36,7 +36,7 @@ const StackNavigatorTest = function () {
   // On sauvegarde une fonction StackNavigatorTest dans une const
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Recherche" component={HomeScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Result" component={ResultScreen} />
       <Stack.Screen name="Resto" component={RestoScreen} />
       <Stack.Screen name="Reservation" component={ReservationScreen} />
