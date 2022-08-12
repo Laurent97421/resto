@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   // Button
   button: {
-    backgroundColor:'lightgrey',
+    backgroundColor: '#FDCF08',
     height: 56,
     marginHorizontal: 16,
     borderRadius: 40,

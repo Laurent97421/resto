@@ -5,6 +5,7 @@ import { FloatingLabelInput } from 'react-native-floating-label-input';
 import { Icon } from '@rneui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { connect } from 'react-redux';
+import { AntDesign } from '@expo/vector-icons';
 
 
 function Authentification(props) {
@@ -17,6 +18,10 @@ let privateAdressIP = "172.20.10.4"; // Pauline
 const [visibleOverlaySub, setVisibleOverlaySub] = useState(true);
 const [visibleOverlayLog, setVisibleOverlayLog] = useState(false);
 const [visibleOverlayForget, setVisibleOverlayForget] = useState(false);
+
+// Display errors
+const [errorSignUp, setErrorSignUp] = useState([])
+const [errorLogin, setErrorLogin] = useState([])
 
 const closeSubscribe = () => {
     setVisibleOverlaySub(!visibleOverlaySub);
@@ -50,6 +55,8 @@ const closeLogin = () => {
         if(body.result === true){
             props.saveUser(body);
             setVisibleOverlaySub(false);
+        } else {
+            setErrorSignUp(body.error);
         }
     };
 
@@ -76,6 +83,8 @@ const closeLogin = () => {
             if(bodyConnectionInfos.result == true) {
                 props.saveUser(bodyConnectionInfos);
                 setVisibleOverlayLog(false);
+            } else {
+                setErrorLogin(bodyConnectionInfos.error)
             }
         } catch (err) {
             // Error si pas de user trouvé en BDD
@@ -115,7 +124,7 @@ const closeLogin = () => {
     <View>
       
         {/* SUBSCRIBE */}
-        <Overlay isVisible={visibleOverlaySub} overlayStyle={{width: '90%'}}>
+        <Overlay isVisible={visibleOverlaySub} overlayStyle={{width: '90%', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30}}>
             {/* input Last Name */}
             <FloatingLabelInput
                 onChangeText={(msg) => setSignupLastName(msg)}
@@ -173,9 +182,13 @@ const closeLogin = () => {
                 placeholder="Mot de passe"
             ></FloatingLabelInput>
 
+            <Text style={{paddingHorizontal:15, marginTop: 8, color: 'red', fontStyle: 'italic'}}>{errorSignUp}</Text>
+
             {/* Button Subscribe */}
             <Button
-                style={{ marginTop: 30 }}
+                buttonStyle={{backgroundColor: '#FDCF08'}}
+                titleStyle={{color: 'black'}}
+                containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}
                 title="S'inscrire"
                 onPress={() => {
                     console.log("Click sur s'inscrire détécté !");
@@ -185,7 +198,9 @@ const closeLogin = () => {
 
             {/* Button Google Connect */}
             <Button
-                style={{ paddingTop: "1%" }}
+                buttonStyle={{backgroundColor: 'white'}}
+                titleStyle={{color:'black'}}
+                containerStyle={{borderRadius: 40, marginBottom: 10, borderWidth: 0.5}}
                 title="Connexion via Google"
                 onPress={() => console.log("s'inscrire via google")}
             />
@@ -195,16 +210,19 @@ const closeLogin = () => {
                 J'ai déjà un compte
             </Text>
 
-            <TouchableOpacity onPress={() => { setVisibleOverlaySub(false); setVisibleOverlayLog(true);}}>
-                <Text style={{ textAlign: "center", color: "green" }}>
-                    Se connecter
+            <TouchableOpacity style={{marginTop: 10}} onPress={() => { setVisibleOverlaySub(false); setVisibleOverlayLog(true);}}>
+                <Text style={{ textAlign: "center", color: "#005249", fontWeight: '600' }}>
+                    SE CONNECTER
                 </Text>
             </TouchableOpacity>
         </Overlay>
 
         {/* LOGIN */}
-        <Overlay isVisible={visibleOverlayLog} overlayStyle={{ width: "90%" }}>
+        <Overlay isVisible={visibleOverlayLog} overlayStyle={{ width: "90%", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30 }}>
             
+            {/* Flèche retour */}
+            <AntDesign name="arrowleft" size={24} color="black" onPress={() => {setVisibleOverlayLog(false); setVisibleOverlaySub(true)}}/>
+
             {/* Input Email */}
             <FloatingLabelInput
                 keyboardType="email-address"
@@ -240,9 +258,13 @@ const closeLogin = () => {
                 </Text>
             </TouchableOpacity>
 
+            <Text style={{paddingHorizontal:15, marginTop: 8, color: 'red', fontStyle: 'italic'}}>{errorLogin}</Text>
+
             {/* Button Login */}
             <Button
-                style={{ paddingTop: "10%" }}
+                buttonStyle={{backgroundColor: '#FDCF08'}}
+                titleStyle={{color: 'black'}}
+                containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}
                 title="Se connecter"
                 onPress={() => {
                     console.log('click sur Se Connecter détécté !');
@@ -252,7 +274,10 @@ const closeLogin = () => {
         </Overlay>
 
         {/* FORGET PASSWORD */}
-        <Overlay isVisible={visibleOverlayForget} overlayStyle={{ width: "90%" }}>
+        <Overlay isVisible={visibleOverlayForget} overlayStyle={{ width: "90%", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30 }}>
+
+            {/* Flèche retour */}
+            <AntDesign name="arrowleft" size={24} color="black" onPress={() => {setVisibleOverlayForget(false); setVisibleOverlayLog(true)}}/>
 
             {/* Input Email */}
             <FloatingLabelInput
@@ -293,22 +318,16 @@ const closeLogin = () => {
                 placeholder="Confirmer le nouveau mot de passe"
             ></FloatingLabelInput>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft : 16, marginRight: 16, marginBottom: 30 }}>
-                <Button
-                    title="Annuler"
-                    type="outline"
-                    buttonStyle={{ borderColor:'red', height: 56, width: 130, borderRadius: 40 }}
-                    titleStyle={{ color: 'red' }} 
-                    onPress={() => setVisibleOverlayForget(false)}
-                />
-                <Button
-                    title="Valider"
-                    containerStyle={{}}
-                    buttonStyle={{ height: 56, width: 130, borderRadius: 40 }}
-                    titleStyle={{}}
-                    onPress={() => setVisibleOverlayForget(false)}
-                />
-            </View>
+            
+            <Button
+                title="Valider"
+                containerStyle={{}}
+                buttonStyle={{backgroundColor: '#FDCF08'}}
+                titleStyle={{color: 'black'}}
+                containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}
+                onPress={() => setVisibleOverlayForget(false)}
+            />
+
         </Overlay>
 
     </View>

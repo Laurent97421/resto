@@ -58,7 +58,7 @@ export default function ResultScreen() {
             paddingTop: 20,
           }}
         >
-          Liste des restaurants disponible
+          Liste des restaurants disponibles
         </Text>
       </View>
 

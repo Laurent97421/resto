@@ -28,10 +28,10 @@ router.post("/signup", async function (req, res, next) {
     req.body.emailFromFront == "" ||
     req.body.passwordFromFront == ""
   ) {
-    error.push("Empty field...");
+    error.push("Un ou plusieurs champ(s) sont vide(s)");
   // On affiche une erreur si l'email du user existe déjà en BDD
   } else if (userTaken) {
-    error.push("Email already taken");
+    error.push("Cette adresse e-mail existe déjà !");
   // Si aucune erreur, on sauvegarder le user en BDD, on passe le result à true et on stock son token dans une variable
   } else {
     var newUser = new userModel({
