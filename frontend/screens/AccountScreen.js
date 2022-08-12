@@ -186,7 +186,7 @@ function AccountScreen(props) {
               <Text style={{ fontSize: 15 }}>Nom :</Text>
               <Input
                 type="text"
-                value={props.userConnected.userBDD.userName}
+                value={props.userConnected.userFromFrontExist.userName}
                 onChangeText={ (value) => { setLastnameInput(value);} }
               ></Input>
             </View>
@@ -195,7 +195,7 @@ function AccountScreen(props) {
               <Text style={{ fontSize: 15 }}>Prénom :</Text>
               <Input
                 type="text"
-                value={props.userConnected.userBDD.userFirstName}
+                value={props.userConnected.userFromFrontExist.userFirstName}
                 onChangeText={ (value) => {setFirstnameInput(value);} }
               ></Input>
             </View>
@@ -204,7 +204,7 @@ function AccountScreen(props) {
               <Text style={{ fontSize: 15 }}>Adresse e-mail :</Text>
               <Input
                 type="email"
-                value={props.userConnected.userBDD.userEmail}
+                value={props.userConnected.userFromFrontExist.userEmail}
                 onChangeText={ (value) => {setEmailInput(value);} }
               ></Input>
             </View>
@@ -214,7 +214,7 @@ function AccountScreen(props) {
               <Input
                 keyboardType="numeric"
                 type="tel"
-                value={props.userConnected.userBDD.userPhone.toString()}
+                value={props.userConnected.userFromFrontExist.userPhone.toString()}
                 onChangeText={ (value) => {setPhoneNumberInput(value);} }
               ></Input>
             </View>
@@ -258,7 +258,7 @@ function AccountScreen(props) {
             staticLabel
             label="Nom"
             editable={false}
-            value={props.userConnected.userBDD.userName}
+            value={props.userConnected.userFromFrontExist.userName}
           ></FloatingLabelInput>
           
           <FloatingLabelInput
@@ -267,7 +267,7 @@ function AccountScreen(props) {
             staticLabel
             label="Prénom"
             editable={false}
-            value={props.userConnected.userBDD.userFirstName}
+            value={props.userConnected.userFromFrontExist.userFirstName}
           ></FloatingLabelInput>
 
           <FloatingLabelInput
@@ -276,7 +276,7 @@ function AccountScreen(props) {
             staticLabel
             label="Adresse e-mail"
             editable={false}
-            value={props.userConnected.userBDD.userEmail}
+            value={props.userConnected.userFromFrontExist.userEmail}
           ></FloatingLabelInput>
 
           <FloatingLabelInput
@@ -285,7 +285,7 @@ function AccountScreen(props) {
             staticLabel
             label="Numéro de téléphone"
             editable={false}
-            value={props.userConnected.userBDD.userPhone.toString()}
+            value={props.userConnected.userFromFrontExist.userPhone.toString()}
           ></FloatingLabelInput>
 
         </View>
