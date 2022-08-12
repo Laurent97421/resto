@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   touchableOpacity: {
     height: 56,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#FDCF08',
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center'

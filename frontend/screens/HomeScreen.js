@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { Button, Overlay, Input } from "@rneui/themed";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
@@ -15,9 +8,8 @@ import filters from "../assets/files-JSON/filters.json";
 import { acc } from "react-native-reanimated";
 import { connect } from "react-redux";
 
-import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker'
-
 
 
 
@@ -25,7 +17,6 @@ function HomeScreen(props) {
 
 
   // SET UP DU CALENDRIER //
-  
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -77,22 +68,22 @@ function HomeScreen(props) {
   const [filter, setFilter] = useState([])
   
   // Selection des filtres  
-
   const listFilter = (indice, element) => {
-    const [color, setColor] = useState("lightgrey");
+    const [color, setColor] = useState("#DEDEDE");
     const [active, setActive] = useState(false);
-    const [logoColor, setLogoColor] = useState("black");
+    const [logoColor, setLogoColor] = useState("#BDBDBD");
 
     //  Filtres
     const handleClick = () => {
       setActive(true);
-      setColor("lightblue")
-      setLogoColor("blue")
+      setColor("#D4F0F6")
+      setLogoColor("#009ABC")
       setFilter([...filter, {element: element}])
+      
       if(active === true){
         setActive(false)
-        setColor("lightgrey")
-        setLogoColor("black")
+        setColor("#DEDEDE")
+        setLogoColor("#BDBDBD")
         var allFilter = filter.filter(e => e.element !== element)
         setFilter(allFilter)
       }
@@ -120,7 +111,7 @@ function HomeScreen(props) {
       <TouchableOpacity
         key={indice}
         style={{
-          backgroundColor: color,
+          backgroundColor: "#F9F9F9",
           width: 75,
           height: 75,
           justifyContent: "center",
@@ -128,6 +119,8 @@ function HomeScreen(props) {
           borderRadius: 10,
           marginRight: 10,
           marginVertical: 10,
+          borderWidth: 0.5,
+          borderColor: color
         }}
         onPress={() => {
           handleClick();
@@ -135,14 +128,13 @@ function HomeScreen(props) {
       >
         <View
           style={{
-            marginLeft: "70%",
-            marginTop: "-30%",
-            marginBottom: "13%",
-            backgroundColor: "white",
+            position: 'absolute',
+            top: 5,
+            right: 5,
             borderRadius: 90,
           }}
         >
-          <Icon name="checkcircleo" color={logoColor} />
+          <AntDesign name="checkcircle" size={13} color={logoColor} />
         </View>
         <Text style={{ textAlign: "center", fontSize: 12 }}>{element}</Text>
         <View></View>
@@ -187,16 +179,16 @@ function HomeScreen(props) {
   // // // // // // // //
 
   return (
-    <ScrollView>
-    <Text h4 style={{textAlign: 'center'}}>Rechercher un restaurant</Text>
+    <View style={{flex:1, paddingTop: 60, backgroundColor: 'white'}}>
+      <Text h4 style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Rechercher un restaurant</Text>
 
-    {/* Authentification Overlays */}
-    <Authentification/>
+      {/* Authentification Overlays */}
+      <Authentification/>
 
-    {/* SEARCH INPUTS */}
-    <View style = {styles.viewSearch}>
+      {/* SEARCH INPUTS */}
+      <View style = {styles.searchInputsContainer}>
         <TextInput 
-        style = {{margin: 12, borderWidth: 1, width: '30%', borderRadius: 5}}
+        style = {styles.searchInput}
         placeholder="Adresse"
         onChangeText={(msg) => setSearchAddressResto(msg)}
         value = {searchAddressResto}
@@ -204,23 +196,23 @@ function HomeScreen(props) {
 
 
         <TextInput 
+        style = {styles.searchInput}
         onPressIn={() => {console.log('woula'); setCalendarVisible(true)}}
         editable = {false}
-        style = {{margin: 12, borderWidth: 1, width: '30%', borderRadius: 5}}
         placeholder="Date"
         onChangeText={(msg) => setSearchAddressResto(msg)}
         value = {dateInfos}
         />
 
         <TextInput 
-            style = {{margin: 12, borderWidth: 1, width: '30%', borderRadius: 5}}
+            style = {styles.searchInput}
             onPressIn = {() => {showHour()}}
             editable = {false}
             placeholder="Heure"
             onChangeText={(msg) => setTime(msg)}
             value = {time}
         />
-        </View>
+      </View>
         
       {/* CALENDAR OVERLAY */}
       <Overlay isVisible={calendarVisible} overlayStyle={{width: '90%'}}>
@@ -238,6 +230,7 @@ function HomeScreen(props) {
       </Overlay>
 
 
+    <ScrollView>
     {/* FILTERS */}
 
       {/* ALIMENTATION FILTERS */}
@@ -366,10 +359,12 @@ function HomeScreen(props) {
           }
         })
       }
+    </ScrollView>
 
     {/* BUTTON SEARCH */}
     <Button
-      style={{ justifyContent: "flex-end" }}
+      buttonStyle={styles.buttonSearch}
+      titleStyle={{color:'black'}}
       title="Rechercher un restaurant"
       onPress={() => {
         props.navigation.navigate("Result");
@@ -379,15 +374,25 @@ function HomeScreen(props) {
       }}
     />
 
-  </ScrollView>
+  </View>
 
   );
 }
 
 const styles = StyleSheet.create({
-  viewSearch: {
+  searchInputsContainer: {
     flexDirection: "row",
-    width: "90%",
+    marginHorizontal: 16,
+    marginVertical: 16,
+    justifyContent: 'space-between'
+  },
+  searchInput: {
+    borderWidth: 0.5,
+    borderColor: 'grey',
+    height: 44,
+    width: '30%',
+    borderRadius: 20,
+    paddingLeft: 10
   },
   filtreContainer: {
     flexDirection: "column",
@@ -395,24 +400,30 @@ const styles = StyleSheet.create({
   },
   title: {
     marginHorizontal: 16,
-    marginBottom: 10,
+    marginBottom: 3,
     fontWeight: "bold",
+    fontSize: 16
   },
   filtreCarre: {
     flexDirection: "row",
     marginHorizontal: 16,
-    // justifyContent: "space-between",
     alignItems: "center",
     flexWrap: "wrap",
   },
   filtre: {
-    backgroundColor: "lightgrey",
     width: 70,
     height: 70,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
   },
+  buttonSearch: {
+    backgroundColor: '#FDCF08',
+    marginHorizontal: 16,
+    height: 44,
+    borderRadius: 20,
+    marginVertical: 16
+  }
 });
 
 function mapDispatchToProps(dispatch) {

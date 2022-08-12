@@ -4,6 +4,8 @@ import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import RestaurantsData from '../assets/files-JSON/restaurant.json'
 import { connect } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 function RestaurantCard(props) {
 
@@ -15,11 +17,21 @@ function RestaurantCard(props) {
     console.log(data)
   }
 
+  var starsGlobalRating = []
+  for (var i=0; i<5; i++) {
+    var color = {};
+    if(i<Math.round(RestaurantsData[0].rating)) {
+      color = '#f1c40f'
+    } else {
+      color = '#F5F5F5'
+    }
+    starsGlobalRating.push(<FontAwesome name="star" size={16} color={color} />)
+  }
+
   // // // // // // // // // // // // // // // // // // // // // // // // // // //$
-var temporaire = []
+  var temporaire = []
 
-props.searchInfos[1].map((data) => {
-
+  props.searchInfos[1].map((data) => {
     RestaurantsData.map((dataResto) => {
       dataResto.features.map((dataFeatures) => {
           const found = dataFeatures.values.find(element => element == data.element);
@@ -29,7 +41,6 @@ props.searchInfos[1].map((data) => {
           }
       })
     })
-
   })
 
   // Pour enlever les doublons dans le tableau d'objets
@@ -42,61 +53,43 @@ props.searchInfos[1].map((data) => {
 
   for (i in uniqueObject) {
     newArray.push(uniqueObject[i]);
-}
+  }
   // // // // // // // // // // // // // // // // // // // // // // // // // // //
   return (
     <View>
       {
         newArray.map((data,i) => {
           return (
+            // chaque bouton de resto
             <TouchableOpacity
               onPress={() => {toDo(data)}}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                backgroundColor: "#D3D3D3",
-                margin: 10,
-                borderRadius: 8,
-                alignItems: "center",
-              }}
-              key={i}
+              style={styles.touchableOpacity}
+              key={data.id}
             >
-                    <Image
-                      source={{uri: data.logo}}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: 50,
-                        overflow: "hidden",
-                        margin: 10,
-                      }}
-                    />
+              <Image
+                source={{uri: data.logo}}
+                style={styles.restoLogo}
+              />
                   
-                    <View>
-                      <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 18 }}>
-                        {data.name}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <IonIcon name="star-outline" />
-                          <IonIcon name="star-outline" />
-                          <IonIcon name="star-outline" />
-                          <IonIcon name="star-outline" />
-                          <IonIcon name="star-outline" />
-                        </View>
-                        <Text>({data.voteNumber})</Text>
-                      </View>
-                    </View>
+              {/* Resto infos */}
+              <View style={styles.restoInfosContainer}>
+                <Text style={styles.restoName}>
+                  {data.name}
+                </Text>
 
-                    <Text>à 450m</Text>
+                {/* RESTO AVIS */}
+                <View style={styles.starsContainer}>
+                  <View style={styles.stars}>
+                    {starsGlobalRating}
+                  </View>
 
-                    <IonIcon name="chevron-forward-outline" size={20} />
+                  <Text>({data.voteNumber})</Text>
+                </View>
+              </View>
+
+              <Text style={{marginRight: 10}}>à 450m</Text>
+
+              <IonIcon name="chevron-forward-outline" size={20} />
 
             </TouchableOpacity>
           )
@@ -106,6 +99,42 @@ props.searchInfos[1].map((data) => {
     
   );
 }
+
+const styles = StyleSheet.create({
+  touchableOpacity: {
+    flexDirection: "row",
+    backgroundColor: "#DEDEDE",
+    marginHorizontal: 10,
+    marginTop: 8,
+    borderRadius: 8,
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 25
+  },
+  restoLogo: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
+  restoInfosContainer: {
+    height: '100%',
+    width: '45%',
+    marginHorizontal: 20,
+  },
+  restoName: {
+    fontWeight: "bold",
+    fontSize: 18
+  },
+  starsContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  stars: {
+    flexDirection: 'row',
+    marginRight: 30,
+  },
+})
 
 function mapDispatchToProps(dispatch) {
   return {
