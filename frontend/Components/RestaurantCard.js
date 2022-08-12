@@ -58,7 +58,7 @@ function RestaurantCard(props) {
   return (
     <View>
       {
-        newArray.map((data) => {
+        newArray.map((data,i) => {
           return (
             // chaque bouton de resto
             <TouchableOpacity

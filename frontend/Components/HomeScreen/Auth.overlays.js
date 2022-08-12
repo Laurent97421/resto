@@ -10,8 +10,8 @@ import { AntDesign } from '@expo/vector-icons';
 
 function Authentification(props) {
 
-// let privateAdressIP = "172.20.10.8"; // Laurent
-let privateAdressIP = "172.20.10.4"; // Pauline
+let privateAdressIP = "172.20.10.8"; // Laurent
+// let privateAdressIP = "172.20.10.4"; // Pauline
 
 
 // Overlays Visibility
@@ -60,10 +60,11 @@ const closeLogin = () => {
         }
     };
 
-///////// LOGIN ///////////
+    ///////// LOGIN ///////////
     // Save inputs values
     const [signInEmail, setSignInEmail] = useState("");
     const [signInPassword, setSignInPassword] = useState("");
+
 
     // On vérifie dans le backend si le user existe déjà ou pas
     var checkConnectionInformation = async () => {
@@ -77,7 +78,7 @@ const closeLogin = () => {
                 }
             );
             var bodyConnectionInfos = await connectionInfos.json();
-            console.log(bodyConnectionInfos)
+            // console.log(bodyConnectionInfos)
 
             // 2. Close overlay + Sauvegarder le user dans Redux
             if(bodyConnectionInfos.result == true) {

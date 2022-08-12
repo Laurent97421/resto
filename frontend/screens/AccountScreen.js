@@ -166,6 +166,8 @@ function AccountScreen(props) {
 
   // console.log('Je suis le token du mapState dans AccountScreen')
   // console.log(props.userConnected.userBDD.userFirstName);
+  // console.log('STATETOPROPS')
+  // console.log(props.userConnected);
 
   return (
     <View style={styles.container}>
@@ -186,7 +188,7 @@ function AccountScreen(props) {
               <Text style={{ fontSize: 15 }}>Nom :</Text>
               <Input
                 type="text"
-                value={props.userConnected.userBDD.userName}
+                value={props.userConnected.userFromBDD.userName}
                 onChangeText={ (value) => { setLastnameInput(value);} }
               ></Input>
             </View>
@@ -195,7 +197,7 @@ function AccountScreen(props) {
               <Text style={{ fontSize: 15 }}>Prénom :</Text>
               <Input
                 type="text"
-                value={props.userConnected.userBDD.userFirstName}
+                value={props.userConnected.userFromBDD.userFirstName}
                 onChangeText={ (value) => {setFirstnameInput(value);} }
               ></Input>
             </View>
@@ -204,7 +206,7 @@ function AccountScreen(props) {
               <Text style={{ fontSize: 15 }}>Adresse e-mail :</Text>
               <Input
                 type="email"
-                value={props.userConnected.userBDD.userEmail}
+                value={props.userConnected.userFromBDD.userEmail}
                 onChangeText={ (value) => {setEmailInput(value);} }
               ></Input>
             </View>
@@ -214,7 +216,7 @@ function AccountScreen(props) {
               <Input
                 keyboardType="numeric"
                 type="tel"
-                value={props.userConnected.userBDD.userPhone.toString()}
+                value={props.userConnected.userFromBDD.userPhone.toString()}
                 onChangeText={ (value) => {setPhoneNumberInput(value);} }
               ></Input>
             </View>
@@ -258,7 +260,7 @@ function AccountScreen(props) {
             staticLabel
             label="Nom"
             editable={false}
-            value={props.userConnected.userBDD.userName}
+            value={props.userConnected.userFromBDD.userName}
           ></FloatingLabelInput>
           
           <FloatingLabelInput
@@ -267,7 +269,7 @@ function AccountScreen(props) {
             staticLabel
             label="Prénom"
             editable={false}
-            value={props.userConnected.userBDD.userFirstName}
+            value={props.userConnected.userFromBDD.userFirstName}
           ></FloatingLabelInput>
 
           <FloatingLabelInput
@@ -276,7 +278,7 @@ function AccountScreen(props) {
             staticLabel
             label="Adresse e-mail"
             editable={false}
-            value={props.userConnected.userBDD.userEmail}
+            value={props.userConnected.userFromBDD.userEmail}
           ></FloatingLabelInput>
 
           <FloatingLabelInput
@@ -285,7 +287,7 @@ function AccountScreen(props) {
             staticLabel
             label="Numéro de téléphone"
             editable={false}
-            value={props.userConnected.userBDD.userPhone.toString()}
+            value={props.userConnected.userFromBDD.userPhone.toString()}
           ></FloatingLabelInput>
 
         </View>

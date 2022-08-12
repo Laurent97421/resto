@@ -19,7 +19,7 @@ function RestoScreen(props) {
     } else {
       color = '#F5F5F5'
     }
-    starsGlobalRating.push(<FontAwesome name="star" size={20} color={color} />)
+    starsGlobalRating.push(<FontAwesome key={i} name="star" size={20} color={color} />)
   }
 
   const navigation = useNavigation();

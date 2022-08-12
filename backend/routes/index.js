@@ -49,32 +49,33 @@ router.post("/signup", async function (req, res, next) {
       token = userSave.token;
     }
   }
-  res.json({ result, userSave, token, error });
+  res.json({ result, userFromBDD: userSave, token, error });
 });
 
 /* POST Sign-in */
 router.post("/sign-in", async function (req, res, next) {
-  
+
   var error = [];
   var result = false;
 
-  if (
-    req.body.emailFromFront == "" ||
-    req.body.passwordFromFront == ""
-  ) {
+  if ( req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
     error.push("Un ou plusieurs champ(s) sont vide(s)");
   } else {
+    // console.log('Etape 1: findOne effectué')
     var userFromFrontExist = await userModel.findOne({
-      userEmail: req.body.emailFromFront,
-      userPassword: req.body.passwordFromFront
+      userEmail: req.body.emailFromFront
     });
     if (userFromFrontExist) {
+      // console.log('Tape 2: if(userFromFrontExist)')
+      if(bcrypt.compareSync(req.body.passwordFromFront, userFromFrontExist.userPassword))
+      // console.log('Etape 3: compareSync')
       result = true;
     } else {
       error.push("Information(s) incorrecte(s)");
     }
   }
-  res.json({result, userFromFrontExist, error})
+  res.json({result, userFromBDD: userFromFrontExist, error})
+  // res.json({})
 })
 
 /* POST Reset Password */
