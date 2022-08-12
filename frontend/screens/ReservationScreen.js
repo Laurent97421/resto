@@ -70,7 +70,7 @@ function ReservationScreen(props) {
       const saveResa = await fetch("http://"+ privateAdressIP +":3000/reservation", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `restoName=${props.restoSelected[0].name}&restoAddress=${props.restoSelected[0].address}&restoZIPCode=${props.restoSelected[0].ZIPcode}&restoCity=${props.restoSelected[0].city}&restoPhone=${props.restoSelected[0].phoneNumber}&date=${formatDate(new Date(props.userSearch[0].date))}&hour=${props.userSearch[0].heure}&numberOfPeople=${counterAdults+counterChildren+counterBabies}&resaName=${props.userConnected.userSave.userName.toUpperCase()}&resaPhone=${props.userConnected.userSave.userPhone}&status=${'En attente...'}&tokenFromRedux=${props.userConnected.userSave.token}`,
+          body: `restoName=${props.restoSelected[0].name}&restoAddress=${props.restoSelected[0].address}&restoZIPCode=${props.restoSelected[0].ZIPcode}&restoCity=${props.restoSelected[0].city}&restoPhone=${props.restoSelected[0].phoneNumber}&date=${formatDate(new Date(props.userSearch[0].date))}&hour=${props.userSearch[0].heure}&numberOfPeople=${counterAdults+counterChildren+counterBabies}&resaName=${props.userConnected.userFromBDD.userName.toUpperCase()}&resaPhone=${props.userConnected.userFromBDD.userPhone}&status=${'En attente...'}&tokenFromRedux=${props.userConnected.userFromBDD.token}`,
       });
       // const responseText = await saveResa.text();
       const responseJson = await saveResa.json();
@@ -188,7 +188,7 @@ function ReservationScreen(props) {
           {/* Nom */}
           <View>
             <Text style={styles.inputHeader}>Nom associé</Text>
-            <TextInput value={props.userConnected.userSave.userName.toUpperCase()} style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput value={props.userConnected.userFromBDD.userName.toUpperCase()} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
 
           {/* Numéro de téléphone */}
@@ -198,7 +198,7 @@ function ReservationScreen(props) {
               <TouchableOpacity><Text style={{fontSize: 10, fontStyle:'italic', textDecorationLine: 'underline'}}>Changer de numéro</Text></TouchableOpacity>
             </View>
 
-            <TextInput keyboardType='phone-pad' value={props.userConnected.userSave.userPhone.toString()} style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput keyboardType='phone-pad' value={props.userConnected.userFromBDD.userPhone.toString()} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
         </View>
 
