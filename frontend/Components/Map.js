@@ -60,7 +60,7 @@ function Map() {
       image: restaurantData[i].images[0].uri,
     });
 
-    console.log(listPOI);
+    // console.log(listPOI);
   }
 
   var markerPOI = listPOI.map((POI, i) => {

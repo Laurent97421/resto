@@ -47,7 +47,7 @@ props.searchInfos[1].map((data) => {
   return (
     <View>
       {
-        newArray.map((data) => {
+        newArray.map((data,i) => {
           return (
             <TouchableOpacity
               onPress={() => {toDo(data)}}
@@ -59,7 +59,7 @@ props.searchInfos[1].map((data) => {
                 borderRadius: 8,
                 alignItems: "center",
               }}
-              key={data.id}
+              key={i}
             >
                     <Image
                       source={{uri: data.logo}}
@@ -98,7 +98,7 @@ props.searchInfos[1].map((data) => {
 
                     <IonIcon name="chevron-forward-outline" size={20} />
 
-                  </TouchableOpacity>
+            </TouchableOpacity>
           )
         })
       }
