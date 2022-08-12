@@ -1,95 +1,152 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import RestaurantsData from "../assets/files-JSON/restaurant.json";
-import { connect } from "react-redux";
+
+import RestaurantsData from '../assets/files-JSON/restaurant.json'
+import { connect } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
 
 function RestaurantCard(props) {
   const navigation = useNavigation();
 
   const toDo = (data) => {
     navigation.navigate("Resto");
-    props.onRestoClick(data);
-    // console.log(JSON.stringify(data));
-  };
+    props.onRestoClick(data)
+    // console.log(data)
+  }
+  
   const destinations = props.resultsDirection;
   console.log(destinations);
-
-  // const destinationsData = destinations.map((restaurant) => {
+  
+   // const destinationsData = destinations.map((restaurant) => {
   //   return <Text>{restaurant.distance} m</Text>;
   // });
 
+  var starsGlobalRating = []
+  for (var i=0; i<5; i++) {
+    var color = {};
+    if(i<Math.round(RestaurantsData[0].rating)) {
+      color = '#f1c40f'
+    } else {
+      color = '#F5F5F5'
+    }
+    starsGlobalRating.push(<FontAwesome key = {i} name="star" size={16} color={color} />)
+  }
+
+  // // // // // // // // // // // // // // // // // // // // // // // // // // //$
+  var temporaire = []
+
+  props.searchInfos[1].map((data) => {
+    RestaurantsData.map((dataResto) => {
+      dataResto.features.map((dataFeatures) => {
+          const found = dataFeatures.values.find(element => element == data.element);
+          if(found){
+            temporaire.push({id: dataResto.id, name: dataResto.name, address: dataResto.address, ZIPcode: dataResto.ZIPcode, city: dataResto.city, phoneNumber: dataResto.phoneNumber, rating: dataResto.rating, voteNumber: dataResto.voteNumber, logo: dataResto.logo, images: dataResto.images, menu: dataResto.menu, boissons: dataResto.boissons, features: dataResto.features})
+
+          }
+      })
+    })
+  })
+
+  // Pour enlever les doublons dans le tableau d'objets
+  let newArray = [];
+  let uniqueObject = {};
+  for(let i in temporaire){
+    objName = temporaire[i]['name']
+    uniqueObject[objName] = temporaire[i];
+  }
+
+  for (i in uniqueObject) {
+    newArray.push(uniqueObject[i]);
+  }
+  // // // // // // // // // // // // // // // // // // // // // // // // // // //
   return (
     <View>
-      {RestaurantsData &&
-        // destination &&
-        RestaurantsData.map((data) => {
+      {
+        newArray.map((data,i) => {
           // const dest = destination[index];
           // console.log(dest);
           return (
+            // chaque bouton de resto
             <TouchableOpacity
-              onPress={() => {
-                toDo(data);
-              }}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                backgroundColor: "#D3D3D3",
-                margin: 10,
-                borderRadius: 8,
-                alignItems: "center",
-              }}
+
+              onPress={() => {toDo(data)}}
+              style={styles.touchableOpacity}
               key={data.id}
             >
               <Image
-                source={{ uri: data.logo }}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 50,
-                  overflow: "hidden",
-                  margin: 10,
-                }}
+                source={{uri: data.logo}}
+                style={styles.restoLogo}
               />
-              <View>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: 18,
-                  }}
-                >
+                  
+              {/* Resto infos */}
+              <View style={styles.restoInfosContainer}>
+                <Text style={styles.restoName}>
                   {data.name}
                 </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <View style={{ flexDirection: "row" }}>
-                    <IonIcon name="star-outline" />
-                    <IonIcon name="star-outline" />
-                    <IonIcon name="star-outline" />
-                    <IonIcon name="star-outline" />
-                    <IonIcon name="star-outline" />
+
+                {/* RESTO AVIS */}
+                <View style={styles.starsContainer}>
+                  <View style={styles.stars}>
+                    {starsGlobalRating}
                   </View>
                   <Text>({data.voteNumber})</Text>
                 </View>
               </View>
 
+
+              <Text style={{marginRight: 10}}>à 450m</Text>
+
               <IonIcon name="chevron-forward-outline" size={20} />
+
             </TouchableOpacity>
-          );
-        })}
+          )
+        })
+      }
+
     </View>
   );
 }
 function mapStateToProps(state) {
   return { resultsDirection: state.resultsDirection };
 }
+
+const styles = StyleSheet.create({
+  touchableOpacity: {
+    flexDirection: "row",
+    backgroundColor: "#DEDEDE",
+    marginHorizontal: 10,
+    marginTop: 8,
+    borderRadius: 8,
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 25
+  },
+  restoLogo: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
+  restoInfosContainer: {
+    height: '100%',
+    width: '45%',
+    marginHorizontal: 20,
+  },
+  restoName: {
+    fontWeight: "bold",
+    fontSize: 18
+  },
+  starsContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  stars: {
+    flexDirection: 'row',
+    marginRight: 30,
+  },
+})
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -100,4 +157,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantCard);
+function mapStateToProps(state) {
+  return { searchInfos: state.search }
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )(RestaurantCard);
+

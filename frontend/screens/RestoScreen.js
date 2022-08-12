@@ -1,16 +1,32 @@
 import React from "react";
-import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+
 
 import MyTabs from "../Components/RestoScreen/TabScreen";
 
 /// ATTTENTIOOOONNNNN !!! Rebasculer l'overlay à true dans HomeScreen avant de push
 
 function RestoScreen(props) {
-  
+
+  var starsGlobalRating = []
+  for (var i=0; i<5; i++) {
+    var color = {};
+    if(i<Math.round(props.restoSelected[0].rating)) {
+      color = '#f1c40f'
+    } else {
+      color = '#F5F5F5'
+    }
+    starsGlobalRating.push(<FontAwesome key={i} name="star" size={20} color={color} />)
+  }
+
+  const navigation = useNavigation();
+
   return (
     <View style={{backgroundColor:'white', flex:1}}>
+
         {/* Header */}
         <View style={styles.headerContainer}>
           <View style={styles.imageContainer}>
@@ -27,11 +43,7 @@ function RestoScreen(props) {
         <View style={styles.ratingContainer}>
           <View style={styles.starsContainer}>
             <View style={styles.stars}>
-              <FontAwesome name="star-o" size={20} color="black" />
-              <FontAwesome name="star-o" size={20} color="black" />
-              <FontAwesome name="star-o" size={20} color="black" />
-              <FontAwesome name="star-o" size={20} color="black" />
-              <FontAwesome name="star-o" size={20} color="black" />
+              { starsGlobalRating }
             </View>
             <Text style={styles.nbVote}>({props.restoSelected[0].voteNumber})</Text>
           </View>
@@ -39,14 +51,11 @@ function RestoScreen(props) {
           <Text style={styles.seeAll}>Voir tous les avis</Text>
         </View>
 
-        {/* Buttons */}
+        {/* Button */}
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.touchableOpacity}>
-            <Text style={styles.buttonTitle}>Menu</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.touchableOpacity}>
-            <Text style={styles.buttonTitle}>Boissons</Text>
-          </TouchableOpacity>        
+          <TouchableOpacity style={styles.touchableOpacity} onPress={() =>  navigation.navigate('Reservation')}>
+            <Text style={styles.buttonTitle}>Réserver ce restaurant</Text>
+          </TouchableOpacity>      
         </View>
 
         {/* Tab Navigation */}
@@ -116,15 +125,12 @@ const styles = StyleSheet.create({
   },
   // Buttons
   buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
     marginHorizontal: 16,
     marginVertical: 15,
   },
   touchableOpacity: {
     height: 56,
-    backgroundColor: 'lightgrey',
-    width: 150,
+    backgroundColor: '#FDCF08',
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center'
@@ -132,6 +138,22 @@ const styles = StyleSheet.create({
   buttonTitle: {
     fontSize: 17,
     fontWeight: 'bold'
+  },
+  // Menu overlay
+  menuOverlay: {
+    flex:1,
+    backgroundColor: 'white',
+    marginTop: 200,
+    borderRadius: 20,
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {width: 0, height: -10},
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 });
 

@@ -65,6 +65,7 @@ function Map(props) {
       logo: restaurantData[i].logo,
       image: restaurantData[i].images[0].uri,
     });
+
     listPOI.forEach((item, i) => {
       item.id = i + 1;
     });

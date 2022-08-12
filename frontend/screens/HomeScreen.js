@@ -1,27 +1,22 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { Button, Overlay, Input } from "@rneui/themed";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import DatePicker from "@react-native-community/datetimepicker";
 import Authentification from "../Components/HomeScreen/Auth.overlays";
 import filters from "../assets/files-JSON/filters.json";
 import { acc } from "react-native-reanimated";
 import { connect } from "react-redux";
-// import { IconFill, IconOutline } from "@ant-design/icons-react-native";
-// import { Icon } from "@rneui/themed";
-// import { checkcircleo } from "react-native-vector-icons/AntDesign";
-import Icon from "react-native-vector-icons/AntDesign";
+
+import { AntDesign } from '@expo/vector-icons';
+import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker'
+
+
 
 function HomeScreen(props) {
+
+
+  // SET UP DU CALENDRIER //
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "Janvier",
@@ -64,41 +59,33 @@ function HomeScreen(props) {
     today: "Aujourd'hui",
   };
   LocaleConfig.defaultLocale = "fr";
+  // // // // // // // //
 
   // Pour la recherche du restaurant
   const [searchAddressResto, setSearchAddressResto] = useState("");
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [dateInfos, setDateInfos] = useState();
-  const [timeVisible, setTimeVisible] = useState(false);
-  const [filter, setFilter] = useState([]);
-  // console.log('OHOZHRIOEHROIZHEIORHOIERH')
-
-  // Selection des filtres
+  const [filter, setFilter] = useState([])
+  
+  // Selection des filtres  
   const listFilter = (indice, element) => {
-    const [color, setColor] = useState("lightgrey");
+    const [color, setColor] = useState("#DEDEDE");
     const [active, setActive] = useState(false);
-    const [logoColor, setLogoColor] = useState("black");
+    const [logoColor, setLogoColor] = useState("#BDBDBD");
 
     //  Filtres
     const handleClick = () => {
       setActive(true);
-      setColor("lightblue");
-      setLogoColor("blue");
-      setFilter([...filter, { element: element }]);
-      // console.log(filter[0].element)
-      if (active === true) {
-        setActive(false);
-        setColor("lightgrey");
-        setLogoColor("black");
-        // filter.map((data, i) => {
-        // console.log(data.element)
-        // console.log(data)
-        var allFilter = filter.filter((e) => e.element !== element);
-        setFilter(allFilter);
-        // })
-        // setFilter(filter[0].filter(e => e.element !== element))
-        // moviesWishList.filter(e => e.movieName !== movieName)
-        // setFilter([])
+      setColor("#D4F0F6")
+      setLogoColor("#009ABC")
+      setFilter([...filter, {element: element}])
+      
+      if(active === true){
+        setActive(false)
+        setColor("#DEDEDE")
+        setLogoColor("#BDBDBD")
+        var allFilter = filter.filter(e => e.element !== element)
+        setFilter(allFilter)
       }
     };
 
@@ -124,7 +111,7 @@ function HomeScreen(props) {
       <TouchableOpacity
         key={indice}
         style={{
-          backgroundColor: color,
+          backgroundColor: "#F9F9F9",
           width: 75,
           height: 75,
           justifyContent: "center",
@@ -132,6 +119,8 @@ function HomeScreen(props) {
           borderRadius: 10,
           marginRight: 10,
           marginVertical: 10,
+          borderWidth: 0.5,
+          borderColor: color
         }}
         onPress={() => {
           handleClick();
@@ -139,32 +128,18 @@ function HomeScreen(props) {
       >
         <View
           style={{
-            marginLeft: "70%",
-            marginTop: "-30%",
-            marginBottom: "13%",
-            backgroundColor: "white",
+            position: 'absolute',
+            top: 5,
+            right: 5,
             borderRadius: 90,
           }}
         >
-          <Icon name="checkcircleo" color={logoColor} />
+          <AntDesign name="checkcircle" size={13} color={logoColor} />
         </View>
         <Text style={{ textAlign: "center", fontSize: 12 }}>{element}</Text>
         <View></View>
       </TouchableOpacity>
     );
-  };
-
-  const [timePicker, setTimePicker] = useState(false);
-  const [time, setTime] = useState(new Date(Date.now()));
-
-  const showTimePicker = () => {
-    setTimePicker(true);
-  };
-
-  const onTimeSelected = (event, value) => {
-    setTime(value);
-    setTimePicker(false);
-    setTimeVisible(false);
   };
 
   // const searchResto = async () => {
@@ -181,224 +156,243 @@ function HomeScreen(props) {
   //   });
   // }
 
+
+  // SELECTION DE L'HEURE //
+  const [heureVisible, setHeureVisible] = useState(false);
+
+  const showHour = () => {
+    setHeureVisible(!heureVisible)
+  }
+  const [time, setTime] = useState('');
+  
+
+  const timePicker = ()=> {
+    
+    return (
+      <DatePicker
+      mode="time"
+      minuteInterval={15}
+      onTimeChange={selectedTime => {setTime(selectedTime); showHour()}}
+    />
+    )
+  }
+  // // // // // // // //
+
   return (
-    <ScrollView>
-      <Text h4 style={{ textAlign: "center" }}>
-        Rechercher un restaurant
-      </Text>
+    <View style={{flex:1, paddingTop: 60, backgroundColor: 'white'}}>
+      <Text h4 style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Rechercher un restaurant</Text>
 
       {/* Authentification Overlays */}
-      <Authentification />
+      <Authentification/>
 
       {/* SEARCH INPUTS */}
-      <View style={styles.viewSearch}>
-        <TextInput
-          style={{ margin: 12, borderWidth: 1, width: "30%", borderRadius: 5 }}
-          placeholder="Adresse"
-          onChangeText={(msg) => setSearchAddressResto(msg)}
-          value={searchAddressResto}
+      <View style = {styles.searchInputsContainer}>
+        <TextInput 
+        style = {styles.searchInput}
+        placeholder="Adresse"
+        onChangeText={(msg) => setSearchAddressResto(msg)}
+        value = {searchAddressResto}
         />
 
-        <TextInput
-          onPressIn={() => {
-            console.log("woula");
-            setCalendarVisible(true);
-          }}
-          editable={false}
-          style={{ margin: 12, borderWidth: 1, width: "30%", borderRadius: 5 }}
-          placeholder="Date"
-          onChangeText={(msg) => setSearchAddressResto(msg)}
-          value={dateInfos}
+
+        <TextInput 
+        style = {styles.searchInput}
+        onPressIn={() => {console.log('woula'); setCalendarVisible(true)}}
+        editable = {false}
+        placeholder="Date"
+        onChangeText={(msg) => setSearchAddressResto(msg)}
+        value = {dateInfos}
         />
 
-        {!timePicker && (
-          <TextInput
-            style={{
-              margin: 12,
-              borderWidth: 1,
-              width: "30%",
-              borderRadius: 5,
-            }}
-            onPressIn={() => {
-              console.log("zebi");
-              setTimeVisible();
-              showTimePicker();
-            }}
-            editable={false}
+        <TextInput 
+            style = {styles.searchInput}
+            onPressIn = {() => {showHour()}}
+            editable = {false}
             placeholder="Heure"
             onChangeText={(msg) => setTime(msg)}
-            value={
-              time.getHours().toString() + ":" + time.getMinutes().toString()
-            }
-          />
-        )}
-      </View>
-
-      {/* CALENDAR OVERLAY */}
-      <Overlay isVisible={calendarVisible} overlayStyle={{ width: "90%" }}>
-        <Calendar
-          onDayPress={(day) => {
-            // console.log('Selected day')
-            // console.log(day);
-            setDateInfos(day.dateString);
-            setCalendarVisible(false);
-          }}
-          // onMonthChange={month => {
-          //   console.log('month changed', month);
-          // }}
+            value = {time}
         />
-      </Overlay>
-
-      {/* TIME OVERLAY */}
-      {timePicker && (
-        <Overlay overlayStyle={{ width: "23%" }}>
-          <DateTimePicker
-            value={time}
-            mode={"time"}
-            minuteInterval={15}
-            display={Platform.OS === "ios" ? "default" : "default"}
-            is24hour={false}
-            onChange={onTimeSelected}
-          />
-        </Overlay>
-      )}
-
-      {/* FILTERS */}
-
-      {/* ALIMENTATION FILTERS */}
-      {filters &&
-        filters.map((data) => {
-          if (data.id == 1) {
-            return (
-              // touchable()
-              <View key={data.id}>
-                <View style={styles.filtreContainer}>
-                  {/* HEADER */}
-                  <Text style={styles.title}>{data.categoryName}</Text>
-                  {/* FILTERS */}
-                  <View style={styles.filtreCarre}>
-                    {data.filtres &&
-                      data.filtres.map((alimentation, i) => {
-                        return listFilter(i, alimentation.name);
-                      })}
-                  </View>
-                </View>
-              </View>
-            );
-          }
-        })}
-
-      {/* ALLERGENES */}
-      {filters &&
-        filters.map((data) => {
-          if (data.id == 2) {
-            return (
-              <View key={data.id}>
-                <View style={styles.filtreContainer}>
-                  {/* HEADER */}
-                  <Text style={styles.title}>{data.categoryName}</Text>
-                  {/* FILTERS */}
-                  <View style={styles.filtreCarre}>
-                    {data.filtres &&
-                      data.filtres.map((equipement, i) => {
-                        return listFilter(i, equipement.name);
-                      })}
-                  </View>
-                </View>
-              </View>
-            );
-          }
-        })}
-
-      {/* MOYENS DE PAIEMENT */}
-      {filters &&
-        filters.map((data) => {
-          if (data.id == 3) {
-            return (
-              <View key={data.id}>
-                <View style={styles.filtreContainer}>
-                  {/* HEADER */}
-                  <Text style={styles.title}>{data.categoryName}</Text>
-                  {/* FILTERS */}
-                  <View style={styles.filtreCarre}>
-                    {data.filtres &&
-                      data.filtres.map((equipement, i) => {
-                        return listFilter(i, equipement.name);
-                      })}
-                  </View>
-                </View>
-              </View>
-            );
-          }
-        })}
-
-      {/* EQUIPEMENTS FILTERS */}
-      {filters &&
-        filters.map((data) => {
-          if (data.id == 4) {
-            return (
-              <View key={data.id}>
-                <View style={styles.filtreContainer}>
-                  {/* HEADER */}
-                  <Text style={styles.title}>{data.categoryName}</Text>
-                  {/* FILTERS */}
-                  <View style={styles.filtreCarre}>
-                    {data.filtres &&
-                      data.filtres.map((equipement, i) => {
-                        return listFilter(i, equipement.name);
-                      })}
-                  </View>
-                </View>
-              </View>
-            );
-          }
-        })}
-
-      {/* ACCESS FILTERS */}
-      {filters &&
-        filters.map((data) => {
-          if (data.id == 5) {
-            return (
-              <View key={data.id}>
-                <View style={styles.filtreContainer}>
-                  {/* HEADER */}
-                  <Text style={styles.title}>{data.categoryName}</Text>
-                  {/* FILTERS */}
-                  <View style={styles.filtreCarre}>
-                    {data.filtres &&
-                      data.filtres.map((accessibilite, i) => {
-                        return listFilter(i, accessibilite.name);
-                      })}
-                  </View>
-                </View>
-              </View>
-            );
-          }
-        })}
-
-      {/* BUTTON SEARCH */}
-      <Button
-        style={{ justifyContent: "flex-end" }}
-        title="Rechercher un restaurant"
-        onPress={() => {
-          props.navigation.navigate("Result");
-          // searchResto();
-          props.saveSearchResto(
-            searchAddressResto,
-            dateInfos,
-            time.getHours() + ":" + time.getMinutes(),
-            filter
-          );
+      </View>
+        
+      {/* CALENDAR OVERLAY */}
+      <Overlay isVisible={calendarVisible} overlayStyle={{width: '90%'}}>
+        <Calendar
+         onDayPress={day => {
+          setDateInfos(day.dateString);
+          setCalendarVisible(false);
         }}
       />
+    </Overlay>
+
+        {/* TIME OVERLAY */}
+      <Overlay isVisible = {heureVisible} onBackdropPress = {showHour} overlayStyle = {{width: '90%', height: 'auto', borderRadius: 20}} >
+        {timePicker()}
+      </Overlay>
+
+
+    <ScrollView>
+    {/* FILTERS */}
+
+      {/* ALIMENTATION FILTERS */}
+      {
+        filters && filters.map((data) => {
+
+          if(data.id == 1){
+            return(
+              // touchable()
+              <View key = {data.id}>
+              <View style={styles.filtreContainer}>
+                {/* HEADER */}
+                <Text style={styles.title}>{data.categoryName}</Text>
+                {/* FILTERS */}
+                <View style={styles.filtreCarre}>
+                  {data.filtres && data.filtres.map((alimentation, i) => {
+                    return(
+                      listFilter(i, alimentation.name)
+                    )
+                  })}
+                </View>
+              </View>
+            </View>
+            )
+          }
+        })
+      }
+
+      {/* ALLERGENES */}
+      {
+        filters && filters.map((data) => {
+          if(data.id == 2) {
+            return(
+            <View key = {data.id}>
+              <View style={styles.filtreContainer}>
+                {/* HEADER */}
+                <Text style={styles.title}>{data.categoryName}</Text>
+                {/* FILTERS */}
+                <View style={styles.filtreCarre}>
+                  {data.filtres && data.filtres.map((equipement, i) => {
+
+                    return(
+                      listFilter(i, equipement.name)
+                    )
+                  })}
+                </View>
+              </View>
+            </View>
+            )
+          }
+        })
+      }
+
+      {/* MOYENS DE PAIEMENT */}
+      {
+        filters && filters.map((data) => {
+          if(data.id == 3) {
+            return(
+            <View key = {data.id}>
+              <View style={styles.filtreContainer}>
+                {/* HEADER */}
+                <Text style={styles.title}>{data.categoryName}</Text>
+                {/* FILTERS */}
+                <View style={styles.filtreCarre}>
+                  {data.filtres && data.filtres.map((equipement, i) => {
+
+                    return(
+                      listFilter(i, equipement.name)
+                    )
+                  })}
+                </View>
+              </View>
+            </View>
+            )
+          }
+        })
+      }
+
+      {/* EQUIPEMENTS FILTERS */}
+      {
+        filters && filters.map((data) => {
+          if(data.id == 4) {
+            return(
+            <View key = {data.id}>
+              <View style={styles.filtreContainer}>
+                {/* HEADER */}
+                <Text style={styles.title}>{data.categoryName}</Text>
+                {/* FILTERS */}
+                <View style={styles.filtreCarre}>
+                  {data.filtres && data.filtres.map((equipement, i) => {
+
+                    return(
+                      listFilter(i, equipement.name)
+                      
+                    )
+                  })}
+                </View>
+              </View>
+            </View>
+            )
+          }
+        })
+      }
+
+      {/* ACCESS FILTERS */}
+      {
+        filters && filters.map((data) => {
+          if(data.id == 5){
+            return(
+              <View key = {data.id}>
+                <View style={styles.filtreContainer}>
+                  {/* HEADER */}
+                  <Text style={styles.title}>{data.categoryName}</Text>
+                  {/* FILTERS */}
+                  <View style={styles.filtreCarre}>
+
+                    {data.filtres && data.filtres.map((accessibilite, i) => {
+                      return(
+                        listFilter(i, accessibilite.name)
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
+              )
+          }
+        })
+      }
     </ScrollView>
+
+    {/* BUTTON SEARCH */}
+    <Button
+      buttonStyle={styles.buttonSearch}
+      titleStyle={{color:'black'}}
+      title="Rechercher un restaurant"
+      onPress={() => {
+        props.navigation.navigate("Result");
+        // searchResto();
+        props.saveSearchResto(searchAddressResto, dateInfos, time, filter)
+
+      }}
+    />
+
+  </View>
+
   );
 }
 
 const styles = StyleSheet.create({
-  viewSearch: {
+  searchInputsContainer: {
     flexDirection: "row",
-    width: "90%",
+    marginHorizontal: 16,
+    marginVertical: 16,
+    justifyContent: 'space-between'
+  },
+  searchInput: {
+    borderWidth: 0.5,
+    borderColor: 'grey',
+    height: 44,
+    width: '30%',
+    borderRadius: 20,
+    paddingLeft: 10
   },
   filtreContainer: {
     flexDirection: "column",
@@ -406,24 +400,30 @@ const styles = StyleSheet.create({
   },
   title: {
     marginHorizontal: 16,
-    marginBottom: 10,
+    marginBottom: 3,
     fontWeight: "bold",
+    fontSize: 16
   },
   filtreCarre: {
     flexDirection: "row",
     marginHorizontal: 16,
-    // justifyContent: "space-between",
     alignItems: "center",
     flexWrap: "wrap",
   },
   filtre: {
-    backgroundColor: "lightgrey",
     width: 70,
     height: 70,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
   },
+  buttonSearch: {
+    backgroundColor: '#FDCF08',
+    marginHorizontal: 16,
+    height: 44,
+    borderRadius: 20,
+    marginVertical: 16
+  }
 });
 
 function mapDispatchToProps(dispatch) {

@@ -146,7 +146,7 @@
       {
         "id": 2,
         "property": "Allergènes",
-        "values":["Gluten", "Crustacés", "Oeufs"]
+        "values":["Gluten", "Crustacés", "Oeufs", "Arachides", "Lait", "Céréales"]
       },
       {
         "id": 3,
@@ -634,7 +634,7 @@
       {
         "id": 1,
         "property": "Alimentation",
-        "values":["Veggie"]
+        "values":["Veggie", "Hallal"]
       },
       {
         "id": 2,
