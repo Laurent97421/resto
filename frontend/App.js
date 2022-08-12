@@ -23,10 +23,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import token from "./reducers/token";
 import restoSelected from "./reducers/resto";
 import search from "./reducers/search";
+import resultsDirection from "./reducers/resultsDest";
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']);
 
-const reducer = combineReducers({ token, restoSelected, search });
+const reducer = combineReducers({
+  token,
+  restoSelected,
+  search,
+  resultsDirection,
+});
 const store = configureStore({ reducer });
 
 const Stack = createStackNavigator();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -8,8 +8,8 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import { Button } from "@rneui/themed";
-import { SearchIcon, AdjustmentsIcon } from "react-native-heroicons/outline";
+// import { Button } from "@rneui/themed";
+// import { SearchIcon, AdjustmentsIcon } from "react-native-heroicons/outline";
 
 import Map from "../Components/Map";
 
@@ -18,7 +18,7 @@ import RestaurantCard from "../Components/RestaurantCard";
 // import { GooglePlacesAutoComplete } from "react-native-google-places-autocomplete";
 // import { GOOGLE_MAPS_APIKEY } from "@env";
 
-export default function ResultScreen() {
+export default function ResultScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       {/* <View>
@@ -51,14 +51,14 @@ export default function ResultScreen() {
             textAlign: "center",
             fontWeight: "bold",
             fontSize: 18,
-            paddingTop: 20,
+            padding: 15,
           }}
         >
           Liste des restaurants disponible
         </Text>
       </View>
 
-      <ScrollView style={{ height: "15%" }}>
+      <ScrollView style={{ height: "0%" }}>
         <RestaurantCard />
       </ScrollView>
     </SafeAreaView>
@@ -79,9 +79,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    // paddingTop: 20,
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   // outsideSearch: {
   //   flexDirection: "row",
@@ -99,6 +96,5 @@ const styles = StyleSheet.create({
   // },
   map: {
     flex: 1,
-    // margin: 4,
   },
 });
