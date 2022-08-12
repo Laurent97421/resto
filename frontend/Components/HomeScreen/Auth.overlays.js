@@ -50,6 +50,7 @@ const closeLogin = () => {
         if(body.result === true){
             props.saveUser(body);
             setVisibleOverlaySub(false);
+            // console.log(body)
         }
     };
 
