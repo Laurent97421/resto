@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+
 import RestaurantsData from '../assets/files-JSON/restaurant.json'
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
-
 function RestaurantCard(props) {
-
   const navigation = useNavigation();
 
   const toDo = (data) => {
@@ -16,6 +15,13 @@ function RestaurantCard(props) {
     props.onRestoClick(data)
     // console.log(data)
   }
+  
+  const destinations = props.resultsDirection;
+  console.log(destinations);
+  
+   // const destinationsData = destinations.map((restaurant) => {
+  //   return <Text>{restaurant.distance} m</Text>;
+  // });
 
   var starsGlobalRating = []
   for (var i=0; i<5; i++) {
@@ -59,9 +65,12 @@ function RestaurantCard(props) {
     <View>
       {
         newArray.map((data,i) => {
+          // const dest = destination[index];
+          // console.log(dest);
           return (
             // chaque bouton de resto
             <TouchableOpacity
+
               onPress={() => {toDo(data)}}
               style={styles.touchableOpacity}
               key={data.id}
@@ -82,10 +91,10 @@ function RestaurantCard(props) {
                   <View style={styles.stars}>
                     {starsGlobalRating}
                   </View>
-
                   <Text>({data.voteNumber})</Text>
                 </View>
               </View>
+
 
               <Text style={{marginRight: 10}}>à 450m</Text>
 
@@ -95,9 +104,12 @@ function RestaurantCard(props) {
           )
         })
       }
+
     </View>
-    
   );
+}
+function mapStateToProps(state) {
+  return { resultsDirection: state.resultsDirection };
 }
 
 const styles = StyleSheet.create({
@@ -138,18 +150,16 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onRestoClick: function(restoSelected) {
-      dispatch ( {type: 'addRestoSelected', restoSelected: restoSelected})
+    onRestoClick: function (restoSelected) {
+      dispatch({ type: "addRestoSelected", restoSelected: restoSelected });
       // console.log(JSON.stringify(restoSelected))
-    }
-  }
+    },
+  };
 }
 
 function mapStateToProps(state) {
   return { searchInfos: state.search }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RestaurantCard);
+export default connect( mapStateToProps, mapDispatchToProps )(RestaurantCard);
+
