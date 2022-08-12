@@ -49,7 +49,7 @@ router.post("/signup", async function (req, res, next) {
       token = userSave.token;
     }
   }
-  res.json({ result, userSave, token, error });
+  res.json({ result, userFromBDD: userSave, token, error });
 });
 
 /* POST Sign-in */
@@ -74,7 +74,7 @@ router.post("/sign-in", async function (req, res, next) {
       error.push("Information(s) incorrecte(s)");
     }
   }
-  res.json({result, userFromFrontExist, error})
+  res.json({result, userFromBDD: userFromFrontExist, error})
   // res.json({})
 })
 
