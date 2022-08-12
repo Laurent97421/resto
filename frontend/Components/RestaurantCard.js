@@ -14,7 +14,7 @@ function RestaurantCard(props) {
   const toDo = (data) => {
     navigation.navigate("Resto");
     props.onRestoClick(data)
-    console.log(data)
+    // console.log(data)
   }
 
   var starsGlobalRating = []
@@ -25,7 +25,7 @@ function RestaurantCard(props) {
     } else {
       color = '#F5F5F5'
     }
-    starsGlobalRating.push(<FontAwesome name="star" size={16} color={color} />)
+    starsGlobalRating.push(<FontAwesome key = {i} name="star" size={16} color={color} />)
   }
 
   // // // // // // // // // // // // // // // // // // // // // // // // // // //$

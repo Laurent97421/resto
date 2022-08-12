@@ -322,7 +322,6 @@ const closeLogin = () => {
             
             <Button
                 title="Valider"
-                containerStyle={{}}
                 buttonStyle={{backgroundColor: '#FDCF08'}}
                 titleStyle={{color: 'black'}}
                 containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}

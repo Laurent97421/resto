@@ -171,7 +171,7 @@ function HomeScreen(props) {
     return (
       <DatePicker
       mode="time"
-      minuteInterval={3}
+      minuteInterval={15}
       onTimeChange={selectedTime => {setTime(selectedTime); showHour()}}
     />
     )

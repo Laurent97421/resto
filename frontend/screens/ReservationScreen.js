@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 function ReservationScreen(props) {
 
-  console.log(typeof(formatDate(new Date(props.userSearch[0].date))))
+  // console.log(typeof(formatDate(new Date(props.userSearch[0].date))))
 
   // Pour naviguer vers un screen du Bottom Tab Nav à partir d'un bouton
   const jumpToAction = TabActions.jumpTo("Mes réservations");
@@ -74,8 +74,8 @@ function ReservationScreen(props) {
       });
       // const responseText = await saveResa.text();
       const responseJson = await saveResa.json();
-      console.log('Voici la réservation sauvegardé')
-      console.log(responseJson)
+      // console.log('Voici la réservation sauvegardé')
+      // console.log(responseJson)
   };
 
   return (
