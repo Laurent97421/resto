@@ -11,8 +11,6 @@ import { connect } from "react-redux";
 import { AntDesign } from '@expo/vector-icons';
 import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker'
 
-
-
 function HomeScreen(props) {
 
 
@@ -180,11 +178,12 @@ function HomeScreen(props) {
 
   return (
     <View style={{flex:1, paddingTop: 60, backgroundColor: 'white'}}>
+
+              {/* Authentification Overlays */}
+              <Authentification/>
+
+      {/* HOMESCREEN */}
       <Text h4 style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Rechercher un restaurant</Text>
-
-      {/* Authentification Overlays */}
-      <Authentification/>
-
       {/* SEARCH INPUTS */}
       <View style = {styles.searchInputsContainer}>
         <TextInput 
@@ -375,7 +374,6 @@ function HomeScreen(props) {
     />
 
   </View>
-
   );
 }
 
