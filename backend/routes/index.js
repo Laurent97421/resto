@@ -125,8 +125,6 @@ router.post("/account-screen", async function (req, res, next) {
   res.json({userFromBDD});
 });
 
-module.exports = router;
-
 /* GET Account Screen - Se déconnecter */
 
 /* GET Account Screen Overlay - Modifier mes informations */
@@ -159,3 +157,5 @@ router.post('/reservation', async function (req, res, next) {
 
   res.json({userConnected});
 });
+
+module.exports = router;
