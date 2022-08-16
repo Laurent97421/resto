@@ -7,12 +7,33 @@ import Authentification from "../Components/HomeScreen/Auth.overlays";
 import filters from "../assets/files-JSON/filters.json";
 import { acc } from "react-native-reanimated";
 import { connect } from "react-redux";
-
+import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker'
+import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker';
+import * as Location from 'expo-location';
 
 function HomeScreen(props) {
 
+  // GEOLOCALISATION (INPUT ADRESSE)
+  const [currentLatitude, setCurrentLatitude] = useState(0); // Geolocalisation - Latitude
+  const [currentLongitude, setCurrentLongitude] = useState(0); // Geolocalisation - Longitude
+
+  const handleLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync(); // Pour demander l'autorisation de géolocaliser l'utilisateur
+
+    if (status === "granted") {
+      let location = await Location.watchPositionAsync({ distanceInterval: 2 }, (location) => {
+        setCurrentLatitude(location.coords.latitude);
+        setCurrentLongitude(location.coords.longitude);
+        setSearchAddressResto('Ma Position')
+        console.log(location);
+      });
+      console.log(currentLatitude, currentLongitude)
+    } else {
+      console.log("Permission denied");
+      return;
+    }
+  }
 
   // SET UP DU CALENDRIER //
   LocaleConfig.locales["fr"] = {
@@ -74,8 +95,8 @@ function HomeScreen(props) {
     //  Filtres
     const handleClick = () => {
       setActive(true);
-      setColor("#D4F0F6")
-      setLogoColor("#009ABC")
+      setColor("#005249")
+      setLogoColor("#005249")
       setFilter([...filter, {element: element}])
       
       if(active === true){
@@ -162,7 +183,6 @@ function HomeScreen(props) {
     setHeureVisible(!heureVisible)
   }
   const [time, setTime] = useState('');
-  
 
   const timePicker = ()=> {
     
@@ -184,33 +204,48 @@ function HomeScreen(props) {
 
       {/* HOMESCREEN */}
       <Text h4 style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Rechercher un restaurant</Text>
+      
       {/* SEARCH INPUTS */}
-      <View style = {styles.searchInputsContainer}>
-        <TextInput 
-        style = {styles.searchInput}
-        placeholder="Adresse"
-        onChangeText={(msg) => setSearchAddressResto(msg)}
-        value = {searchAddressResto}
-        />
+      <View style={styles.searchInputsContainer}>
+          <View style={{justifyContent: 'center'}}>
+            <TextInput 
+            style = {styles.addressInput}
+            placeholder="Adresse"
+            onChangeText={(msg) => setSearchAddressResto(msg)}
+            value = {searchAddressResto}
+            />
+            <View style={{position: 'absolute', right: 10}}>
+              <FontAwesome5 name="location-arrow" size={18} color="#005249" onPress={() => handleLocation()}/>
+            </View>
+          </View>
 
-
-        <TextInput 
-        style = {styles.searchInput}
-        onPressIn={() => {console.log('woula'); setCalendarVisible(true)}}
-        editable = {false}
-        placeholder="Date"
-        onChangeText={(msg) => setSearchAddressResto(msg)}
-        value = {dateInfos}
-        />
-
-        <TextInput 
-            style = {styles.searchInput}
-            onPressIn = {() => {showHour()}}
+        <View style={styles.dateTimeInputContainer}>
+          <View style={styles.dateTimeInput}>
+            <TextInput 
+            onPressIn={() => {console.log('woula'); setCalendarVisible(true)}}
             editable = {false}
-            placeholder="Heure"
-            onChangeText={(msg) => setTime(msg)}
-            value = {time}
-        />
+            placeholder="Date"
+            onChangeText={(msg) => setSearchAddressResto(msg)}
+            value = {dateInfos}
+            />
+            <View style={{position: 'absolute', right: 10}}>
+              <FontAwesome5 name="calendar-day" size={18} color="#005249"/>
+            </View>
+          </View>
+
+          <View style={styles.dateTimeInput}>
+            <TextInput 
+                onPressIn = {() => {showHour()}}
+                editable = {false}
+                placeholder="Heure"
+                onChangeText={(msg) => setTime(msg)}
+                value = {time}
+            />
+            <View style={{position: 'absolute', right: 10}}>
+              <FontAwesome5 name="clock" size={18} color="#005249"/>
+            </View>
+          </View>
+        </View>
       </View>
         
       {/* CALENDAR OVERLAY */}
@@ -379,18 +414,30 @@ function HomeScreen(props) {
 
 const styles = StyleSheet.create({
   searchInputsContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     marginHorizontal: 16,
     marginVertical: 16,
-    justifyContent: 'space-between'
   },
-  searchInput: {
-    borderWidth: 0.5,
+  dateTimeInputContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: 'space-between',
+  },
+  addressInput: {
+    borderWidth: 0.2,
     borderColor: 'grey',
-    height: 44,
-    width: '30%',
+    height: 40,
     borderRadius: 20,
     paddingLeft: 10
+  },
+  dateTimeInput: {
+    borderWidth: 0.2,
+    borderColor: 'grey',
+    height: 40,
+    width: '48%',
+    borderRadius: 20,
+    paddingLeft: 10,
+    justifyContent: 'center'
   },
   filtreContainer: {
     flexDirection: "column",
