@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, ActivityIndicator, KeyboardAvoidingView } from "react-native";
 import { Button, Overlay } from "@rneui/themed";
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 import { Icon } from '@rneui/themed'
 import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 function Authentification(props) {
@@ -170,6 +171,7 @@ useEffect(() => {
       
         {/* SUBSCRIBE */}
         <Overlay isVisible={visibleOverlaySub} overlayStyle={{width: '90%', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30}}>
+        <KeyboardAwareScrollView>
             {/* input Last Name */}
             <FloatingLabelInput
                 onChangeText={(msg) => setSignupLastName(msg)}
@@ -268,11 +270,11 @@ useEffect(() => {
                     SE CONNECTER
                 </Text>
             </TouchableOpacity>
+        </KeyboardAwareScrollView>
         </Overlay>
 
         {/* LOGIN */}
         <Overlay isVisible={visibleOverlayLog} overlayStyle={{ width: "90%", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30 }}>
-            
             {/* Flèche retour */}
             <AntDesign name="arrowleft" size={24} color="black" onPress={() => {setVisibleOverlayLog(false); setVisibleOverlaySub(true)}}/>
 
@@ -328,7 +330,7 @@ useEffect(() => {
 
         {/* FORGET PASSWORD */}
         <Overlay isVisible={visibleOverlayForget} overlayStyle={{ width: "90%", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30 }}>
-
+        <KeyboardAwareScrollView>
             {/* Flèche retour */}
             <AntDesign name="arrowleft" size={24} color="black" onPress={() => {setVisibleOverlayForget(false); setVisibleOverlayLog(true)}}/>
 
@@ -379,7 +381,7 @@ useEffect(() => {
                 containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}
                 onPress={() => setVisibleOverlayForget(false)}
             />
-
+        </KeyboardAwareScrollView>
         </Overlay>
 
     </View>
