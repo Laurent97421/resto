@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-
 import RestaurantsData from '../assets/files-JSON/restaurant.json'
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 
 function RestaurantCard(props) {
+
   const navigation = useNavigation();
 
   const toDo = (data) => {
@@ -70,7 +70,6 @@ function RestaurantCard(props) {
           return (
             // chaque bouton de resto
             <TouchableOpacity
-
               onPress={() => {toDo(data)}}
               style={styles.touchableOpacity}
               key={data.id}
@@ -78,9 +77,10 @@ function RestaurantCard(props) {
               <Image
                 source={{uri: data.logo}}
                 style={styles.restoLogo}
+                resizeMode='stretch'
               />
                   
-              {/* Resto infos */}
+              {/* RESTO INFOS */}
               <View style={styles.restoInfosContainer}>
                 <Text style={styles.restoName}>
                   {data.name}
@@ -96,9 +96,9 @@ function RestaurantCard(props) {
               </View>
 
 
-              <Text style={{marginRight: 10}}>à 450m</Text>
+              {/* <Text style={{marginRight: 10}}>à 450m</Text> */}
 
-              <IonIcon name="chevron-forward-outline" size={20} />
+              <IonIcon name="chevron-forward-outline" size={20} style={{marginRight: 10}}/>
 
             </TouchableOpacity>
           )
@@ -108,13 +108,11 @@ function RestaurantCard(props) {
     </View>
   );
 }
-function mapStateToProps(state) {
-  return { resultsDirection: state.resultsDirection };
-}
 
 const styles = StyleSheet.create({
   touchableOpacity: {
     flexDirection: "row",
+    justifyContent: 'space-between',
     backgroundColor: "#DEDEDE",
     marginHorizontal: 10,
     marginTop: 8,
@@ -127,8 +125,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 50,
-    resizeMode: 'scale',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginLeft: 10
   },
   restoInfosContainer: {
     height: '100%',
@@ -160,8 +158,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { searchInfos: state.search }
+  return { searchInfos: state.search, resultsDirection: state.resultsDirection }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )(RestaurantCard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RestaurantCard);
 

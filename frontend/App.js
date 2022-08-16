@@ -26,7 +26,7 @@ import resultsDirection from "./reducers/resultsDest";
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']);
 
-const reducer = combineReducers({ token, restoSelected, search, resultsDirection });
+const reducer = combineReducers({ user, restoSelected, search, resultsDirection });
 
 const store = configureStore({ reducer });
 

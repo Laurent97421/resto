@@ -6,7 +6,7 @@ import restaurantData from "../assets/files-JSON/restaurant.json";
 import Icon from "react-native-vector-icons/Ionicons";
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_APIKEY } from "@env";
-
+import IonIcon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 import resultsDirection from "../reducers/resultsDest";
 
@@ -75,32 +75,23 @@ function Map(props) {
     return (
       <Marker
         key={i}
-        // pinColor="hotpink"
         coordinate={{
           latitude: POI.restLatitude,
           longitude: POI.restLongitude,
         }}
       >
-        <Icon name="restaurant" color="hotpink" size={18} />
+        <Icon name="restaurant" color="#005249" size={16} />
+
         <Callout tooltip>
           <View style={styles.bubble}>
-            <Text style={{ flexDirection: "column" }}>
-              <Text style={styles.name}>
-                {POI.name}
-                {/* <Text style={styles.name}>{POI.address}</Text> */}
-              </Text>
-              <Text style={styles.name}>
-                {/* <Text>{POI.address}</Text> */}
-              </Text>
-
-              <Image
-                style={styles.image}
-                resizeMode="cover"
-                source={{ uri: POI.image }}
-              />
+            <Image style={styles.restoLogo} source={{ uri: POI.logo }} resizeMode='stretch'/>
+            <Text style={styles.restoName}>
+              {POI.name}
             </Text>
+            <IonIcon name="chevron-forward-outline" size={20} />
           </View>
         </Callout>
+
       </Marker>
     );
   });
@@ -136,70 +127,77 @@ function Map(props) {
   });
 
   return (
-    <MapView
-      ref={mapRef}
-      showsUserLocation
-      style={styles.map}
-      initialRegion={{
-        latitude: 44.836151,
-        longitude: -0.580816,
-        latitudeDelta: latitude_delta,
-        longitudeDelta: longitude_delta,
-      }}
-    >
-      {/* Notre position perso */}
-      <Marker
-        key={"currentPos"}
-        pinColor="green"
-        title="Hello"
-        description="I'm here"
-        coordinate={{
-          latitude: currentLatitude,
-          longitude: currentLongitude,
+    <View style={{height: 160}}>
+      <MapView
+        ref={mapRef}
+        showsUserLocation
+        style={{flex:1}}
+        initialRegion={{
+          latitude: 44.836151,
+          longitude: -0.580816,
+          latitudeDelta: latitude_delta,
+          longitudeDelta: longitude_delta,
         }}
-      />
-      {markerPOI}
-      {directionRest}
-      {/* /* <MapViewDirections
-        origin={origin}
-        destination={{
-          latitude: 45,
-          longitude: -0.5,
-        }}
-        apikey={GOOGLE_MAPS_APIKEY}
-        strokeWidth={3}
-        strokeColor="red"
-        onReady={useCallback((results) => {
-          const resultsDir = [];
-          resultsDir.push({
-            distance: results.distance,
-            duration: results.duration,
-          });
-          resultsDir.forEach((item, i) => {
-            item.id = i + 1;
-            console.log(resultsDir);
-          });
-        }, [])} */}
-      {/* /> */}
-    </MapView>
+      >
+        {/* Notre position perso */}
+        <Marker
+          key={"currentPos"}
+          pinColor="green"
+          title="Hello"
+          description="I'm here"
+          coordinate={{
+            latitude: currentLatitude,
+            longitude: currentLongitude,
+          }}
+        />
+        {markerPOI}
+        {directionRest}
+        {/* /* <MapViewDirections
+          origin={origin}
+          destination={{
+            latitude: 45,
+            longitude: -0.5,
+          }}
+          apikey={GOOGLE_MAPS_APIKEY}
+          strokeWidth={3}
+          strokeColor="red"
+          onReady={useCallback((results) => {
+            const resultsDir = [];
+            resultsDir.push({
+              distance: results.distance,
+              duration: results.duration,
+            });
+            resultsDir.forEach((item, i) => {
+              item.id = i + 1;
+              console.log(resultsDir);
+            });
+          }, [])} */}
+        {/* /> */}
+      </MapView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-    flex: 1,
-  },
   bubble: {
     flexDirection: "row",
-    alignSelf: "flex-start",
-    backgroundColor: "#fff",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: "white",
     borderColor: "#ccc",
     borderRadius: 6,
     borderWidth: 0.5,
     padding: 15,
-    width: 150,
+    width: 200,
+  },
+  restoName: {
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  restoLogo: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
   },
   arrow: {
     backgroundColor: "transparent",
@@ -217,16 +215,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: -0.5,
   },
-  name: {
-    fontSize: 16,
-  },
-  address: {
-    fontSize: 12,
-  },
-  image: {
-    width: 120,
-    height: 80,
-  },
+  
 });
 
 // function mapDispatchToProps(dispatch) {

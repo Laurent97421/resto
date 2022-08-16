@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex:1,
-    resizeMode: 'scale',
+    resizeMode: 'stretch',
     borderRadius: 40,
   },
   restoInfosContainer: {

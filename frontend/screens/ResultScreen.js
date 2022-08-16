@@ -1,50 +1,19 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  TextInput,
-  Image,
-} from "react-native";
+import { StyleSheet, View, Text, ScrollView, SafeAreaView, TextInput, Image } from "react-native";
 // import { Button } from "@rneui/themed";
 // import { SearchIcon, AdjustmentsIcon } from "react-native-heroicons/outline";
 
 import { connect } from "react-redux";
-
 import Map from "../Components/Map";
-
 import RestaurantCard from "../Components/RestaurantCard";
 
 // import { GooglePlacesAutoComplete } from "react-native-google-places-autocomplete";
 // import { GOOGLE_MAPS_APIKEY } from "@env";
 
-
 export default function ResultScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View>
-        <Text
-          h4
-          style={{ textAlign: "center", fontWeight: "bold", fontSize: 20 }}
-        >
-          Restaurants disponibles
-        </Text>
-      </View> */}
-
-      {/* <View style={styles.outsideSearch}>
-        <View style={styles.searchBox}>
-          <SearchIcon color="#A0A0A0" size="20" />
-          <TextInput
-            style={{ textAlign: "center", fontWeight: "bold", width: 250 }}
-            placeholder="Adresse ou la position"
-            keyboardType="default"
-          />
-        </View>
-        <AdjustmentsIcon color="#A0A0A0" />
-      </View> */}
 
       <Map />
 
@@ -83,23 +52,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-  },
-  // outsideSearch: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   margin: 4,
-  //   padding: 4,
-  // },
-  // searchBox: {
-  //   flex: 1,
-  //   flexDirection: "row",
-  //   backgroundColor: "#D3D3D3",
-  //   padding: 10,
-  //   textAlign: "center",
-  //   alignItems: "center",
-  // },
-  map: {
-    flex: 1,
   },
 });
 
