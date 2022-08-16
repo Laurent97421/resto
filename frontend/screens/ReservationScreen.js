@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, ScrollView,  } from "react-native";
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import { Overlay } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from "react-redux";
 import { TabActions } from '@react-navigation/native';
 import { useNavigation } from "@react-navigation/native";
-
-// installer -> npm i react-native-keyboard-aware-scroll-view --save
-// importer -> import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Calendar } from 'react-native-calendars';
+import DatePicker from 'react-native-modern-datepicker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { AntDesign } from '@expo/vector-icons';
 
 
 function ReservationScreen(props) {
-
-  // console.log(typeof(formatDate(new Date(props.userSearch[0].date))))
 
   // Pour naviguer vers un screen du Bottom Tab Nav à partir d'un bouton
   const jumpToAction = TabActions.jumpTo("Mes réservations");
@@ -21,6 +21,10 @@ function ReservationScreen(props) {
   const [counterAdults, setCounterAdults] = useState(0);
   const [counterChildren, setCounterChildren] = useState(0);
   const [counterBabies, setCounterBabies] = useState(0);
+  const [date, setDate] = useState(props.userSearch[0].date);
+  const [hour, setHour] = useState(props.userSearch[0].heure);
+  const [name, setName] = useState(props.userConnected.userFromBDD.userName.toUpperCase());
+  const [phone, setPhone] = useState(props.userConnected.userFromBDD.userPhone);
 
   // Fonctions pour formatter la date au format local  
   function padTo2Digits(num) {
@@ -33,6 +37,20 @@ function ReservationScreen(props) {
       padTo2Digits(date.getMonth() + 1),
       date.getFullYear(),
     ].join('/');
+  }
+
+  // DATE & TIME OVERLAYS
+  const [calendarVisible, setCalendarVisible] = useState(false);
+  const [hourVisible, setHourVisible] = useState(false);
+
+  const timePicker = ()=> {
+    return (
+      <DatePicker
+        mode="time"
+        minuteInterval={15}
+        onTimeChange={selectedTime => {setHour(selectedTime); setHourVisible(false)}}
+      />
+    )
   }
 
   // Fonctions pour que le compteur convives ne soit pas < 0
@@ -60,7 +78,7 @@ function ReservationScreen(props) {
     }
   }
 
-  // SAVE RESERVATION IN BDD
+//// SAVE RESERVATION IN BDD
   // let privateAdressIP = "172.20.10.8"; // Laurent
   let privateAdressIP = "172.20.10.4"; // Pauline
 
@@ -70,16 +88,51 @@ function ReservationScreen(props) {
       const saveResa = await fetch("http://"+ privateAdressIP +":3000/reservation", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `restoName=${props.restoSelected[0].name}&restoAddress=${props.restoSelected[0].address}&restoZIPCode=${props.restoSelected[0].ZIPcode}&restoCity=${props.restoSelected[0].city}&restoPhone=${props.restoSelected[0].phoneNumber}&date=${formatDate(new Date(props.userSearch[0].date))}&hour=${props.userSearch[0].heure}&numberOfPeople=${counterAdults+counterChildren+counterBabies}&resaName=${props.userConnected.userFromBDD.userName.toUpperCase()}&resaPhone=${props.userConnected.userFromBDD.userPhone}&status=${'En attente...'}&tokenFromRedux=${props.userConnected.userFromBDD.token}`,
+          body: `restoName=${props.restoSelected[0].name}&restoAddress=${props.restoSelected[0].address}&restoZIPCode=${props.restoSelected[0].ZIPcode}&restoCity=${props.restoSelected[0].city}&restoPhone=${props.restoSelected[0].phoneNumber}&date=${date}&hour=${hour}&numberOfPeople=${counterAdults+counterChildren+counterBabies}&resaName=${name}&resaPhone=${parseInt(phone)}&status=${'En attente...'}&tokenFromRedux=${props.userConnected.userFromBDD.token}`,
       });
-      // const responseText = await saveResa.text();
       const responseJson = await saveResa.json();
       // console.log('Voici la réservation sauvegardé')
       // console.log(responseJson)
   };
 
+  // Vérification du numéro de téléphone avant sauvegarde en BDD
+  const [emptyInput, setEmptyInput] = useState("")
+  const [invalidPhone, setInvalidPhone] = useState("");
+
+  const handleReservation = () => {
+    if (date == "" || hour == "" || name == "" || phone == "") {
+      setEmptyInput('Un ou plusieurs champ(s) sont vide(s)')
+    } else if (phone.length !== 10) {
+      setInvalidPhone('Numéro de téléphone incorrect')
+    } else {
+      saveReservation();
+      setResaConfirmed(true);
+      onceResaConfirmed();
+      setTimeout(() => {
+        setResaConfirmed(false);
+        navigation.navigate('Recherche');
+      }, 2000)
+    }
+  };
+
+  // Vider les useState au bout de quelques secondes
+  setTimeout(() => {
+    setEmptyInput("");
+    setInvalidPhone("");
+  }, 3000);
+
+  // Ajouter un overlay 'Réservation Validée'
+  const [resaConfirmed, setResaConfirmed] = useState(false);
+
+  const onceResaConfirmed = () => {
+    setTimeout(() => {
+      navigation.dispatch(jumpToAction);
+    }, 3000);
+  }
+
   return (
-    <View style={{backgroundColor:'white', flex:1}}>
+    <KeyboardAwareScrollView>
+    <View behavior="padding" style={{backgroundColor:'white', flex:1}}>
 
         {/* Header */}
         <View style={styles.headerContainer}>
@@ -93,18 +146,28 @@ function ReservationScreen(props) {
           </View>
         </View>
 
+        {/* CALENDAR OVERLAY */}
+        <Overlay isVisible={calendarVisible} onBackdropPress={() => setCalendarVisible(false)} overlayStyle={{width: '90%'}}>
+          <Calendar onDayPress={day => { setDate(day.dateString); setCalendarVisible(false) }}/>
+        </Overlay>
+
+        {/* TIME OVERLAY */}
+        <Overlay isVisible={hourVisible} onBackdropPress={() => setHourVisible(false)} overlayStyle={{width: '90%', height: 'auto', borderRadius: 20}} >
+        {timePicker()}
+        </Overlay>
+
         {/* Inputs */}
         <View style={styles.inputsContainer}>
           {/* Date */}
           <View>
             <Text style={styles.inputHeader}>Date</Text>
-            <TextInput value={formatDate(new Date(props.userSearch[0].date))} style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput editable={false} value={formatDate(new Date(date))} style={[styles.input, {paddingLeft: 10}]} onPressIn={() => setCalendarVisible(true)}/>
           </View>
 
           {/* Heure */}
           <View>
             <Text style={styles.inputHeader}>Heure</Text>
-            <TextInput value={props.userSearch[0].heure} style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput editable={false} value={hour} style={[styles.input, {paddingLeft: 10}]} onPressIn={() => setHourVisible(true)}/>
           </View>
 
           {/* Nombre de convives */}
@@ -188,7 +251,7 @@ function ReservationScreen(props) {
           {/* Nom */}
           <View>
             <Text style={styles.inputHeader}>Nom associé</Text>
-            <TextInput value={props.userConnected.userFromBDD.userName.toUpperCase()} style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput value={name} onChangeText={(value) => setName(value)} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
 
           {/* Numéro de téléphone */}
@@ -198,16 +261,28 @@ function ReservationScreen(props) {
               <TouchableOpacity><Text style={{fontSize: 10, fontStyle:'italic', textDecorationLine: 'underline'}}>Changer de numéro</Text></TouchableOpacity>
             </View>
 
-            <TextInput keyboardType='phone-pad' value={props.userConnected.userFromBDD.userPhone.toString()} style={[styles.input, {paddingLeft: 10}]}/>
+            <TextInput keyboardType='phone-pad' onChangeText={(value) => setPhone(value)} value={phone.toString()} style={[styles.input, {paddingLeft: 10}]}/>
           </View>
         </View>
 
+        {/* Messages d'erreurs */}
+        <Text style={{paddingHorizontal:15, color: 'red', fontStyle: 'italic', fontSize:10, marginTop: -20}}>{emptyInput}</Text>
+        <Text style={{paddingHorizontal:15, color: 'red', fontStyle: 'italic', fontSize:10}}>{invalidPhone}</Text>
+
         {/* Button */}
         <View>
-          <TouchableOpacity style={styles.button} onPress={() =>  {navigation.dispatch(jumpToAction); saveReservation()}}><Text style={styles.buttonTitle}>Je réserve</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleReservation()}><Text style={styles.buttonTitle}>Je réserve</Text></TouchableOpacity>
         </View>
+
+        {/* RESA VALIDEE OVERLAY */}
+        <Overlay isVisible={resaConfirmed} overlayStyle={{width: '80%', alignItems: 'center', paddingVertical: 40, borderRadius: 20}}>
+          <AntDesign name="checkcircleo" size={100} color="#005249" style={{}}/>
+          <Text style={{marginTop: 30, marginBottom: 20, fontSize: 16, fontWeight: 'bold'}}>RÉSERVATION VALIDÉE !</Text>
+          <Text style={{textAlign: 'center', fontStyle: 'italic'}}>Il ne vous reste plus qu'à attendre la confirmation du Restaurateur.</Text>
+        </Overlay>
     
-    </View>
+     </View>
+     </KeyboardAwareScrollView>
   );
 }
 
