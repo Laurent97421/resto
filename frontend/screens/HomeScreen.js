@@ -12,6 +12,7 @@ import { AntDesign } from '@expo/vector-icons';
 import DatePicker, {getFormatedDate} from 'react-native-modern-datepicker';
 import * as Location from 'expo-location';
 
+
 function HomeScreen(props) {
 
   // GEOLOCALISATION (INPUT ADRESSE)
@@ -26,9 +27,7 @@ function HomeScreen(props) {
         setCurrentLatitude(location.coords.latitude);
         setCurrentLongitude(location.coords.longitude);
         setSearchAddressResto('Ma Position')
-        console.log(location);
       });
-      console.log(currentLatitude, currentLongitude)
     } else {
       console.log("Permission denied");
       return;
@@ -178,20 +177,19 @@ function HomeScreen(props) {
 
   // SELECTION DE L'HEURE //
   const [heureVisible, setHeureVisible] = useState(false);
+  const [time, setTime] = useState('');
 
   const showHour = () => {
     setHeureVisible(!heureVisible)
   }
-  const [time, setTime] = useState('');
 
   const timePicker = ()=> {
-    
     return (
       <DatePicker
-      mode="time"
-      minuteInterval={15}
-      onTimeChange={selectedTime => {setTime(selectedTime); showHour()}}
-    />
+        mode="time"
+        minuteInterval={15}
+        onTimeChange={selectedTime => {setTime(selectedTime); showHour()}}
+      />
     )
   }
   // // // // // // // //
@@ -229,7 +227,7 @@ function HomeScreen(props) {
             value = {dateInfos}
             />
             <View style={{position: 'absolute', right: 10}}>
-              <FontAwesome5 name="calendar-day" size={18} color="#005249"/>
+              <FontAwesome5 name="calendar-day" size={18} color="#005249" onPress={() => setCalendarVisible(true)}/>
             </View>
           </View>
 
@@ -242,7 +240,7 @@ function HomeScreen(props) {
                 value = {time}
             />
             <View style={{position: 'absolute', right: 10}}>
-              <FontAwesome5 name="clock" size={18} color="#005249"/>
+              <FontAwesome5 name="clock" size={18} color="#005249" onPress={() => {showHour()}}/>
             </View>
           </View>
         </View>
@@ -255,8 +253,8 @@ function HomeScreen(props) {
           setDateInfos(day.dateString);
           setCalendarVisible(false);
         }}
-      />
-    </Overlay>
+        />
+      </Overlay>
 
         {/* TIME OVERLAY */}
       <Overlay isVisible = {heureVisible} onBackdropPress = {showHour} overlayStyle = {{width: '90%', height: 'auto', borderRadius: 20}} >

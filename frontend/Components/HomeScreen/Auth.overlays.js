@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ImageBackground,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, ActivityIndicator, KeyboardAvoidingView } from "react-native";
 import { Button, Overlay } from "@rneui/themed";
-import { FloatingLabelInput } from "react-native-floating-label-input";
-import { Icon } from "@rneui/themed";
-import { connect } from "react-redux";
-import { AntDesign } from "@expo/vector-icons";
+import { FloatingLabelInput } from 'react-native-floating-label-input';
+import { Icon } from '@rneui/themed'
+import { connect } from 'react-redux';
+import { AntDesign } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 function Authentification(props) {
   // let privateAdressIP = "172.20.10.8"; // Laurent
@@ -188,137 +182,94 @@ function Authentification(props) {
                     Commencer
                 </Text>
             </TouchableOpacity> */}
-      </Overlay>
 
-      {/* SUBSCRIBE */}
-      <Overlay
-        isVisible={visibleOverlaySub}
-        overlayStyle={{
-          width: "90%",
-          borderRadius: 20,
-          paddingHorizontal: 16,
-          paddingVertical: 30,
-        }}
-      >
-        {/* input Last Name */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setSignupLastName(msg)}
-          value={signupLastName.toUpperCase()}
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Nom"
-          placeholder="Nom"
-        ></FloatingLabelInput>
-        <Text></Text>
+        </Overlay>
+      
+        {/* SUBSCRIBE */}
+        <Overlay isVisible={visibleOverlaySub} overlayStyle={{width: '90%', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30}}>
+        <KeyboardAwareScrollView>
+            {/* input Last Name */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setSignupLastName(msg)}
+                value={signupLastName.toUpperCase()}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Nom"
+                placeholder="Nom"
+            ></FloatingLabelInput>
+            <Text></Text>
 
-        {/* input First Name */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setSignupFirstName(msg)}
-          value={signupFirstName}
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Prénom"
-          placeholder="Prénom"
-        ></FloatingLabelInput>
-        <Text></Text>
+            {/* input First Name */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setSignupFirstName(msg)}
+                value={signupFirstName}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Prénom"
+                placeholder="Prénom"
+            ></FloatingLabelInput>
+            <Text></Text>
 
-        {/* input Email */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setSignupEmail(msg)}
-          value={signupEmail}
-          keyboardType="email-address"
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Email"
-          placeholder="Email"
-        ></FloatingLabelInput>
-        <Text
-          style={{
-            paddingHorizontal: 15,
-            color: "red",
-            fontStyle: "italic",
-            fontSize: 10,
-          }}
-        >
-          {invalidEmail}
-        </Text>
+            {/* input Email */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setSignupEmail(msg)}
+                value={signupEmail}
+                keyboardType="email-address"
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Email"
+                placeholder="Email"
+            ></FloatingLabelInput>
+            <Text style={{paddingHorizontal:15, color: 'red', fontStyle: 'italic', fontSize:10}}>{invalidEmail}</Text>
 
-        {/* input Phone Number */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setSignupTel(msg)}
-          value={signupTel}
-          keyboardType="numeric"
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Tel"
-          placeholder="Tel"
-        ></FloatingLabelInput>
-        <Text
-          style={{
-            paddingHorizontal: 15,
-            color: "red",
-            fontStyle: "italic",
-            fontSize: 10,
-          }}
-        >
-          {invalidPhone}
-        </Text>
+            {/* input Phone Number */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setSignupTel(msg)}
+                value={signupTel}
+                keyboardType="numeric"
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Tel"
+                placeholder="Tel"
+            ></FloatingLabelInput>
+            <Text style={{paddingHorizontal:15, color: 'red', fontStyle: 'italic', fontSize:10}}>{invalidPhone}</Text>
 
-        {/* input Password */}
-        <FloatingLabelInput
-          isPassword={true}
-          onChangeText={(msg) => setSignupPassword(msg)}
-          value={signupPassword}
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Mot de passe"
-          placeholder="Mot de passe"
-          customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-          customHidePasswordComponent={
-            <Icon name="eye-with-line" type="entypo" />
-          }
-        ></FloatingLabelInput>
-        <Text
-          style={{
-            paddingHorizontal: 15,
-            color: "red",
-            fontStyle: "italic",
-            fontSize: 10,
-          }}
-        >
-          {emptyInput}
-        </Text>
-        <Text
-          style={{
-            paddingHorizontal: 15,
-            color: "red",
-            fontStyle: "italic",
-            fontSize: 10,
-          }}
-        >
-          {errorSignUp}
-        </Text>
+            {/* input Password */}
+            <FloatingLabelInput
+                isPassword={true}
+                onChangeText={(msg) => setSignupPassword(msg)}
+                value={signupPassword}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Mot de passe"
+                placeholder="Mot de passe"
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+            ></FloatingLabelInput>
+            <Text style={{paddingHorizontal:15, color: 'red', fontStyle: 'italic', fontSize:10}}>{emptyInput}</Text>
+            <Text style={{paddingHorizontal:15, color: 'red', fontStyle: 'italic', fontSize:10}}>{errorSignUp}</Text>
 
-        {/* Button Subscribe */}
-        <Button
-          buttonStyle={{ backgroundColor: "#FDCF08" }}
-          titleStyle={{ color: "black" }}
-          containerStyle={{ borderRadius: 40, marginTop: 20, marginBottom: 10 }}
-          title="S'inscrire"
-          onPress={() => {
-            console.log("Click sur s'inscrire détécté !");
-            handleSignUp();
-            // signup();
-          }}
-        />
+            {/* Button Subscribe */}
+            <Button
+                buttonStyle={{backgroundColor: '#FDCF08'}}
+                titleStyle={{color: 'black'}}
+                containerStyle={{borderRadius: 40, marginTop: 20, marginBottom: 10}}
+                title="S'inscrire"
+                onPress={() => {
+                    console.log("Click sur s'inscrire détécté !");
+                    handleSignUp();
+                    // signup();
+            }}
+            />
 
-        {/* Button Google Connect */}
-        {/* <Button
+            {/* Button Google Connect */}
+            {/* <Button
+
                 buttonStyle={{backgroundColor: 'white'}}
                 titleStyle={{color:'black'}}
                 containerStyle={{borderRadius: 40, marginBottom: 10, borderWidth: 0.5}}
@@ -326,193 +277,131 @@ function Authentification(props) {
                 onPress={() => console.log("s'inscrire via google")}
             /> */}
 
-        {/* J'ai déjà un compte */}
-        <Text
-          style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}
-        >
-          J'ai déjà un compte
-        </Text>
 
-        <TouchableOpacity
-          style={{ marginTop: 10 }}
-          onPress={() => {
-            setVisibleOverlaySub(false);
-            setVisibleOverlayLog(true);
-          }}
-        >
-          <Text
-            style={{ textAlign: "center", color: "#005249", fontWeight: "600" }}
-          >
-            SE CONNECTER
-          </Text>
-        </TouchableOpacity>
-      </Overlay>
+            {/* J'ai déjà un compte */}
+            <Text style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}>
+                J'ai déjà un compte
+            </Text>
 
-      {/* LOGIN */}
-      <Overlay
-        isVisible={visibleOverlayLog}
-        overlayStyle={{
-          width: "90%",
-          borderRadius: 20,
-          paddingHorizontal: 16,
-          paddingVertical: 30,
-        }}
-      >
-        {/* Flèche retour */}
-        <AntDesign
-          name="arrowleft"
-          size={24}
-          color="black"
-          onPress={() => {
-            setVisibleOverlayLog(false);
-            setVisibleOverlaySub(true);
-          }}
-        />
+            <TouchableOpacity style={{marginTop: 10}} onPress={() => { setVisibleOverlaySub(false); setVisibleOverlayLog(true);}}>
+                <Text style={{ textAlign: "center", color: "#005249", fontWeight: '600' }}>
+                    SE CONNECTER
+                </Text>
+            </TouchableOpacity>
+        </KeyboardAwareScrollView>
+        </Overlay>
 
-        {/* Input Email */}
-        <FloatingLabelInput
-          keyboardType="email-address"
-          onChangeText={(value) => setSignInEmail(value)}
-          value={signInEmail}
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Email"
-          placeholder="Email"
-        ></FloatingLabelInput>
+        {/* LOGIN */}
+        <Overlay isVisible={visibleOverlayLog} overlayStyle={{ width: "90%", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30 }}>
+            {/* Flèche retour */}
+            <AntDesign name="arrowleft" size={24} color="black" onPress={() => {setVisibleOverlayLog(false); setVisibleOverlaySub(true)}}/>
 
-        {/* Input Password */}
-        <FloatingLabelInput
-          onChangeText={(value) => setSignInPassword(value)}
-          value={signInPassword}
-          isPassword={true}
-          customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-          customHidePasswordComponent={
-            <Icon name="eye-with-line" type="entypo" />
-          }
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Mot de passe"
-          placeholder="Mot de passe"
-        ></FloatingLabelInput>
+            {/* Input Email */}
+            <FloatingLabelInput
+                keyboardType="email-address"
+                onChangeText={(value) => setSignInEmail(value)}
+                value={signInEmail}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Email"
+                placeholder="Email"
+            ></FloatingLabelInput>
 
-        {/* Button Forget Password */}
-        <TouchableOpacity
-          onPress={() => {
-            setVisibleOverlayLog(false);
-            setVisibleOverlayForget(true);
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "right",
-              color: "green",
-              fontSize: 10,
-              paddingRight: 20,
-            }}
-          >
-            Mot de passe oublié
-          </Text>
-        </TouchableOpacity>
+            {/* Input Password */}
+            <FloatingLabelInput
+                onChangeText={(value) => setSignInPassword(value)}
+                value={signInPassword}
+                isPassword={true}
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Mot de passe"
+                placeholder="Mot de passe"
+            ></FloatingLabelInput>
 
-        <Text
-          style={{
-            paddingHorizontal: 15,
-            marginTop: 8,
-            color: "red",
-            fontStyle: "italic",
-            fontSize: 10,
-          }}
-        >
-          {errorLogin}
-        </Text>
+            {/* Button Forget Password */}
+            <TouchableOpacity onPress={() => {setVisibleOverlayLog(false); setVisibleOverlayForget(true);}}>
+                <Text
+                    style={{textAlign: "right", color: "green", fontSize: 10, paddingRight: 20,}}
+                >
+                    Mot de passe oublié
+                </Text>
+            </TouchableOpacity>
 
-        {/* Button Login */}
-        <Button
-          buttonStyle={{ backgroundColor: "#FDCF08" }}
-          titleStyle={{ color: "black" }}
-          containerStyle={{ borderRadius: 40, marginTop: 30, marginBottom: 10 }}
-          title="Se connecter"
-          onPress={() => {
-            console.log("click sur Se Connecter détécté !");
-            checkConnectionInformation();
-          }}
-        />
-      </Overlay>
+            <Text style={{paddingHorizontal:15, marginTop: 8, color: 'red', fontStyle: 'italic', fontSize:10}}>{errorLogin}</Text>
 
-      {/* FORGET PASSWORD */}
-      <Overlay
-        isVisible={visibleOverlayForget}
-        overlayStyle={{
-          width: "90%",
-          borderRadius: 20,
-          paddingHorizontal: 16,
-          paddingVertical: 30,
-        }}
-      >
-        {/* Flèche retour */}
-        <AntDesign
-          name="arrowleft"
-          size={24}
-          color="black"
-          onPress={() => {
-            setVisibleOverlayForget(false);
-            setVisibleOverlayLog(true);
-          }}
-        />
+            {/* Button Login */}
+            <Button
+                buttonStyle={{backgroundColor: '#FDCF08'}}
+                titleStyle={{color: 'black'}}
+                containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}
+                title="Se connecter"
+                onPress={() => {
+                    console.log('click sur Se Connecter détécté !');
+                    checkConnectionInformation();
+                }}
+            />
+        </Overlay>
 
-        {/* Input Email */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setEmailReset(msg)}
-          value={emailReset}
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Email"
-          placeholder="Email"
-        ></FloatingLabelInput>
+        {/* FORGET PASSWORD */}
+        <Overlay isVisible={visibleOverlayForget} overlayStyle={{ width: "90%", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 30 }}>
+        <KeyboardAwareScrollView>
+            {/* Flèche retour */}
+            <AntDesign name="arrowleft" size={24} color="black" onPress={() => {setVisibleOverlayForget(false); setVisibleOverlayLog(true)}}/>
 
-        {/* Input New Password */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setPasswordReset(msg)}
-          value={passwordReset}
-          isPassword={true}
-          customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-          customHidePasswordComponent={
-            <Icon name="eye-with-line" type="entypo" />
-          }
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Nouveau mot de passe"
-          placeholder="Nouveau mot de passe"
-        ></FloatingLabelInput>
+            {/* Input Email */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setEmailReset(msg)}
+                value={emailReset}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Email"
+                placeholder="Email"
+            ></FloatingLabelInput>
 
-        {/* Input New Password Confirm */}
-        <FloatingLabelInput
-          onChangeText={(msg) => setConfirmedPasswordReset(msg)}
-          value={confirmedPasswordReset}
-          isPassword={true}
-          customShowPasswordComponent={<Icon name="eye" type="entypo" />}
-          customHidePasswordComponent={
-            <Icon name="eye-with-line" type="entypo" />
-          }
-          labelStyles={styles.labelStyles}
-          containerStyles={styles.containerStyles}
-          staticLabel
-          label="Confirmer le nouveau mot de passe"
-          placeholder="Confirmer le nouveau mot de passe"
-        ></FloatingLabelInput>
+            {/* Input New Password */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setPasswordReset(msg)}
+                value={passwordReset}
+                isPassword={true}
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Nouveau mot de passe"
+                placeholder="Nouveau mot de passe"
+            ></FloatingLabelInput>
 
-        <Button
-          title="Valider"
-          buttonStyle={{ backgroundColor: "#FDCF08" }}
-          titleStyle={{ color: "black" }}
-          containerStyle={{ borderRadius: 40, marginTop: 30, marginBottom: 10 }}
-          onPress={() => setVisibleOverlayForget(false)}
-        />
-      </Overlay>
+            {/* Input New Password Confirm */}
+            <FloatingLabelInput
+                onChangeText={(msg) => setConfirmedPasswordReset(msg)}
+                value={confirmedPasswordReset}
+                isPassword={true}
+                customShowPasswordComponent={<Icon name="eye" type="entypo" />}
+                customHidePasswordComponent={<Icon name="eye-with-line" type="entypo" />}
+                labelStyles={styles.labelStyles}
+                containerStyles={styles.containerStyles}
+                staticLabel
+                label="Confirmer le nouveau mot de passe"
+                placeholder="Confirmer le nouveau mot de passe"
+            ></FloatingLabelInput>
+
+            
+            <Button
+                title="Valider"
+                buttonStyle={{backgroundColor: '#FDCF08'}}
+                titleStyle={{color: 'black'}}
+                containerStyle={{borderRadius: 40, marginTop: 30, marginBottom: 10}}
+                onPress={() => setVisibleOverlayForget(false)}
+            />
+        </KeyboardAwareScrollView>
+        </Overlay>
+        
     </View>
   );
 }
