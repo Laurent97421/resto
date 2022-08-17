@@ -7,7 +7,6 @@ var userModel = require("../models/users");
 
 /* POST Sign-up */
 router.post("/signup", async function (req, res, next) {
-  
   // Pour encrypter le password
   const hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
 
@@ -29,10 +28,10 @@ router.post("/signup", async function (req, res, next) {
     req.body.passwordFromFront == ""
   ) {
     error.push("Un ou plusieurs champ(s) sont vide(s)");
-  // On affiche une erreur si l'email du user existe déjà en BDD
+    // On affiche une erreur si l'email du user existe déjà en BDD
   } else if (userTaken) {
     error.push("Cette adresse e-mail existe déjà !");
-  // Si aucune erreur, on sauvegarder le user en BDD, on passe le result à true et on stock son token dans une variable
+    // Si aucune erreur, on sauvegarder le user en BDD, on passe le result à true et on stock son token dans une variable
   } else {
     var newUser = new userModel({
       userName: req.body.nameFromFront,
@@ -41,7 +40,7 @@ router.post("/signup", async function (req, res, next) {
       userPhone: req.body.phoneFromFront,
       userPassword: hash,
       token: uid2(32),
-      reservations: []
+      reservations: [],
     });
     var userSave = await newUser.save();
     if (userSave) {
@@ -54,29 +53,33 @@ router.post("/signup", async function (req, res, next) {
 
 /* POST Sign-in */
 router.post("/sign-in", async function (req, res, next) {
-
   var error = [];
   var result = false;
 
-  if ( req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
+  if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
     error.push("Un ou plusieurs champ(s) sont vide(s)");
   } else {
     // console.log('Etape 1: findOne effectué')
     var userFromFrontExist = await userModel.findOne({
-      userEmail: req.body.emailFromFront
+      userEmail: req.body.emailFromFront,
     });
     if (userFromFrontExist) {
       // console.log('Tape 2: if(userFromFrontExist)')
-      if(bcrypt.compareSync(req.body.passwordFromFront, userFromFrontExist.userPassword))
-      // console.log('Etape 3: compareSync')
-      result = true;
+      if (
+        bcrypt.compareSync(
+          req.body.passwordFromFront,
+          userFromFrontExist.userPassword
+        )
+      )
+        // console.log('Etape 3: compareSync')
+        result = true;
     } else {
       error.push("Information(s) incorrecte(s)");
     }
   }
-  res.json({result, userFromBDD: userFromFrontExist, error})
+  res.json({ result, userFromBDD: userFromFrontExist, error });
   // res.json({})
-})
+});
 
 /* POST Reset Password */
 router.post("/reset-password", async function (req, res, next) {
@@ -118,44 +121,61 @@ router.get("/account-screen/:token", async function (req, res) {
 });
 
 router.post("/account-screen", async function (req, res, next) {
+  var userFromBDD = await userModel.findOne({ token: req.body.tokenFromFront });
+  console.log(userFromBDD);
 
-  var userFromBDD = await userModel.findOne({token: req.body.tokenFromFront})
-  console.log(userFromBDD)
-
-  res.json({userFromBDD});
+  res.json({ userFromBDD });
 });
 
 /* GET Account Screen - Se déconnecter */
 
 /* GET Account Screen Overlay - Modifier mes informations */
 
-
 // POST Ajouter une réservation comme sous-document
-router.post('/reservation', async function (req, res, next) {
+router.post("/reservation", async function (req, res, next) {
   // On récupère le user connecté
-  var userConnected = await userModel.findOne({token: req.body.tokenFromRedux});
+  var userConnected = await userModel.findOne({
+    token: req.body.tokenFromRedux,
+  });
   console.log(userConnected);
 
-  if(userConnected.token == req.body.tokenFromRedux) {
-    userConnected.reservations.push(
-      {
-        restoName: req.body.restoName,
-        restoAddress: req.body.restoAddress,
-        restoZIPCode: req.body.restoZIPCode,
-        restoCity: req.body.restoCity,
-        restoPhone: req.body.restoPhone,
-        date: req.body.date,
-        hour: req.body.hour,
-        numberOfPeople: req.body.numberOfPeople,
-        resaName: req.body.resaName,
-        resaPhone: req.body.resaPhone,
-        status: req.body.status
-      }
-    )
+  if (userConnected.token == req.body.tokenFromRedux) {
+    userConnected.reservations.push({
+      restoName: req.body.restoName,
+      restoAddress: req.body.restoAddress,
+      restoZIPCode: req.body.restoZIPCode,
+      restoCity: req.body.restoCity,
+      restoPhone: req.body.restoPhone,
+      date: req.body.date,
+      hour: req.body.hour,
+      numberOfPeople: req.body.numberOfPeople,
+      resaName: req.body.resaName,
+      resaPhone: req.body.resaPhone,
+      status: req.body.status,
+    });
     await userConnected.save();
   }
 
-  res.json({userConnected});
+  res.json({ userConnected });
+});
+
+//querring the BDD
+router.get("/reservation", async function (req, res, next) {
+  var userConnected = await userModel.findOne({
+    token: req.body.tokenFromRedux,
+  });
+  // if (userConnected.token == req.body.tokenFromRedux) {
+  //   var reservations = userConnected.reservations;
+  // }
+  var userReservations = [];
+
+  var result = false;
+
+  if (userConnected !== null) {
+    userReservations = userConnected.reservations;
+    result = true;
+  }
+  res.json({ userReservations, result });
 });
 
 module.exports = router;

@@ -7,158 +7,173 @@ import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-
 function Authentification(props) {
+  // let privateAdressIP = "172.20.10.8"; // Laurent
+  // let privateAdressIP = "172.20.10.4"; // Pauline
+  let privateAdressIP = "192.168.1.14"; // Johann
 
-// let privateAdressIP = "172.20.10.8"; // Laurent
-let privateAdressIP = "172.20.10.4"; // Pauline
+  // Overlays Visibility
+  const [visibleOverlaySub, setVisibleOverlaySub] = useState(false);
+  const [visibleOverlayLog, setVisibleOverlayLog] = useState(false);
+  const [visibleOverlayForget, setVisibleOverlayForget] = useState(false);
+  const [visibleOpeningLogo, setVisibleOpeningLogo] = useState(true);
 
-// Overlays Visibility
-const [visibleOverlaySub, setVisibleOverlaySub] = useState(false);
-const [visibleOverlayLog, setVisibleOverlayLog] = useState(false);
-const [visibleOverlayForget, setVisibleOverlayForget] = useState(false);
-const [visibleOpeningLogo, setVisibleOpeningLogo] = useState(true);
+  // Display errors
+  const [errorSignUp, setErrorSignUp] = useState([]);
+  const [errorLogin, setErrorLogin] = useState([]);
 
-// Display errors
-const [errorSignUp, setErrorSignUp] = useState([])
-const [errorLogin, setErrorLogin] = useState([])
-
-///////// OPENING LOGO ///////////
-useEffect(() => {
+  ///////// OPENING LOGO ///////////
+  useEffect(() => {
     const timer = setTimeout(() => {
-        setVisibleOpeningLogo(false);
-        setVisibleOverlaySub(true);
-    }, 2000)
-}, [])
+      setVisibleOpeningLogo(false);
+      setVisibleOverlaySub(true);
+    }, 2000);
+  }, []);
 
-///////// SUBSCRIBE ///////////
-    // Save inputs values
-    const [signupLastName, setSignupLastName] = useState("");
-    const [signupFirstName, setSignupFirstName] = useState("");
-    const [signupEmail, setSignupEmail] = useState("");
-    const [signupTel, setSignupTel] = useState("");
-    const [signupPassword, setSignupPassword] = useState("");
-    const [emptyInput, setEmptyInput] = useState("")
-    const [invalidEmail, setInvalidEmail] = useState("");
-    const [invalidPhone, setInvalidPhone] = useState("");
+  ///////// SUBSCRIBE ///////////
+  // Save inputs values
+  const [signupLastName, setSignupLastName] = useState("");
+  const [signupFirstName, setSignupFirstName] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupTel, setSignupTel] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [emptyInput, setEmptyInput] = useState("");
+  const [invalidEmail, setInvalidEmail] = useState("");
+  const [invalidPhone, setInvalidPhone] = useState("");
 
-    // Lancer le sign up après vérification de chaque input
-    const handleSignUp = () => {
-        if (signupLastName == "" || signupFirstName == "" || signupEmail == "" || signupTel == "" || signupPassword == "") {
-            setEmptyInput('Un ou plusieurs champ(s) sont vide(s)')
-        } else if (!signupEmail.match(/\S+@\S+\.\S+/)) {
-            setInvalidEmail('Adresse e-mail incorrecte')
-        } else if (signupTel.length !== 10) {
-            setInvalidPhone('Numéro de téléphone incorrect')
-        } else {
-            signup();
+  // Lancer le sign up après vérification de chaque input
+  const handleSignUp = () => {
+    if (
+      signupLastName == "" ||
+      signupFirstName == "" ||
+      signupEmail == "" ||
+      signupTel == "" ||
+      signupPassword == ""
+    ) {
+      setEmptyInput("Un ou plusieurs champ(s) sont vide(s)");
+    } else if (!signupEmail.match(/\S+@\S+\.\S+/)) {
+      setInvalidEmail("Adresse e-mail incorrecte");
+    } else if (signupTel.length !== 10) {
+      setInvalidPhone("Numéro de téléphone incorrect");
+    } else {
+      signup();
+    }
+  };
+
+  // Vider les useState au bout de quelques secondes
+  setTimeout(() => {
+    setEmptyInput("");
+    setInvalidEmail("");
+    setInvalidPhone("");
+  }, 3000);
+
+  // Connection with BackEnd to create a User in BDD
+  var signup = async () => {
+    // 1. Add new user in database using route from back end
+    const saveUser = await fetch("http://" + privateAdressIP + ":3000/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `firstNameFromFront=${signupFirstName}&nameFromFront=${signupLastName}&emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&phoneFromFront=${signupTel}`,
+    });
+    const body = await saveUser.json();
+    // console.log('Voici le user sauvegardé')
+    // console.log(body);
+
+    // 2. Close overlay + Sauvegarder le user dans Redux
+    if (body.result === true) {
+      props.saveUser(body);
+      setVisibleOverlaySub(false);
+    } else {
+      setErrorSignUp(body.error);
+    }
+  };
+
+  ///////// LOGIN ///////////
+  // Save inputs values
+  const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
+
+  // Vider les useState au bout de quelques secondes
+  setTimeout(() => {
+    setErrorLogin("");
+  }, 4000);
+
+  // On vérifie dans le backend si le user existe déjà ou pas
+  var checkConnectionInformation = async () => {
+    try {
+      // 1. On envoie les infos du user pour le connecter
+      var connectionInfos = await fetch(
+        "http://" + privateAdressIP + ":3000/sign-in",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`,
         }
-    };
+      );
+      var bodyConnectionInfos = await connectionInfos.json();
+      // console.log(bodyConnectionInfos)
 
-    // Vider les useState au bout de quelques secondes
-    setTimeout(() => {
-        setEmptyInput("");
-        setInvalidEmail("");
-        setInvalidPhone("");
-    }, 3000);
+      // 2. Close overlay + Sauvegarder le user dans Redux
+      if (bodyConnectionInfos.result == true) {
+        props.saveUser(bodyConnectionInfos);
+        setVisibleOverlayLog(false);
+      } else {
+        setErrorLogin(bodyConnectionInfos.error);
+      }
+    } catch (err) {
+      // Error si pas de user trouvé en BDD
+      console.log("No user connected");
+    }
+  };
 
-    // Connection with BackEnd to create a User in BDD
-    var signup = async () => {
-            // 1. Add new user in database using route from back end
-            const saveUser = await fetch("http://" + privateAdressIP + ":3000/signup", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `firstNameFromFront=${signupFirstName}&nameFromFront=${signupLastName}&emailFromFront=${signupEmail}&passwordFromFront=${signupPassword}&phoneFromFront=${signupTel}`,
-            });
-            const body = await saveUser.json();
-            // console.log('Voici le user sauvegardé')
-            // console.log(body);
-    
-            // 2. Close overlay + Sauvegarder le user dans Redux
-            if(body.result === true){
-                props.saveUser(body);
-                setVisibleOverlaySub(false);
-            } else {
-                setErrorSignUp(body.error);
-            }
-    };
+  ///////// FORGET PASSWORD ///////////
+  // Save inputs values
+  const [emailReset, setEmailReset] = useState("");
+  const [passwordReset, setPasswordReset] = useState("");
 
-///////// LOGIN ///////////
-    // Save inputs values
-    const [signInEmail, setSignInEmail] = useState("");
-    const [signInPassword, setSignInPassword] = useState("");
+  // Reset Password States
+  const [confirmedPasswordReset, setConfirmedPasswordReset] = useState("");
+  const [resetPsw, setResetPsw] = useState(false);
 
-    // Vider les useState au bout de quelques secondes
-    setTimeout(() => {
-        setErrorLogin("");
-    }, 4000);
+  // Connexion avec le BackEnd pour modifier le MDP du User en BDD
+  var resetPassword = async () => {
+    const dataResetPassword = await fetch("/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `emailFromResetPassword=${emailReset}&passwordFromResetPassword=${passwordReset}&passwordFromResetPasswordConfirmed=${confirmedPasswordReset}`,
+    });
 
-    // On vérifie dans le backend si le user existe déjà ou pas
-    var checkConnectionInformation = async () => {
-        try {
-            // 1. On envoie les infos du user pour le connecter
-            var connectionInfos = await fetch("http://" + privateAdressIP + ":3000/sign-in",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`,
-                }
-            );
-            var bodyConnectionInfos = await connectionInfos.json();
-            // console.log(bodyConnectionInfos)
+    const bodyResetPassword = dataResetPassword.json();
 
-            // 2. Close overlay + Sauvegarder le user dans Redux
-            if(bodyConnectionInfos.result == true) {
-                props.saveUser(bodyConnectionInfos);
-                setVisibleOverlayLog(false);
-            } else {
-                setErrorLogin(bodyConnectionInfos.error)
-            }
-        } catch (err) {
-            // Error si pas de user trouvé en BDD
-            console.log("No user connected");
-        }
-    };
-
-///////// FORGET PASSWORD ///////////
-    // Save inputs values
-    const [emailReset, setEmailReset] = useState("");
-    const [passwordReset, setPasswordReset] = useState("");
-
-    // Reset Password States
-    const [confirmedPasswordReset, setConfirmedPasswordReset] = useState("");
-    const [resetPsw, setResetPsw] = useState(false);
-
-    // Connexion avec le BackEnd pour modifier le MDP du User en BDD
-    var resetPassword = async () => {
-        const dataResetPassword = await fetch("/reset-password", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `emailFromResetPassword=${emailReset}&passwordFromResetPassword=${passwordReset}&passwordFromResetPasswordConfirmed=${confirmedPasswordReset}`,
-        });
-
-        const bodyResetPassword = dataResetPassword.json();
-
-        // Si tout est ok en back, result = true, et donc on setResetPsw à true
-        // et ensuite si resetPsw on revient sur l'overlay j'ai déjà un compte
-        if (bodyResetPassword.result) {
-            console.log("test resetPassword");
-            setResetPsw(true);
-        }
-    };
-
+    // Si tout est ok en back, result = true, et donc on setResetPsw à true
+    // et ensuite si resetPsw on revient sur l'overlay j'ai déjà un compte
+    if (bodyResetPassword.result) {
+      console.log("test resetPassword");
+      setResetPsw(true);
+    }
+  };
 
   return (
     <View>
+      {/* RESTO LOGO OPENING */}
+      <Overlay
+        isVisible={visibleOpeningLogo}
+        overlayStyle={{
+          flex: 1,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#FDCF08",
+        }}
+      >
+        <ImageBackground
+          style={{ flex: 1 }}
+          source={require("../../assets/Logo.png")}
+        />
 
-        {/* RESTO LOGO OPENING */}   
-        <Overlay isVisible={visibleOpeningLogo} overlayStyle={{flex:1, width: '100%', height: '100%', backgroundColor: '#FDCF08'}}>
-            <ImageBackground style={{flex:1}} source={require('../../assets/Logo.png')}/>
-            
-            <View style={{position: "absolute", bottom: 80, alignSelf: 'center'}} >
-                <ActivityIndicator size="small" color="#005249" />
-            </View>
-            {/* <TouchableOpacity
+        <View style={{ position: "absolute", bottom: 80, alignSelf: "center" }}>
+          <ActivityIndicator size="small" color="#005249" />
+        </View>
+        {/* <TouchableOpacity
                 style={{position: "absolute", bottom: 80, alignSelf: 'center', backgroundColor: '#005249', width: '100%', margintHorizo
             : 16, alignItems: 'center', justifyContent:'center', height: 44, borderRadius: 40 }}
                 onPress={() => setVisibleOpeningLogo(false)}
@@ -167,6 +182,7 @@ useEffect(() => {
                     Commencer
                 </Text>
             </TouchableOpacity> */}
+
         </Overlay>
       
         {/* SUBSCRIBE */}
@@ -253,12 +269,14 @@ useEffect(() => {
 
             {/* Button Google Connect */}
             {/* <Button
+
                 buttonStyle={{backgroundColor: 'white'}}
                 titleStyle={{color:'black'}}
                 containerStyle={{borderRadius: 40, marginBottom: 10, borderWidth: 0.5}}
                 title="Connexion via Google"
                 onPress={() => console.log("s'inscrire via google")}
             /> */}
+
 
             {/* J'ai déjà un compte */}
             <Text style={{ textAlign: "center", marginTop: "4%", marginBottom: "2%" }}>
@@ -383,41 +401,36 @@ useEffect(() => {
             />
         </KeyboardAwareScrollView>
         </Overlay>
-
+        
     </View>
-    
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-    labelStyles: {
-        backgroundColor: "#fff",
-        paddingHorizontal: 10,
-        marginTop: 20,
-        marginLeft: 15,
-    },
-    containerStyles: {
-      borderWidth: 1,
-      paddingVertical: 10,
-      paddingHorizontal: 10,
-      borderColor: "grey",
-      borderRadius: 10,
-      marginTop: 20,
-      marginLeft: 15,
-      marginRight: 15
-    },
-})
+  labelStyles: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    marginTop: 20,
+    marginLeft: 15,
+  },
+  containerStyles: {
+    borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderColor: "grey",
+    borderRadius: 10,
+    marginTop: 20,
+    marginLeft: 15,
+    marginRight: 15,
+  },
+});
 
 function mapDispatchToProps(dispatch) {
-    return {
-      saveUser: function (user) {
-        dispatch({ type: "saveUser", user: user });
-      },
-    };
-  }
-  
-  export default connect(
-    null,
-    mapDispatchToProps
-)(Authentification);
+  return {
+    saveUser: function (user) {
+      dispatch({ type: "saveUser", user: user });
+    },
+  };
+}
 
+export default connect(null, mapDispatchToProps)(Authentification);
