@@ -2,58 +2,87 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import RestaurantsData from '../assets/files-JSON/restaurant.json'
-import { connect } from 'react-redux';
-import { FontAwesome } from '@expo/vector-icons';
+import RestaurantsData from "../assets/files-JSON/restaurant.json";
+import { connect } from "react-redux";
+import { FontAwesome } from "@expo/vector-icons";
 
 function RestaurantCard(props) {
-
   const navigation = useNavigation();
 
   const toDo = (data) => {
     navigation.navigate("Resto");
-    props.onRestoClick(data)
+    props.onRestoClick(data);
     // console.log(data)
-  }
-  
-  const destinations = props.resultsDirection;
-  console.log(destinations);
-  
-   // const destinationsData = destinations.map((restaurant) => {
-  //   return <Text>{restaurant.distance} m</Text>;
-  // });
+  };
 
-  var starsGlobalRating = []
-  for (var i=0; i<5; i++) {
+  var destinations = props.resultsDirection;
+
+  var restaurantDataSet = [];
+
+  for (var i = 0; i < RestaurantsData.length; i++) {
+    restaurantDataSet.push({
+      id: RestaurantsData[i].id,
+      name: RestaurantsData[i].name,
+      logo: RestaurantsData[i].logo,
+    });
+  }
+
+  const distance = [];
+  for (var i = 0; i < destinations.length; i++) {
+    distance.push({
+      distance: destinations[i].distance,
+    });
+  }
+  // console.log(distance);
+
+  var starsGlobalRating = [];
+  for (var i = 0; i < 5; i++) {
     var color = {};
-    if(i<Math.round(RestaurantsData[0].rating)) {
-      color = '#f1c40f'
+    if (i < Math.round(RestaurantsData[0].rating)) {
+      color = "#f1c40f";
     } else {
-      color = '#F5F5F5'
+      color = "#F5F5F5";
     }
-    starsGlobalRating.push(<FontAwesome key = {i} name="star" size={16} color={color} />)
+    starsGlobalRating.push(
+      <FontAwesome key={i} name="star" size={16} color={color} />
+    );
   }
 
   // // // // // // // // // // // // // // // // // // // // // // // // // // //$
-  var temporaire = []
+  var temporaire = [];
 
   props.searchInfos[1].map((data) => {
     RestaurantsData.map((dataResto) => {
       dataResto.features.map((dataFeatures) => {
-          const found = dataFeatures.values.find(element => element == data.element);
-          if(found){
-            temporaire.push({id: dataResto.id, name: dataResto.name, address: dataResto.address, ZIPcode: dataResto.ZIPcode, city: dataResto.city, phoneNumber: dataResto.phoneNumber, rating: dataResto.rating, voteNumber: dataResto.voteNumber, logo: dataResto.logo, images: dataResto.images, menu: dataResto.menu, boissons: dataResto.boissons, features: dataResto.features})
-
-          }
-      })
-    })
-  })
+        const found = dataFeatures.values.find(
+          (element) => element == data.element
+        );
+        if (found) {
+          temporaire.push({
+            id: dataResto.id,
+            name: dataResto.name,
+            address: dataResto.address,
+            ZIPcode: dataResto.ZIPcode,
+            city: dataResto.city,
+            phoneNumber: dataResto.phoneNumber,
+            rating: dataResto.rating,
+            voteNumber: dataResto.voteNumber,
+            logo: dataResto.logo,
+            images: dataResto.images,
+            menu: dataResto.menu,
+            boissons: dataResto.boissons,
+            features: dataResto.features,
+          });
+        }
+      });
+    });
+  });
 
   // Pour enlever les doublons dans le tableau d'objets
   let newArray = [];
   let uniqueObject = {};
-  for(let i in temporaire){
-    objName = temporaire[i]['name']
+  for (let i in temporaire) {
+    objName = temporaire[i]["name"];
     uniqueObject[objName] = temporaire[i];
   }
 
@@ -63,48 +92,45 @@ function RestaurantCard(props) {
   // // // // // // // // // // // // // // // // // // // // // // // // // // //
   return (
     <View>
-      {
-        newArray.map((data,i) => {
-          // const dest = destination[index];
-          // console.log(dest);
-          return (
-            // chaque bouton de resto
-            <TouchableOpacity
-              onPress={() => {toDo(data)}}
-              style={styles.touchableOpacity}
-              key={data.id}
-            >
-              <Image
-                source={{uri: data.logo}}
-                style={styles.restoLogo}
-                resizeMode='stretch'
-              />
-                  
-              {/* RESTO INFOS */}
-              <View style={styles.restoInfosContainer}>
-                <Text style={styles.restoName}>
-                  {data.name}
-                </Text>
+      {newArray.map((data, i) => {
+        // const dest = destination[index];
+        // console.log(dest);
+        return (
+          // chaque bouton de resto
+          <TouchableOpacity
+            onPress={() => {
+              toDo(data);
+            }}
+            style={styles.touchableOpacity}
+            key={data.id}
+          >
+            <Image
+              source={{ uri: data.logo }}
+              style={styles.restoLogo}
+              resizeMode="stretch"
+            />
 
-                {/* RESTO AVIS */}
-                <View style={styles.starsContainer}>
-                  <View style={styles.stars}>
-                    {starsGlobalRating}
-                  </View>
-                  <Text>({data.voteNumber})</Text>
-                </View>
+            {/* RESTO INFOS */}
+            <View style={styles.restoInfosContainer}>
+              <Text style={styles.restoName}>{data.name}</Text>
+
+              {/* RESTO AVIS */}
+              <View style={styles.starsContainer}>
+                <View style={styles.stars}>{starsGlobalRating}</View>
+                <Text>({data.voteNumber})</Text>
               </View>
+            </View>
 
+            {/* <Text style={{marginRight: 10}}>à 450m</Text> */}
 
-              {/* <Text style={{marginRight: 10}}>à 450m</Text> */}
-
-              <IonIcon name="chevron-forward-outline" size={20} style={{marginRight: 10}}/>
-
-            </TouchableOpacity>
-          )
-        })
-      }
-
+            <IonIcon
+              name="chevron-forward-outline"
+              size={20}
+              style={{ marginRight: 10 }}
+            />
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }
@@ -112,30 +138,30 @@ function RestaurantCard(props) {
 const styles = StyleSheet.create({
   touchableOpacity: {
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     backgroundColor: "#DEDEDE",
     marginHorizontal: 10,
     marginTop: 8,
     borderRadius: 8,
     alignItems: "center",
     padding: 10,
-    borderRadius: 25
+    borderRadius: 25,
   },
   restoLogo: {
     width: 60,
     height: 60,
     borderRadius: 50,
-    backgroundColor: 'white',
-    marginLeft: 10
+    backgroundColor: "white",
+    marginLeft: 10,
   },
   restoInfosContainer: {
-    height: '100%',
-    width: '45%',
+    height: "100%",
+    width: "45%",
     marginHorizontal: 20,
   },
   restoName: {
     fontWeight: "bold",
-    fontSize: 18
+    fontSize: 18,
   },
   starsContainer: {
     marginTop: 10,
@@ -143,10 +169,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   stars: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginRight: 30,
   },
-})
+});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -158,11 +184,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { searchInfos: state.search, resultsDirection: state.resultsDirection }
+  return {
+    searchInfos: state.search,
+    resultsDirection: state.resultsDirection,
+  };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RestaurantCard);
-
+export default connect(mapStateToProps, mapDispatchToProps)(RestaurantCard);

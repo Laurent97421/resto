@@ -8,7 +8,6 @@ import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
-import resultsDirection from "../reducers/resultsDest";
 
 function Map(props) {
   const [currentLatitude, setCurrentLatitude] = useState(0);
@@ -84,14 +83,15 @@ function Map(props) {
 
         <Callout tooltip>
           <View style={styles.bubble}>
-            <Image style={styles.restoLogo} source={{ uri: POI.logo }} resizeMode='stretch'/>
-            <Text style={styles.restoName}>
-              {POI.name}
-            </Text>
+            <Image
+              style={styles.restoLogo}
+              source={{ uri: POI.logo }}
+              resizeMode="stretch"
+            />
+            <Text style={styles.restoName}>{POI.name}</Text>
             <IonIcon name="chevron-forward-outline" size={20} />
           </View>
         </Callout>
-
       </Marker>
     );
   });
@@ -113,11 +113,10 @@ function Map(props) {
             const resultsDest = [];
             resultsDest.push({
               id: POI.id,
-              name: POI.name,
               distance: results.distance,
               duration: results.duration,
             });
-            console.log(resultsDest);
+
             setResultsDirection(resultsDest);
           },
           [origin]
@@ -127,11 +126,11 @@ function Map(props) {
   });
 
   return (
-    <View style={{height: 160}}>
+    <View style={{ height: 160 }}>
       <MapView
         ref={mapRef}
         showsUserLocation
-        style={{flex:1}}
+        style={{ flex: 1 }}
         initialRegion={{
           latitude: 44.836151,
           longitude: -0.580816,
@@ -152,6 +151,7 @@ function Map(props) {
         />
         {markerPOI}
         {directionRest}
+
         {/* /* <MapViewDirections
           origin={origin}
           destination={{
@@ -181,8 +181,8 @@ function Map(props) {
 const styles = StyleSheet.create({
   bubble: {
     flexDirection: "row",
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: "white",
     borderColor: "#ccc",
     borderRadius: 6,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   restoName: {
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: "600",
   },
   restoLogo: {
     width: 30,
@@ -215,7 +215,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: -0.5,
   },
-  
 });
 
 // function mapDispatchToProps(dispatch) {
