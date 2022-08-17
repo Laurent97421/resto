@@ -1,16 +1,16 @@
-import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-
-
 import MyTabs from "../Components/RestoScreen/TabScreen";
+import { Overlay } from "@rneui/themed";
+import { AntDesign } from '@expo/vector-icons';
 
-/// ATTTENTIOOOONNNNN !!! Rebasculer l'overlay à true dans HomeScreen avant de push
 
 function RestoScreen(props) {
 
+  // YELLOW STARS ACCORDING TO GLOBAL RATING
   var starsGlobalRating = []
   for (var i=0; i<5; i++) {
     var color = {};
@@ -23,6 +23,29 @@ function RestoScreen(props) {
   }
 
   const navigation = useNavigation();
+
+  // OVERLAY 'tous les avis'
+  const [isVisible, setIsVisible] = useState(false);
+
+  var ratings = []
+  for (var i=0; i<10; i++) {
+    ratings.push(
+      <View style={{marginHorizontal: 20, marginBottom: 15}}>
+        <Text style={{fontWeight: '600', marginBottom: 5}}>John Doe</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+          <View style={{flexDirection: 'row'}}>
+            <FontAwesome name="star" size={20} color='#f1c40f' />
+            <FontAwesome name="star" size={20} color='#f1c40f' />
+            <FontAwesome name="star" size={20} color='#f1c40f' />
+            <FontAwesome name="star" size={20} color='#f1c40f' />
+            <FontAwesome name="star" size={20} color='#f1c40f' />
+          </View>
+          <Text>le 1 août 2022</Text>
+        </View>
+        <Text>Enim nisi nostrud laborum sit quis cillum fugiat officia veniam aliquip adipisicing culpa. Aliquip et ea anim aute nulla exercitation. Adipisicing voluptate officia magna excepteur elit sunt occaecat. Culpa reprehenderit esse anim nisi cupidatat consectetur labore non.</Text>
+      </View>
+    )
+}
 
   return (
     <View style={{backgroundColor:'white', flex:1}}>
@@ -48,8 +71,16 @@ function RestoScreen(props) {
             <Text style={styles.nbVote}>({props.restoSelected[0].voteNumber})</Text>
           </View>
 
-          <Text style={styles.seeAll}>Voir tous les avis</Text>
+          <Text style={styles.seeAll} onPress={() => setIsVisible(true)}>Voir tous les avis</Text>
         </View>
+
+        {/* Overlay 'tous les avis' */}
+        <Overlay isVisible={isVisible} onBackdropPress={() => setIsVisible(false)} overlayStyle={{width: '90%', height: '50%', borderRadius: 20}}>
+          <AntDesign name="closecircle" size={24} color="#005249" style={{alignSelf: 'flex-end', right: 5, top: 5, marginBottom: 10}} onPress={() => setIsVisible(false)} />
+          <ScrollView style={{marginHorizontal: 0, marginBottom: 20}}>
+            {ratings}
+          </ScrollView>
+        </Overlay>
 
         {/* Button */}
         <View style={styles.buttonsContainer}>

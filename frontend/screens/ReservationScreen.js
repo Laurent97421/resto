@@ -24,7 +24,7 @@ function ReservationScreen(props) {
   const [date, setDate] = useState(props.userSearch[0].date);
   const [hour, setHour] = useState(props.userSearch[0].heure);
   const [name, setName] = useState(props.userConnected.userFromBDD.userName.toUpperCase());
-  const [phone, setPhone] = useState(props.userConnected.userFromBDD.userPhone);
+  const [phone, setPhone] = useState('0'+props.userConnected.userFromBDD.userPhone);
 
   // Fonctions pour formatter la date au format local  
   function padTo2Digits(num) {
