@@ -9,8 +9,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 function Authentification(props) {
   // let privateAdressIP = "172.20.10.8"; // Laurent
-  // let privateAdressIP = "172.20.10.4"; // Pauline
-  let privateAdressIP = "192.168.1.14"; // Johann
+  let privateAdressIP = "172.20.10.4"; // Pauline
+  // let privateAdressIP = "192.168.1.14"; // Johann
 
   // Overlays Visibility
   const [visibleOverlaySub, setVisibleOverlaySub] = useState(false);
